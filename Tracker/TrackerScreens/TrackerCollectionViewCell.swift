@@ -21,6 +21,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiLabel: UILabel = {
         let label = UILabel()
+        label.layer.cornerRadius = 12
+        label.layer.masksToBounds = true
+        label.backgroundColor = .trEmojiBackground
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -45,12 +48,15 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let addButton: UIButton = {
+    private let completeTrackerButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 17
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    var isButtonTapped = false
+    var dayCounter = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,18 +67,35 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func didTapCompleteTrackerButton() {
+        isButtonTapped = !isButtonTapped
+        
+        if isButtonTapped {
+            completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
+            completeTrackerButton.alpha = 0.3
+            dayCounter += 1
+            dateLabel.text = "\(dayCounter) день"
+        } else {
+            completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            completeTrackerButton.alpha = 1
+            dayCounter -= 1
+            dateLabel.text = "\(dayCounter) день"
+        }
+    }
+    
     public func configureCell(_ tracker: Tracker) {
         backgroundImageView.backgroundColor = UIColor(named: tracker.color)
         emojiLabel.text = tracker.emoji
         trackerLabel.text = tracker.title
         dateLabel.text = tracker.schedule
-        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addButton.tintColor = .trWhite
-        addButton.backgroundColor = UIColor(named: tracker.color)
+        completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        completeTrackerButton.tintColor = .trWhite
+        completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
     }
     
     private func setupView() {
-        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, dateLabel, addButton)
+        completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
+        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, dateLabel, completeTrackerButton)
         
         NSLayoutConstraint.activate([
             
@@ -94,13 +117,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             
             dateLabel.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 16),
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            dateLabel.trailingAnchor.constraint(equalTo: addButton.leadingAnchor, constant: -8),
+            dateLabel.trailingAnchor.constraint(equalTo: completeTrackerButton.leadingAnchor, constant: -8),
             dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
             
-            addButton.widthAnchor.constraint(equalToConstant: 34),
-            addButton.heightAnchor.constraint(equalToConstant: 34),
-            addButton.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 8),
-            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
+            completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
+            completeTrackerButton.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 8),
+            completeTrackerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
 //            addButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             
         ])

@@ -16,21 +16,16 @@ final class TrackerViewController: UIViewController {
         return collectionView
     }()
     
-    private let emptyLogo: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "EmptyLogo")
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+    private let searchController: UISearchController = {
+        let search = UISearchController()
+        search.hidesNavigationBarDuringPresentation = false
+        search.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+        search.searchBar.placeholder = "Поиск"
+        return search
     }()
     
-    private let emptyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Что будем отслеживать?"
-        label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let emptyLogo = TrackerEmptyLogo(frame: .zero)
+    private let emptyLabel = TrackerEmptyLabel("Что будем отслеживать?")
     
     private let datePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -41,14 +36,15 @@ final class TrackerViewController: UIViewController {
     }()
     
     var trackers: [Tracker] = [
-        Tracker(id: UUID(), title: "Создать", color: "tr1", emoji: "😜", schedule: "5 days"),
-        Tracker(id: UUID(), title: "Назначить", color: "tr2", emoji: "😀", schedule: "3 days"),
-        Tracker(id: UUID(), title: "Запомнить позвонить, чтобы назначить и создать", color: "tr3", emoji: "😎", schedule: "0 days"),
+        Tracker(id: UUID(), title: "Создать", color: "tr1", emoji: "😜", schedule: "5 дней"),
+        Tracker(id: UUID(), title: "Назначить", color: "tr2", emoji: "😀", schedule: "3 дня"),
+        Tracker(id: UUID(), title: "Запомнить позвонить, чтобы назначить и создать", color: "tr3", emoji: "😎", schedule: "0 дней"),
     ]
     
     var currentDate: Date = Date()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
+    private var filteredTrackers: [TrackerCategory] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,21 +53,51 @@ final class TrackerViewController: UIViewController {
     
     @objc private func didTapAddButton() {
         let vc = CreateTrackerViewController()
-        present(vc, animated: true)
+        present(UINavigationController(rootViewController: vc), animated: true)
         
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy" // Формат даты
+        dateFormatter.dateFormat = "dd.MM.yyyy"
         let formattedDate = dateFormatter.string(from: selectedDate)
         print("Выбранная дата: \(formattedDate)")
+    }
+    
+    private func updateEmptyState() {
+        if filteredTrackers.flatMap({ $0.title }).isEmpty {
+            emptyLogo.isHidden = false
+            emptyLabel.isHidden = false
+            collectionView.isHidden = true
+        } else {
+            emptyLogo.isHidden = true
+            emptyLabel.isHidden = true
+            collectionView.isHidden = false
+        }
+    }
+    
+    private func filterTrackers(for searchText: String) {
+        let filteredCategories = categories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.title.lowercased().contains(searchText.lowercased())
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }
+        
+        if searchText.isEmpty {
+            filteredTrackers = categories
+        } else {
+            filteredTrackers = filteredCategories.filter { !$0.trackers.isEmpty }
+        }
+        updateEmptyState()
     }
     
     private func setupView() {
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        searchController.searchBar.delegate = self
         
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
         
@@ -108,7 +134,9 @@ final class TrackerViewController: UIViewController {
     
     private func setupNavBar() {
         title = "Трекеры"
-        //        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddButton)), animated: true)
+        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController = searchController
+        
         navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "addButton"), style: .done, target: self, action: #selector(didTapAddButton)), animated: true)
         navigationItem.leftBarButtonItem?.tintColor = .trBlack
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
@@ -123,15 +151,35 @@ extension TrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier, for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         let tracker = trackers[indexPath.row]
-//        cell.layer.borderColor = UIColor.black.cgColor
-//        cell.layer.borderWidth = 3
         cell.configureCell(tracker)
         return cell
     }
 }
 
 extension TrackerViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard indexPaths.count > 0 else {
+            return nil
+        }
+        
+        let indexPath = indexPaths[0]
+        
+        return UIContextMenuConfiguration(actionProvider: { actions in
+            return UIMenu(children: [
+                UIAction(title: "Закрепить") { _ in
+                    print("Закрепить")
+                },
+                UIAction(title: "Редактировать") { _ in
+                    print("Редактировать")
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    print("Удалить")
+                    
+                }
+            ])
+        })
+    }
 }
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
@@ -144,8 +192,12 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 9
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-//    }
+}
+
+extension TrackerViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterTrackers(for: searchText)
+        updateEmptyState()
+        collectionView.reloadData()
+    }
 }

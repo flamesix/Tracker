@@ -9,38 +9,30 @@ import UIKit
 
 final class CreateTrackerViewController: UIViewController {
     
-    private let regularEventButton: TrackerButton = {
-        let button = TrackerButton()
-        button.setTitle("Привычка", for: .normal)
-        button.addTarget(CreateTrackerViewController.self, action: #selector(didTapRegularEventButton), for: .touchUpInside)
-        return button
-    }()
-    
-    private let unregularEventButton: TrackerButton = {
-        let button = TrackerButton()
-        button.setTitle("Нерегулярное событие", for: .normal)
-        button.addTarget(CreateTrackerViewController.self, action: #selector(didTapUnRegularEventButton), for: .touchUpInside)
-        return button
-    }()
+    private let regularEventButton = TrackerButton("Привычка", .trBlack, .trWhite)
+    private let unregularEventButton = TrackerButton("Нерегулярное событие", .trBlack, .trWhite)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-
     }
     
     @objc private func didTapRegularEventButton() {
-        
+        let vc = CreateRegularEventViewController()
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func didTapUnRegularEventButton() {
-        
+        let vc = CreateUnregularEventViewController()
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     private func setupView() {
         title = "Создание трекера"
         view.backgroundColor = .trWhite
         view.addSubviews(regularEventButton, unregularEventButton)
+        regularEventButton.addTarget(self, action: #selector(didTapRegularEventButton), for: .touchUpInside)
+        unregularEventButton.addTarget(self, action: #selector(didTapUnRegularEventButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             regularEventButton.heightAnchor.constraint(equalToConstant: 60),
