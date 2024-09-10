@@ -28,17 +28,25 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+    
+    
+    public func configure(with category: TrackerCategory) {
+        categoryTitleLabel.text = category.title
+    }
+}
+
+extension CategoryHeaderReusableView: SettingViewsProtocol {
+    func setupView() {
         addSubview(categoryTitleLabel)
+        addConstraints()
         
+    }
+    
+    func addConstraints() {
         NSLayoutConstraint.activate([
             categoryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             categoryTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-    }
-    
-    public func configure(with category: TrackerCategory) {
-        categoryTitleLabel.text = category.title
     }
 }

@@ -60,8 +60,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    var isButtonTapped = false
-    var dayCounter = 0
+    private var isButtonTapped = false
+    private var dayCounter = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -101,11 +101,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             completeTrackerButton.tintColor = .trWhite
             completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
     }
-    
-    private func setupView() {
+}
+
+extension TrackerCollectionViewCell: SettingViewsProtocol {
+    func setupView() {
         completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
         contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton)
+        addConstraints()
         
+    }
+    
+    func addConstraints() {
         NSLayoutConstraint.activate([
             
             backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
