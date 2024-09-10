@@ -12,8 +12,6 @@ final class ScheduleViewController: UIViewController {
     private let doneButton = TrackerButton("Готово", .trBlack, .trWhite)
     private let tableView = TrackerTableView()
     
-    private let weekDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -49,12 +47,12 @@ final class ScheduleViewController: UIViewController {
 
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weekDays.count
+        return WeekDay.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let day = weekDays[indexPath.row]
+        let day = WeekDay.allCases[indexPath.row].rawValue
         cell.textLabel?.text = day
         let switcher = UISwitch()
         switcher.onTintColor = .trBlue

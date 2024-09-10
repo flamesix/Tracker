@@ -16,9 +16,6 @@ final class TabBarViewController: UITabBarController {
     
     private func setupTabs() {
         
-//        tabBar.barTintColor = UIColor(rgb: 0x1A1B22)
-//        tabBar.tintColor = .ypWhite
-        
         let trackerVC = TrackerViewController()
         let statisticVC = StatisticViewController()
         
@@ -28,9 +25,6 @@ final class TabBarViewController: UITabBarController {
         trackerNVC.navigationBar.prefersLargeTitles = true
         statisticNVC.navigationBar.prefersLargeTitles = true
         
-        
-//        imagesListNVC.navigationBar.barTintColor = UIColor(rgb: 0x1A1B22)
-//        imagesListNVC.navigationBar.tintColor = .ypWhite
         
         trackerNVC.tabBarItem = UITabBarItem(title: "Трекеры",
                                                 image: UIImage(systemName: "record.circle.fill"),

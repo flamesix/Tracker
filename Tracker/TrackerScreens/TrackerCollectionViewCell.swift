@@ -7,8 +7,13 @@
 
 import UIKit
 
+protocol TrackerCollectionViewCellDelegate: AnyObject {
+    func didTapCompletedButton(for cell: TrackerCollectionViewCell)
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
+    weak var delegate: TrackerCollectionViewCellDelegate?
     static let reuseIdentifier = "TrackerCollectionViewCell"
     
     private let backgroundImageView: UIImageView = {
@@ -39,7 +44,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let dateLabel: UILabel = {
+    private let counterLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -67,6 +72,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // TODO: Склонение дней
     @objc private func didTapCompleteTrackerButton() {
         isButtonTapped = !isButtonTapped
         
@@ -74,28 +80,31 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
             completeTrackerButton.alpha = 0.3
             dayCounter += 1
-            dateLabel.text = "\(dayCounter) день"
+            counterLabel.text = "\(dayCounter) день"
+            
+            delegate?.didTapCompletedButton(for: self)
         } else {
             completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
             completeTrackerButton.alpha = 1
             dayCounter -= 1
-            dateLabel.text = "\(dayCounter) день"
+            counterLabel.text = "\(dayCounter) день"
         }
     }
     
-    public func configureCell(_ tracker: Tracker) {
-        backgroundImageView.backgroundColor = UIColor(named: tracker.color)
-        emojiLabel.text = tracker.emoji
-        trackerLabel.text = tracker.title
-        dateLabel.text = tracker.schedule
-        completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        completeTrackerButton.tintColor = .trWhite
-        completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
+    public func configureCell(_ tracker: Tracker, weekDay: Int, completedTrackers: [TrackerRecord]) {
+            backgroundImageView.backgroundColor = UIColor(named: tracker.color)
+            emojiLabel.text = tracker.emoji
+            trackerLabel.text = tracker.title
+            // TODO: Склонение дней
+            counterLabel.text = "\(completedTrackers.filter({$0.id == tracker.id}).count) дней"
+            completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            completeTrackerButton.tintColor = .trWhite
+            completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
     }
     
     private func setupView() {
         completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
-        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, dateLabel, completeTrackerButton)
+        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton)
         
         NSLayoutConstraint.activate([
             
@@ -113,18 +122,16 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             trackerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             trackerLabel.bottomAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: -12),
-//            trackerLabel.heightAnchor.constraint(equalToConstant: 34),
             
-            dateLabel.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 16),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            dateLabel.trailingAnchor.constraint(equalTo: completeTrackerButton.leadingAnchor, constant: -8),
-            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
+            counterLabel.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 16),
+            counterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            counterLabel.trailingAnchor.constraint(equalTo: completeTrackerButton.leadingAnchor, constant: -8),
+            counterLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
             
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
             completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
             completeTrackerButton.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 8),
             completeTrackerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-//            addButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             
         ])
     }

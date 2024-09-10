@@ -18,12 +18,12 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     @objc private func didTapRegularEventButton() {
-        let vc = CreateRegularEventViewController()
+        let vc = NewTrackerViewController(isRegularEvent: true)
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func didTapUnRegularEventButton() {
-        let vc = CreateUnregularEventViewController()
+        let vc = NewTrackerViewController(isRegularEvent: false)
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     

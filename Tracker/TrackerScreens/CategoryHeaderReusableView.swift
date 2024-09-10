@@ -9,9 +9,11 @@ import UIKit
 
 final class CategoryHeaderReusableView: UICollectionReusableView {
     
+    static let reuseIdentifier = "CategoryHeaderReusableView"
+    
     private let categoryTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 19, weight: .bold)
         label.textColor = .trBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,5 +36,9 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
             categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             categoryTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+    
+    public func configure(with category: TrackerCategory) {
+        categoryTitleLabel.text = category.title
     }
 }

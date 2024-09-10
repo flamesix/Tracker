@@ -1,13 +1,15 @@
 //
-//  CreateRegularEventViewController.swift
+//  NewTrackerViewController.swift
 //  Tracker
 //
-//  Created by Юрий Гриневич on 28.08.2024.
+//  Created by Юрий Гриневич on 09.09.2024.
 //
 
 import UIKit
 
-final class CreateRegularEventViewController: UIViewController {
+final class NewTrackerViewController: UIViewController {
+    
+    var isRegularEvent: Bool = true
     
     private let addTrackerNameTextField = TrackerTextField(placeholder: "Введите название трекера")
     private let tableView = TrackerTableView()
@@ -16,9 +18,19 @@ final class CreateRegularEventViewController: UIViewController {
     private let buttonStackView = TrackerButtonStackView()
     private let warningLabel = TrackerWarningLabel()
     
+    init(isRegularEvent: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        self.isRegularEvent = isRegularEvent
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupHideKeyboardOnTap()
     }
     
     @objc private func didTapCancelButton() {
@@ -44,14 +56,14 @@ final class CreateRegularEventViewController: UIViewController {
     private func setupView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .singleLine
+        tableView.separatorStyle = isRegularEvent ? .singleLine : .none
         
         addTrackerNameTextField.delegate = self
         
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         
-        title = "Новая привычка"
+        title = isRegularEvent ? "Новая привычка" : "Новое нерегулярное событие"
         view.backgroundColor = .trWhite
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
@@ -72,7 +84,7 @@ final class CreateRegularEventViewController: UIViewController {
                 tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: 150),
+                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
                 
                 buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -95,7 +107,7 @@ final class CreateRegularEventViewController: UIViewController {
                 tableView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: 32),
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: 150),
+                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
                 
                 buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -107,22 +119,28 @@ final class CreateRegularEventViewController: UIViewController {
     }
 }
 
-extension CreateRegularEventViewController: UITableViewDataSource {
+extension NewTrackerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        isRegularEvent ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
+        switch isRegularEvent {
+        case true:
+            cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
+        case false:
+            cell.textLabel?.text = "Категория"
+        }
+        
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .trBackground
         return cell
     }
 }
 
-extension CreateRegularEventViewController: UITableViewDelegate {
+extension NewTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
@@ -137,7 +155,7 @@ extension CreateRegularEventViewController: UITableViewDelegate {
     }
 }
 
-extension CreateRegularEventViewController: UITextFieldDelegate {
+extension NewTrackerViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         createButton.backgroundColor = .trBlack
         
@@ -149,5 +167,10 @@ extension CreateRegularEventViewController: UITextFieldDelegate {
 
            let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
            return updatedText.count <= 38
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
