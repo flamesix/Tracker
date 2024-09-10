@@ -52,71 +52,6 @@ final class NewTrackerViewController: UIViewController {
         let vc = CategoryViewController()
         present(UINavigationController(rootViewController: vc), animated: true)
     }
-    
-    private func setupView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = isRegularEvent ? .singleLine : .none
-        
-        addTrackerNameTextField.delegate = self
-        
-        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
-        createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
-        
-        title = isRegularEvent ? "Новая привычка" : "Новое нерегулярное событие"
-        view.backgroundColor = .trWhite
-        buttonStackView.addArrangedSubview(cancelButton)
-        buttonStackView.addArrangedSubview(createButton)
-        view.addSubviews(addTrackerNameTextField, tableView, buttonStackView)
-        setupConstraints()
-        
-    }
-    
-    private func setupConstraints() {
-        
-        if warningLabel.isHidden {
-            NSLayoutConstraint.activate([
-                addTrackerNameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
-                
-                tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
-                
-                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
-                
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                addTrackerNameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
-                
-                warningLabel.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 8),
-                warningLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
-                warningLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
-                warningLabel.heightAnchor.constraint(equalToConstant: 22),
-                
-                tableView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: 32),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
-                
-                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
-                
-            ])
-        }
-    }
 }
 
 extension NewTrackerViewController: UITableViewDataSource {
@@ -172,5 +107,76 @@ extension NewTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+
+extension NewTrackerViewController: SettingViewsProtocol {
+    func setupView() {
+        setupTableView()
+        
+        addTrackerNameTextField.delegate = self
+        
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        
+        title = isRegularEvent ? "Новая привычка" : "Новое нерегулярное событие"
+        view.backgroundColor = .trWhite
+        buttonStackView.addArrangedSubview(cancelButton)
+        buttonStackView.addArrangedSubview(createButton)
+        view.addSubviews(addTrackerNameTextField, tableView, buttonStackView)
+        addConstraints()
+        
+    }
+    
+    func addConstraints() {
+        if warningLabel.isHidden {
+            NSLayoutConstraint.activate([
+                addTrackerNameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
+                
+                tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
+                
+                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
+                
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                addTrackerNameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
+                
+                warningLabel.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 8),
+                warningLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
+                warningLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
+                warningLabel.heightAnchor.constraint(equalToConstant: 22),
+                
+                tableView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: 32),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
+                
+                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
+                
+            ])
+        }
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorStyle = isRegularEvent ? .singleLine : .none
     }
 }

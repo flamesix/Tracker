@@ -34,6 +34,7 @@
 		5BCE057F2C8EE083003C4837 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */; };
 		5BCE05822C8EF9CD003C4837 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE05812C8EF9CD003C4837 /* WeekDay.swift */; };
 		5BCE05842C8F3A39003C4837 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */; };
+		5BE428EF2C90BB32004506AF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428EE2C90BB32004506AF /* Protocols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
 		5BCE05812C8EF9CD003C4837 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		5BE428EE2C90BB32004506AF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +189,7 @@
 				5B6FAADD2C7DCB920075174C /* UIView+Extension.swift */,
 				5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */,
 				5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */,
+				5BE428EE2C90BB32004506AF /* Protocols.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				5B2B6AD62C8DDCE000037D7D /* TrackerEmptyLogo.swift in Sources */,
 				5B2B6AD82C8DDD4D00037D7D /* TrackerEmptyLabel.swift in Sources */,
 				5B2BE2E72C7E5227009526FF /* CategoryHeaderReusableView.swift in Sources */,
+				5BE428EF2C90BB32004506AF /* Protocols.swift in Sources */,
 				5B2BE2DF2C7DE6B3009526FF /* CreateTrackerViewController.swift in Sources */,
 				5B6FAA742C7B93690075174C /* TrackerViewController.swift in Sources */,
 				5BCE057F2C8EE083003C4837 /* NewTrackerViewController.swift in Sources */,

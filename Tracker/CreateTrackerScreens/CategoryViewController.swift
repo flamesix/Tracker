@@ -41,53 +41,6 @@ final class CategoryViewController: UIViewController {
         categories = [category1, category2]
     }
     
-    private func updateEmptyState() {
-        if categories.isEmpty {
-            emptyLogo.isHidden = false
-            emptyLabel.isHidden = false
-            tableView.isHidden = true
-        } else {
-            emptyLogo.isHidden = true
-            emptyLabel.isHidden = true
-            tableView.isHidden = false
-        }
-    }
-    
-    private func setupView() {
-        title = "Категория"
-        view.backgroundColor = .trWhite
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        addButton.addTarget(self, action: #selector(addCategory), for: .touchUpInside)
-        
-        view.addSubviews(tableView, emptyLogo, emptyLabel, addButton)
-        
-        NSLayoutConstraint.activate([
-            
-            emptyLogo.widthAnchor.constraint(equalToConstant: 80),
-            emptyLogo.heightAnchor.constraint(equalToConstant: 80),
-            emptyLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            emptyLogo.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            
-            emptyLabel.topAnchor.constraint(equalTo: emptyLogo.bottomAnchor, constant: 8),
-            emptyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            emptyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            emptyLabel.heightAnchor.constraint(equalToConstant: 36),
-            
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20),
-            
-            addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addButton.heightAnchor.constraint(equalToConstant: 60)
-            
-        ])
-    }
-    
     @objc private func addCategory() {
         print("Add Category button tapped")
         
@@ -133,5 +86,56 @@ extension CategoryViewController: UITableViewDelegate {
         selectedIndexPath = indexPath
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension CategoryViewController: SettingViewsProtocol {
+    func setupView() {
+        title = "Категория"
+        view.backgroundColor = .trWhite
+        
+        setupTableView()
+        addButton.addTarget(self, action: #selector(addCategory), for: .touchUpInside)
+        
+        view.addSubviews(tableView, emptyLogo, emptyLabel, addButton)
+        addConstraints()
+        
+    }
+    
+    func addConstraints() {
+        NSLayoutConstraint.activate([
+            
+            emptyLogo.widthAnchor.constraint(equalToConstant: 80),
+            emptyLogo.heightAnchor.constraint(equalToConstant: 80),
+            emptyLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            emptyLogo.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            
+            emptyLabel.topAnchor.constraint(equalTo: emptyLogo.bottomAnchor, constant: 8),
+            emptyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            emptyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            emptyLabel.heightAnchor.constraint(equalToConstant: 36),
+            
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20),
+            
+            addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addButton.heightAnchor.constraint(equalToConstant: 60)
+            
+        ])
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    private func updateEmptyState() {
+        emptyLogo.isHidden = !categories.isEmpty
+        emptyLabel.isHidden = !categories.isEmpty
+        tableView.isHidden = categories.isEmpty
     }
 }

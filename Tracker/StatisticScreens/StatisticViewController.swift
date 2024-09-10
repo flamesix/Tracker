@@ -17,12 +17,20 @@ final class StatisticViewController: UIViewController {
         setupView()
     }
     
-    private func setupView() {
+    
+}
+
+extension StatisticViewController: SettingViewsProtocol {
+    func setupView() {
         title = "Статистика"
         
         view.backgroundColor = .trWhite
         view.addSubviews(emptyLogo, emptyLabel)
+        addConstraints()
         
+    }
+    
+    func addConstraints() {
         NSLayoutConstraint.activate([
             emptyLogo.widthAnchor.constraint(equalToConstant: 80),
             emptyLogo.heightAnchor.constraint(equalToConstant: 80),

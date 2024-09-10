@@ -93,18 +93,6 @@ final class TrackerViewController: UIViewController {
         }
     }
     
-    private func updateEmptyState() {
-        if filteredTrackers.isEmpty {
-            emptyLogo.isHidden = false
-            emptyLabel.isHidden = false
-            collectionView.isHidden = true
-        } else {
-            emptyLogo.isHidden = true
-            emptyLabel.isHidden = true
-            collectionView.isHidden = false
-        }
-    }
-    
     private func filterTrackers(for searchText: String) {
         let trackersToFilter = categories
         let searchResult = trackersToFilter.map { category in
@@ -121,23 +109,25 @@ final class TrackerViewController: UIViewController {
         }
     }
     
-    private func setupView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
+    
+}
+
+extension TrackerViewController: SettingViewsProtocol {
+    func setupView() {
+        setupCollectionView()
         
         searchController.searchBar.delegate = self
-        
-        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
-        collectionView.register(CategoryHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeaderReusableView.reuseIdentifier)
         
         setupNavBar()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         
         view.backgroundColor = .trWhite
         view.addSubviews(emptyLogo, emptyLabel, collectionView)
+        addConstraints()
         updateEmptyState()
-        
-        
+    }
+    
+    func addConstraints() {
         NSLayoutConstraint.activate([
             
             emptyLogo.widthAnchor.constraint(equalToConstant: 80),
@@ -158,6 +148,13 @@ final class TrackerViewController: UIViewController {
         ])
     }
     
+    private func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
+        collectionView.register(CategoryHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeaderReusableView.reuseIdentifier)
+    }
+    
     private func setupNavBar() {
         title = "Трекеры"
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -166,6 +163,12 @@ final class TrackerViewController: UIViewController {
         navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "addButton"), style: .done, target: self, action: #selector(didTapAddButton)), animated: true)
         navigationItem.leftBarButtonItem?.tintColor = .trBlack
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+    }
+    
+    private func updateEmptyState() {
+        emptyLogo.isHidden = !filteredTrackers.isEmpty
+        emptyLabel.isHidden = !filteredTrackers.isEmpty
+        collectionView.isHidden = filteredTrackers.isEmpty
     }
 }
 

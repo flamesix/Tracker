@@ -17,29 +17,6 @@ final class ScheduleViewController: UIViewController {
         setupView()
     }
     
-    private func setupView() {
-        title = "Расписание"
-        view.backgroundColor = .trWhite
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        view.addSubviews(tableView, doneButton)
-        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: 525),
-            
-            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            doneButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
-    }
-    
     @objc private func doneButtonTapped() {
         dismiss(animated: true)
     }
@@ -67,5 +44,37 @@ extension ScheduleViewController: UITableViewDataSource {
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+}
+
+extension ScheduleViewController: SettingViewsProtocol {
+    func setupView() {
+        title = "Расписание"
+        view.backgroundColor = .trWhite
+        
+        setupTableView()
+        
+        view.addSubviews(tableView, doneButton)
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        addConstraints()
+        
+    }
+    func addConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.heightAnchor.constraint(equalToConstant: 525),
+            
+            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            doneButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 }

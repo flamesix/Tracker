@@ -26,14 +26,20 @@ final class CreateTrackerViewController: UIViewController {
         let vc = NewTrackerViewController(isRegularEvent: false)
         present(UINavigationController(rootViewController: vc), animated: true)
     }
-    
-    private func setupView() {
+}
+
+
+extension CreateTrackerViewController: SettingViewsProtocol {
+    func setupView() {
         title = "Создание трекера"
         view.backgroundColor = .trWhite
         view.addSubviews(regularEventButton, unregularEventButton)
         regularEventButton.addTarget(self, action: #selector(didTapRegularEventButton), for: .touchUpInside)
         unregularEventButton.addTarget(self, action: #selector(didTapUnRegularEventButton), for: .touchUpInside)
-        
+        addConstraints()
+    }
+    
+    func addConstraints() {
         NSLayoutConstraint.activate([
             regularEventButton.heightAnchor.constraint(equalToConstant: 60),
             regularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
