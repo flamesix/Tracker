@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CreateTrackerViewControllerDelegate: AnyObject {
+    func pushCategories() -> [TrackerCategory]
+}
+
 final class CreateTrackerViewController: UIViewController {
+    
+    weak var delegate: CreateTrackerViewControllerDelegate?
     
     private let regularEventButton = TrackerButton("Привычка", .trBlack, .trWhite)
     private let unregularEventButton = TrackerButton("Нерегулярное событие", .trBlack, .trWhite)
@@ -19,11 +25,13 @@ final class CreateTrackerViewController: UIViewController {
     
     @objc private func didTapRegularEventButton() {
         let vc = NewTrackerViewController(isRegularEvent: true)
+        vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func didTapUnRegularEventButton() {
         let vc = NewTrackerViewController(isRegularEvent: false)
+        vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
 }

@@ -9,7 +9,17 @@ import UIKit
 
 final class NewTrackerViewController: UIViewController {
     
-    var isRegularEvent: Bool = true
+    public var categories: [TrackerCategory] = []
+    private var mockColors: [String] = Array(1...18).map { String("tr\($0)")}
+    
+    private var isRegularEvent: Bool = true
+    private var category: String = ""
+    private var scheduleDescription: String = ""
+    
+    private var createdCategory: TrackerCategory?
+    private var trackerTitle: String = ""
+    private var schedule: [Int] = []
+    private var selectedDays: [WeekDay: Bool] = [:]
     
     private let addTrackerNameTextField = TrackerTextField(placeholder: "Введите название трекера")
     private let tableView = TrackerTableView()
@@ -30,26 +40,59 @@ final class NewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupHideKeyboardOnTap()
+//        setupHideKeyboardOnTap() ///Убрал, так как новый трекер можно добить (кнопка становится активной), только нажав Enter на экранной клавиатуре. Пока не придумал как оптимизировать...
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateCategory(_:)), name: .updateCategory, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .updateCategory, object: nil)
+    }
+    
+    private func createTracker() -> Tracker {
+            let tracker = Tracker(id: UUID(),
+                                  title: trackerTitle,
+                                  color: mockColors.randomElement() ?? "tr1",
+                                  emoji: "🫡", schedule: schedule)
+            return tracker
     }
     
     @objc private func didTapCancelButton() {
-        dismiss(animated: true)
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc private func didTapCreateButton() {
-        guard let name = addTrackerNameTextField.text, !name.isEmpty else {
-            return
+        createdCategory = TrackerCategory(title: category, trackers: [createTracker()])
+        
+        NotificationCenter.default.post(name: .addCategory, object: createdCategory)
+        
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController?.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    @objc private func updateCategory(_ notification: Notification) {
+        guard let category = notification.object as? String else { return }
+        self.category = category
+        categories.append(TrackerCategory(title: category, trackers: []))
+        tableView.reloadData()
     }
     
     private func showScheduleViewController() {
         let vc = ScheduleViewController()
+        vc.schedule = schedule
+        vc.selectedDays = selectedDays
+        vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     private func showCategoryViewController() {
         let vc = CategoryViewController()
+        vc.categories = categories
+        vc.selectedCategory = category
+        vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
@@ -61,16 +104,9 @@ extension NewTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        switch isRegularEvent {
-        case true:
-            cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
-        case false:
-            cell.textLabel?.text = "Категория"
-        }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryScheduleTableViewCell.reuseIdentifier, for: indexPath) as? CategoryScheduleTableViewCell else { return UITableViewCell() }
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = .trBackground
+        cell.configure(isRegularEvent: isRegularEvent, indexPath: indexPath, schedule: scheduleDescription, category: category)
         return cell
     }
 }
@@ -92,9 +128,26 @@ extension NewTrackerViewController: UITableViewDelegate {
 
 extension NewTrackerViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        createButton.backgroundColor = .trBlack
         
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        switch reason {
+        case .committed:
+            guard let trackerTitle = textField.text else { return }
+            if !scheduleDescription.isEmpty && !category.isEmpty {
+                self.trackerTitle = trackerTitle
+                createButton.isEnabled = true
+                createButton.backgroundColor = .trBlack
+            }
+        case .cancelled:
+            createButton.isEnabled = false
+            createButton.backgroundColor = .trGray
+        @unknown default:
+            print("Cannot Handle Unknown Reason")
+        }
+    }
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
            guard let currentText = textField.text,
@@ -110,6 +163,22 @@ extension NewTrackerViewController: UITextFieldDelegate {
     }
 }
 
+extension NewTrackerViewController: ScheduleViewControllerDelegate {
+    func updateScheduleSelection(with selectedDays: [WeekDay : Bool], schedule: [Int]) {
+        scheduleDescription = selectedDays.keys.map { $0.short }.joined(separator: ", ")
+        self.selectedDays = selectedDays
+        self.schedule = schedule
+        tableView.reloadData()
+    }
+}
+
+extension NewTrackerViewController: CategoryViewControllerDelegate {
+    func updateCategorySelection(with category: String) {
+        self.category = category
+        tableView.reloadData()
+    }
+}
+
 
 extension NewTrackerViewController: SettingViewsProtocol {
     func setupView() {
@@ -119,6 +188,7 @@ extension NewTrackerViewController: SettingViewsProtocol {
         
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        createButton.isEnabled = false
         
         title = isRegularEvent ? "Новая привычка" : "Новое нерегулярное событие"
         view.backgroundColor = .trWhite

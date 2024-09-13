@@ -7,17 +7,60 @@
 
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func updateScheduleSelection(with selectedDays: [WeekDay: Bool], schedule: [Int])
+}
+
 final class ScheduleViewController: UIViewController {
     
-    private let doneButton = TrackerButton("Готово", .trBlack, .trWhite)
+    weak var delegate: ScheduleViewControllerDelegate?
+    
+    private let doneButton = TrackerButton("Готово", .trGray, .trWhite)
     private let tableView = TrackerTableView()
+    
+    var selectedDays: [WeekDay: Bool] = [:]
+    var schedule: [Int] = [] {
+        didSet {
+            updateDoneButtonState()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
     
+    @objc private func switcherTapped(_ sender: UISwitch) {
+        let day = WeekDay.allCases[sender.tag]
+        if sender.isOn {
+            selectedDays[day] = true
+            if sender.tag != 6 {
+                schedule.append(sender.tag + 2)
+            } else {
+                schedule.append(1)
+            }
+        } else {
+            selectedDays[day] = false
+            if sender.tag != 6 {
+                schedule.removeAll(where: { $0 == sender.tag + 2 })
+            } else {
+                schedule.removeAll(where: { $0 == 1 })
+            }
+        }
+    }
+    
+    private func updateDoneButtonState() {
+        if !schedule.isEmpty {
+            doneButton.isEnabled = true
+            doneButton.backgroundColor = .trBlack
+        } else {
+            doneButton.isEnabled = false
+            doneButton.backgroundColor = .trGray
+        }
+    }
+    
     @objc private func doneButtonTapped() {
+        delegate?.updateScheduleSelection(with: selectedDays, schedule: schedule)
         dismiss(animated: true)
     }
 }
@@ -28,14 +71,11 @@ extension ScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.reuseIdentifier, for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
+        
         let day = WeekDay.allCases[indexPath.row].rawValue
-        cell.textLabel?.text = day
-        let switcher = UISwitch()
-        switcher.onTintColor = .trBlue
-        cell.accessoryView = switcher
-        cell.backgroundColor = .trBackground
-        cell.selectionStyle = .none
+        cell.config(with: day, schedule: schedule, indexPath: indexPath)
+        cell.switcher.addTarget(self, action: #selector(switcherTapped(_:)), for: .valueChanged)
         
         return cell
     }

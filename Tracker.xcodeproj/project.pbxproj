@@ -35,6 +35,10 @@
 		5BCE05822C8EF9CD003C4837 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE05812C8EF9CD003C4837 /* WeekDay.swift */; };
 		5BCE05842C8F3A39003C4837 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */; };
 		5BE428EF2C90BB32004506AF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428EE2C90BB32004506AF /* Protocols.swift */; };
+		5BE428F12C92106F004506AF /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428F02C92106F004506AF /* Notification+Extension.swift */; };
+		5BE428F32C92BFDF004506AF /* CategoryScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428F22C92BFDF004506AF /* CategoryScheduleTableViewCell.swift */; };
+		5BE428F52C92F7FC004506AF /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428F42C92F7FC004506AF /* NewCategoryViewController.swift */; };
+		5BE428F72C943777004506AF /* ScheduleTableVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE428F62C943777004506AF /* ScheduleTableVIewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +72,10 @@
 		5BCE05812C8EF9CD003C4837 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		5BE428EE2C90BB32004506AF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		5BE428F02C92106F004506AF /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
+		5BE428F22C92BFDF004506AF /* CategoryScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScheduleTableViewCell.swift; sourceTree = "<group>"; };
+		5BE428F42C92F7FC004506AF /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
+		5BE428F62C943777004506AF /* ScheduleTableVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableVIewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +128,9 @@
 				5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */,
 				5B2B6AC02C8D914F00037D7D /* ScheduleViewController.swift */,
 				5B2B6AC42C8DA29D00037D7D /* CategoryViewController.swift */,
+				5BE428F42C92F7FC004506AF /* NewCategoryViewController.swift */,
+				5BE428F22C92BFDF004506AF /* CategoryScheduleTableViewCell.swift */,
+				5BE428F62C943777004506AF /* ScheduleTableVIewCell.swift */,
 			);
 			path = CreateTrackerScreens;
 			sourceTree = "<group>";
@@ -190,6 +201,7 @@
 				5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */,
 				5BCE05832C8F3A39003C4837 /* UIViewController+Extension.swift */,
 				5BE428EE2C90BB32004506AF /* Protocols.swift */,
+				5BE428F02C92106F004506AF /* Notification+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -287,11 +299,15 @@
 				5BE428EF2C90BB32004506AF /* Protocols.swift in Sources */,
 				5B2BE2DF2C7DE6B3009526FF /* CreateTrackerViewController.swift in Sources */,
 				5B6FAA742C7B93690075174C /* TrackerViewController.swift in Sources */,
+				5BE428F32C92BFDF004506AF /* CategoryScheduleTableViewCell.swift in Sources */,
 				5BCE057F2C8EE083003C4837 /* NewTrackerViewController.swift in Sources */,
 				5B6FAAD92C7DC89C0075174C /* TabBarController.swift in Sources */,
 				5B6FAA702C7B93690075174C /* AppDelegate.swift in Sources */,
+				5BE428F72C943777004506AF /* ScheduleTableVIewCell.swift in Sources */,
 				5B2BE2E12C7DE6F4009526FF /* TrackerButton.swift in Sources */,
 				5BCE057B2C8EDA73003C4837 /* TrackerCategory.swift in Sources */,
+				5BE428F12C92106F004506AF /* Notification+Extension.swift in Sources */,
+				5BE428F52C92F7FC004506AF /* NewCategoryViewController.swift in Sources */,
 				5B6FAADB2C7DC9370075174C /* StatisticViewController.swift in Sources */,
 				5B2B6AC72C8DA43000037D7D /* TrackerTableView.swift in Sources */,
 				5BCE057D2C8EDA89003C4837 /* TrackerRecord.swift in Sources */,

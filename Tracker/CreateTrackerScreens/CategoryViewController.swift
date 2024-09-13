@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol CategoryViewControllerDelegate: AnyObject {
+    func updateCategorySelection(with category: String)
+}
+
 final class CategoryViewController: UIViewController {
     
-    static let categoriesNotification = Notification.Name(rawValue: "categoriesNotification")
+    weak var delegate: CategoryViewControllerDelegate?
     
+    var selectedCategory: String = ""
     private let tableView = TrackerTableView()
     private let addButton = TrackerButton("Добавить категорию", .trBlack, .trWhite)
     private let emptyLogo = TrackerEmptyLogo(frame: .zero)
@@ -28,25 +33,12 @@ final class CategoryViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         
-        //Mock данные -------------------------------
-        let tracker1 = Tracker(id: UUID(), title: "Создать", color: "tr1", emoji: "✊", schedule: [2, 3])
-        let tracker2 = Tracker(id: UUID(), title: "Назначить", color: "tr2", emoji: "✍️", schedule: [2, 4])
-        let tracker3 = Tracker(id: UUID(), title: "Решить", color: "tr3", emoji: "🤔", schedule: [5, 6])
-        let tracker4 = Tracker(id: UUID(), title: "Заняться", color: "tr4", emoji: "🫣", schedule: [6, 7])
-        let tracker5 = Tracker(id: UUID(), title: "Отдохнуть", color: "tr5", emoji: "🫠", schedule: [2, 6])
-        
-        let category1 = TrackerCategory(title: "Важное", trackers: [tracker1, tracker2])
-        let category2 = TrackerCategory(title: "Не важное", trackers: [tracker3, tracker4, tracker5])
-        
-        categories = [category1, category2]
     }
     
     @objc private func addCategory() {
-        print("Add Category button tapped")
-        
-        NotificationCenter.default.post(name: CategoryViewController.categoriesNotification,
-                                        object: categories)
-        dismiss(animated: true)
+        let vc = NewCategoryViewController()
+        vc.delegate = self
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
 
@@ -56,10 +48,9 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        cell.textLabel?.text = categories[indexPath.row].title
-        cell.backgroundColor = .trBackground
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryScheduleTableViewCell.reuseIdentifier, for: indexPath) as? CategoryScheduleTableViewCell else { return UITableViewCell() }
+        let category = categories[indexPath.row].title
+        cell.configureCategory(category: category, selectedCategory: selectedCategory)
         return cell
     }
 }
@@ -86,6 +77,9 @@ extension CategoryViewController: UITableViewDelegate {
         selectedIndexPath = indexPath
         
         tableView.deselectRow(at: indexPath, animated: true)
+        let category = categories[indexPath.row].title
+        delegate?.updateCategorySelection(with: category)
+        dismiss(animated: true)
     }
 }
 
@@ -118,7 +112,7 @@ extension CategoryViewController: SettingViewsProtocol {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20),
+            tableView.heightAnchor.constraint(equalToConstant: CGFloat(categories.count * 75)),
             
             addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -137,5 +131,12 @@ extension CategoryViewController: SettingViewsProtocol {
         emptyLogo.isHidden = !categories.isEmpty
         emptyLabel.isHidden = !categories.isEmpty
         tableView.isHidden = categories.isEmpty
+    }
+}
+
+extension CategoryViewController: NewCategoryViewControllerDelegate {
+    func updateTable() {
+        tableView.reloadData()
+        dismiss(animated: true, completion: nil)
     }
 }

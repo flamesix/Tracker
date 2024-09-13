@@ -38,7 +38,11 @@ final class TrackerViewController: UIViewController {
     var trackers: [Tracker] = []
     
     var currentDate: Date = Date()
-    var categories: [TrackerCategory] = []
+    var categories: [TrackerCategory] = [] {
+        didSet {
+            filteredTrackers = categories
+        }
+    }
     
     var completedTrackers: [TrackerRecord] = []
     private var filteredTrackers: [TrackerCategory] = [] {
@@ -51,38 +55,35 @@ final class TrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-
-        //Mock данные -------------------------------
-        let tracker1 = Tracker(id: UUID(), title: "Создать", color: "tr1", emoji: "✊", schedule: [2, 3])
-        let tracker2 = Tracker(id: UUID(), title: "Назначить", color: "tr2", emoji: "✍️", schedule: [2, 4])
-        let tracker3 = Tracker(id: UUID(), title: "Решить", color: "tr3", emoji: "🤔", schedule: [5, 6])
-        let tracker4 = Tracker(id: UUID(), title: "Заняться", color: "tr4", emoji: "🫣", schedule: [6, 7])
-        let tracker5 = Tracker(id: UUID(), title: "Отдохнуть", color: "tr5", emoji: "🫠", schedule: [2, 6])
-        
-        let category1 = TrackerCategory(title: "Важное", trackers: [tracker1, tracker2])
-        let category2 = TrackerCategory(title: "Не важное", trackers: [tracker3, tracker4, tracker5])
-        
-        categories = [category1, category2]
-        //Mock данные ---------------------------------
-        filteredTrackers = [category1, category2]
-        filterTrackersForDate(date: Date())
-        
-        
+        showTodayTrackers(date: currentDate)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .addCategory, object: nil)
+    }
+    
+    @objc private func getCategories(_ notification: Notification) {
+        guard let category = notification.object as? TrackerCategory else { return }
+        categories.append(category)
+        showTodayTrackers(date: currentDate)
     }
     
     @objc private func didTapAddButton() {
+        NotificationCenter.default.removeObserver(self, name: .addCategory, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getCategories(_:)), name: .addCategory, object: nil)
         let vc = CreateTrackerViewController()
+        vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
         
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        filterTrackersForDate(date: sender.date)
+        showTodayTrackers(date: sender.date)
         updateEmptyState()
         collectionView.reloadData()
     }
     
-    private func filterTrackersForDate(date: Date) {
+    private func showTodayTrackers(date: Date) {
         let weekDay = Calendar.current.component(.weekday, from: date)
         
         filteredTrackers = categories.compactMap { category in
@@ -108,8 +109,12 @@ final class TrackerViewController: UIViewController {
             filteredTrackers = categories
         }
     }
-    
-    
+}
+
+extension TrackerViewController: CreateTrackerViewControllerDelegate {
+    func pushCategories() -> [TrackerCategory] {
+        categories
+    }
 }
 
 extension TrackerViewController: SettingViewsProtocol {
@@ -253,6 +258,10 @@ extension TrackerViewController: UISearchBarDelegate {
 }
 
 extension TrackerViewController: TrackerCollectionViewCellDelegate {
+    func isDateToday() -> Bool {
+       return datePicker.date <= currentDate
+    }
+    
     func didTapCompletedButton(for cell: TrackerCollectionViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]

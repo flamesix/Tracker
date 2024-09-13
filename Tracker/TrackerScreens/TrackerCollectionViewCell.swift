@@ -8,6 +8,7 @@
 import UIKit
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
+    func isDateToday() -> Bool
     func didTapCompletedButton(for cell: TrackerCollectionViewCell)
 }
 
@@ -73,21 +74,24 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     // TODO: Склонение дней
+    //Локализацию пока не добавляю, будет дальше по курсу
     @objc private func didTapCompleteTrackerButton() {
-        isButtonTapped = !isButtonTapped
-        
-        if isButtonTapped {
-            completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
-            completeTrackerButton.alpha = 0.3
-            dayCounter += 1
-            counterLabel.text = "\(dayCounter) день"
+        if delegate?.isDateToday() ?? false {
+            isButtonTapped = !isButtonTapped
             
-            delegate?.didTapCompletedButton(for: self)
-        } else {
-            completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
-            completeTrackerButton.alpha = 1
-            dayCounter -= 1
-            counterLabel.text = "\(dayCounter) день"
+            if isButtonTapped {
+                completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
+                completeTrackerButton.alpha = 0.3
+                dayCounter += 1
+                counterLabel.text = "\(dayCounter) день"
+                
+                delegate?.didTapCompletedButton(for: self)
+            } else {
+                completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
+                completeTrackerButton.alpha = 1
+                dayCounter -= 1
+                counterLabel.text = "\(dayCounter) день"
+            }
         }
     }
     
