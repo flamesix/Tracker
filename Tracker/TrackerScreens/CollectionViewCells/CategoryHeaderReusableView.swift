@@ -33,6 +33,10 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
     public func configure(with category: TrackerCategory) {
         categoryTitleLabel.text = category.title
     }
+    
+    public func configure(with title: String) {
+        categoryTitleLabel.text = title
+    }
 }
 
 extension CategoryHeaderReusableView: SettingViewsProtocol {
@@ -44,8 +48,8 @@ extension CategoryHeaderReusableView: SettingViewsProtocol {
     
     func addConstraints() {
         NSLayoutConstraint.activate([
-            categoryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            categoryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             categoryTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
