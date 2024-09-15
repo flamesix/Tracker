@@ -18,6 +18,8 @@ final class NewTrackerViewController: UIViewController {
         case emoji = "Emoji"
         case color = "Цвет"
     }
+    private var selectedColor: String = ""
+    private var selectedEmoji: String = ""
     private var selectedItems: [Int: IndexPath] = [:]
     
     private var isRegularEvent: Bool = true
@@ -63,11 +65,12 @@ final class NewTrackerViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .updateCategory, object: nil)
     }
     
-    private func createTracker() -> Tracker {
+    private func createTracker(color: String, emoji: String) -> Tracker {
             let tracker = Tracker(id: UUID(),
                                   title: trackerTitle,
-                                  color: mockColors.randomElement() ?? "tr1",
-                                  emoji: "🫡", schedule: schedule)
+                                  color: color,
+                                  emoji: emoji,
+                                  schedule: schedule)
             return tracker
     }
     
@@ -78,7 +81,7 @@ final class NewTrackerViewController: UIViewController {
     }
     
     @objc private func didTapCreateButton() {
-        createdCategory = TrackerCategory(title: category, trackers: [createTracker()])
+        createdCategory = TrackerCategory(title: category, trackers: [createTracker(color: selectedColor, emoji: selectedEmoji)])
         
         NotificationCenter.default.post(name: .addCategory, object: createdCategory)
         
@@ -352,15 +355,17 @@ extension NewTrackerViewController: UICollectionViewDelegate {
             default:
                 break
             }
-            
-            
         }
         
         switch indexPath.section {
         case 0:
+            let emoji = emojis[indexPath.row]
+            selectedEmoji = emoji
             guard let emojiCell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell else { return }
             emojiCell.configureSelection(isSelected: true)
         case 1:
+            let color = mockColors[indexPath.row]
+            selectedColor = color
             guard let colorCell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
             colorCell.configureSelection(isSelected: true)
         default:
