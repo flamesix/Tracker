@@ -9,6 +9,8 @@ import UIKit
 
 final class NewTrackerViewController: UIViewController {
     
+    private let trackerCategoryStore = TrackerCategoryStore()
+    
     public var categories: [TrackerCategory] = []
     private var emojis: [String] = ["🙂", "😻", "🌺", "🐶", "❤️", "😱",
                                     "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -56,7 +58,8 @@ final class NewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-//        setupHideKeyboardOnTap()
+        updateCategories()
+        //        setupHideKeyboardOnTap()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateCategory(_:)), name: .updateCategory, object: nil)
     }
@@ -65,13 +68,22 @@ final class NewTrackerViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .updateCategory, object: nil)
     }
     
+    private func updateCategories() {
+        do {
+            categories = try trackerCategoryStore.getCategory()
+            print(categories)
+        } catch {
+            print("Can't update categories in NewTrackerViewController")
+        }
+    }
+    
     private func createTracker(color: String, emoji: String) -> Tracker {
-            let tracker = Tracker(id: UUID(),
-                                  title: trackerTitle,
-                                  color: color,
-                                  emoji: emoji,
-                                  schedule: schedule)
-            return tracker
+        let tracker = Tracker(id: UUID(),
+                              title: trackerTitle,
+                              color: color,
+                              emoji: emoji,
+                              schedule: schedule)
+        return tracker
     }
     
     @objc private func didTapCancelButton() {
@@ -169,11 +181,11 @@ extension NewTrackerViewController: UITextFieldDelegate {
     
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-           guard let currentText = textField.text,
-                 let stringRange = Range(range, in: currentText) else { return false }
-
-           let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-           return updatedText.count <= 38
+        guard let currentText = textField.text,
+              let stringRange = Range(range, in: currentText) else { return false }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        return updatedText.count <= 38
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -313,20 +325,21 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let emojiCell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier, for: indexPath) as? EmojiCollectionViewCell else { return UICollectionViewCell() }
-        
-        guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCollectionViewCell.reuseIdentifier, for: indexPath) as? ColorCollectionViewCell else { return UICollectionViewCell() }
-        
-        let color = mockColors[indexPath.row]
-        let emoji = emojis[indexPath.row]
-        
-        emojiCell.configure(with: emoji)
-        colorCell.configure(with: color)
         
         switch EmojiColorSection.allCases[indexPath.section] {
         case .emoji:
+            guard let emojiCell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier, for: indexPath) as? EmojiCollectionViewCell else { return UICollectionViewCell() }
+            
+            let emoji = emojis[indexPath.row]
+            emojiCell.configure(with: emoji)
+            
             return emojiCell
         case .color:
+            guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCollectionViewCell.reuseIdentifier, for: indexPath) as? ColorCollectionViewCell else { return UICollectionViewCell() }
+            
+            let color = mockColors[indexPath.row]
+            colorCell.configure(with: color)
+            
             return colorCell
         }
     }
@@ -371,18 +384,18 @@ extension NewTrackerViewController: UICollectionViewDelegate {
         default:
             break
         }
-
+        
         selectedItems[indexPath.section] = indexPath
     }
     
 }
 
 extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-////        let spacing: CGFloat = 5
-//        let width = (collectionView.bounds.width) / 6
-//        return CGSize(width: width, height: width)
-//    }
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    ////        let spacing: CGFloat = 5
+    //        let width = (collectionView.bounds.width) / 6
+    //        return CGSize(width: width, height: width)
+    //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
@@ -391,7 +404,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         CGSize(width: collectionView.bounds.width, height: 18)
     }
-   
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
     }

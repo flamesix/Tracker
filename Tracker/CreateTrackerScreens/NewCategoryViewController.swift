@@ -15,6 +15,8 @@ final class NewCategoryViewController: UIViewController {
 
     weak var delegate: NewCategoryViewControllerDelegate?
     
+    private let trackerCategoryStore = TrackerCategoryStore()
+    
     private let categoryTitleTextField = TrackerTextField(placeholder: "Введите название категории")
     private let doneButton = TrackerButton("Готово", .trGray, .trWhite)
 
@@ -35,8 +37,22 @@ final class NewCategoryViewController: UIViewController {
     }
     
     @objc private func didTapDoneButton() {
+        
         guard let category = categoryTitleTextField.text,
               category.count > 0 else { return }
+        
+        do {
+            try trackerCategoryStore.addNewCategory(category)
+            
+        } catch {
+            print("Категория не сохранена")
+        }
+
+//        dismiss(animated: false) {
+//            self.delegate?.updateCategory(category)
+//        }
+        
+        
         
         NotificationCenter.default.post(name: .updateCategory, object: category)
         dismiss(animated: false) { [weak self] in
