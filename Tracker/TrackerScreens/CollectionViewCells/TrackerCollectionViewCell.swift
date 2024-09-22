@@ -75,6 +75,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        completeTrackerButton.alpha = 1
+    }
+    
     // TODO: Склонение дней
     //Локализацию пока не добавляю, будет дальше по курсу
     @objc private func didTapCompleteTrackerButton() {

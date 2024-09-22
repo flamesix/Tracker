@@ -37,6 +37,7 @@ final class TrackerViewController: UIViewController {
     
     private let store = Store.shared
     private let trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -62,6 +63,7 @@ final class TrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        getCategories()
         showTodayTrackers(date: currentDate)
     }
     
@@ -70,8 +72,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func getCategories(_ notification: Notification) {
-        guard let category = notification.object as? TrackerCategory else { return }
-        categories.append(category)
+        getCategories()
         showTodayTrackers(date: currentDate)
     }
     
@@ -118,16 +119,14 @@ final class TrackerViewController: UIViewController {
         }
     }
     
-//    private func udateDate() {
-//        do {
-//            completedTrackers = try trackerRecordStore.getCompletedTrackers()
-//            updateExecutedTrackerIds()
-//            let category = try store.getCategoriesTracker()
-//            updateTargetDayTrackers(category)
-//        } catch {
-//            print("Данные не доступны")
-//        }
-//    }
+    private func getCategories() {
+        do {
+            categories = try store.getCategoriesTracker()
+            print(categories)
+        } catch {
+            print("Can't get Categories in TrackerViewController")
+        }
+    }
 }
 
 extension TrackerViewController: CreateTrackerViewControllerDelegate {
@@ -279,7 +278,7 @@ extension TrackerViewController: UISearchBarDelegate {
 
 extension TrackerViewController: TrackerCollectionViewCellDelegate {
     func isNotFutureDate() -> Bool {
-       return datePicker.date <= currentDate
+        return datePicker.date <= Date()
     }
     
     func didTapCompletedButton(for cell: TrackerCollectionViewCell) {
@@ -291,16 +290,10 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
     }
     
     func didTapCompletedButton(_ id: UUID, _ status: Bool) {
-        print("didTapCompletedButton(_ id: UUID, _ status: Bool)")
         if completedTrackersIDs.contains(id) {
-            guard let index = completedTrackers.firstIndex(where: { $0.id == id }) else {
-                print("Не нашел трекер во время изменения статуса")
-                return
-            }
+            guard let index = completedTrackers.firstIndex(where: { $0.id == id }) else { return }
             if !status {
-//                let selectedDate = Calendar.current.dateComponents([.day, .month, .year], from: selectedDate)
                 for dateCompletedDate in completedTrackers[index].date {
-//                    let dateCompleted = Calendar.current.dateComponents([.day, .month, .year], from: dateCompletedDate)
                     if selectedDate == dateCompletedDate {
                         trackerRecordStore.deleteTrackerRecord(id: id, date: dateCompletedDate)
                         return

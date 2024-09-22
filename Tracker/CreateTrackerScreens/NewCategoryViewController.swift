@@ -45,14 +45,8 @@ final class NewCategoryViewController: UIViewController {
             try trackerCategoryStore.addNewCategory(category)
             
         } catch {
-            print("Категория не сохранена")
+            print("Can't store category")
         }
-
-//        dismiss(animated: false) {
-//            self.delegate?.updateCategory(category)
-//        }
-        
-        
         
         NotificationCenter.default.post(name: .updateCategory, object: category)
         dismiss(animated: false) { [weak self] in
