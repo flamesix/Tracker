@@ -15,7 +15,6 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 19, weight: .bold)
         label.textColor = .trBlack
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -41,7 +40,7 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
 
 extension CategoryHeaderReusableView: SettingViewsProtocol {
     func setupView() {
-        addSubview(categoryTitleLabel)
+        addSubviews(categoryTitleLabel)
         addConstraints()
         
     }

@@ -38,12 +38,10 @@ final class NewTrackerViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isScrollEnabled = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     private let addTrackerNameTextField = TrackerTextField(placeholder: "Введите название трекера")

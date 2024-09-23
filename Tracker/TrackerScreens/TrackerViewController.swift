@@ -12,7 +12,6 @@ final class TrackerViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
@@ -36,10 +35,10 @@ final class TrackerViewController: UIViewController {
     }()
     
     private let store = Store.shared
-    private let trackerStore = TrackerStore()
-    private let trackerCategoryStore = TrackerCategoryStore()
+//    private let trackerStore = TrackerStore()
+//    private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var trackers: [Tracker] = []
     
@@ -208,7 +207,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier, for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         cell.delegate = self
         let tracker = filteredTrackers[indexPath.section].trackers[indexPath.item]
-        cell.id = tracker.id
+        cell.updateID(id: tracker.id)
         cell.configureCell(tracker, weekDay: Calendar.current.component(.weekday, from: datePicker.date), completedTrackers: completedTrackers)
         return cell
     }
@@ -281,6 +280,7 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
         return datePicker.date <= Date()
     }
     
+//TODO: Saving completed trackers
     func didTapCompletedButton(for cell: TrackerCollectionViewCell) {
 //        guard let indexPath = collectionView.indexPath(for: cell) else { return }
 //        let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]

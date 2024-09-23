@@ -14,14 +14,12 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     private let colorImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 8
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let colorBackgroundView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     

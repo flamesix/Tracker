@@ -22,7 +22,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
         imageView.layer.cornerRadius = 16
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -32,7 +31,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.layer.masksToBounds = true
         label.backgroundColor = .trEmojiBackground
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -42,7 +40,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .trWhite
         label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -51,20 +48,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .trBlack
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let completeTrackerButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 17
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private var isButtonTapped = false
     private var dayCounter = 0
-    var id: UUID = UUID() 
+    private var id: UUID = UUID()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -78,6 +73,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         completeTrackerButton.alpha = 1
+    }
+    
+    func updateID(id: UUID) {
+        self.id = id
     }
     
     // TODO: Склонение дней

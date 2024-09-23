@@ -15,14 +15,12 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let emojiBackgroundView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     

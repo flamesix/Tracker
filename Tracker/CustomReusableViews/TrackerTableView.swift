@@ -12,7 +12,6 @@ final class TrackerTableView: UITableView {
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         layer.cornerRadius = 16
-//        register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         register(CategoryScheduleTableViewCell.self, forCellReuseIdentifier: CategoryScheduleTableViewCell.reuseIdentifier)
         register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.reuseIdentifier)
         translatesAutoresizingMaskIntoConstraints = false

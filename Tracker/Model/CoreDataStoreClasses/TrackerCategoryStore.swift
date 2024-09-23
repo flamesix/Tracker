@@ -22,7 +22,7 @@ final class TrackerCategoryStore {
         let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: Constants.trackerCategoryData)
         do {
             let authors = try context.fetch(request)
-            authors.forEach { categories.append(TrackerCategory(title: $0.title!, trackers: [])) }
+            authors.forEach { categories.append(TrackerCategory(title: $0.title ?? "", trackers: [])) }
         } catch {
             throw error
         }
