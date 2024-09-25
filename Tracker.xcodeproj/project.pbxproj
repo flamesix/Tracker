@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B099ECA2CA4630300417D54 /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B099EC82CA4630300417D54 /* TrackerModel.xcdatamodeld */; };
+		5B099ECD2CA464F400417D54 /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B099ECB2CA464F400417D54 /* TrackerModel.xcdatamodeld */; };
 		5B2B180E2C9971C8000571C1 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B180D2C9971C8000571C1 /* Store.swift */; };
 		5B2B18122C9A0130000571C1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B18112C9A0130000571C1 /* Constants.swift */; };
 		5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */; };
@@ -50,7 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5B099EC92CA4630300417D54 /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
+		5B099ECC2CA464F400417D54 /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
 		5B2B180D2C9971C8000571C1 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		5B2B18112C9A0130000571C1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 		5B6FAA632C7B93690075174C = {
 			isa = PBXGroup;
 			children = (
-				5B099EC82CA4630300417D54 /* TrackerModel.xcdatamodeld */,
+				5B099ECB2CA464F400417D54 /* TrackerModel.xcdatamodeld */,
 				5B6FAA6E2C7B93690075174C /* Tracker */,
 				5B6FAA6D2C7B93690075174C /* Products */,
 			);
@@ -353,7 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B099ECA2CA4630300417D54 /* TrackerModel.xcdatamodeld in Sources */,
+				5B099ECD2CA464F400417D54 /* TrackerModel.xcdatamodeld in Sources */,
 				5BCE05842C8F3A39003C4837 /* UIViewController+Extension.swift in Sources */,
 				5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */,
 				5B2B6AD42C8DCE9B00037D7D /* TrackerWarningLabel.swift in Sources */,
@@ -615,12 +615,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		5B099EC82CA4630300417D54 /* TrackerModel.xcdatamodeld */ = {
+		5B099ECB2CA464F400417D54 /* TrackerModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5B099EC92CA4630300417D54 /* TrackerModel.xcdatamodel */,
+				5B099ECC2CA464F400417D54 /* TrackerModel.xcdatamodel */,
 			);
-			currentVersion = 5B099EC92CA4630300417D54 /* TrackerModel.xcdatamodel */;
+			currentVersion = 5B099ECC2CA464F400417D54 /* TrackerModel.xcdatamodel */;
 			name = TrackerModel.xcdatamodeld;
 			path = Tracker/Model/TrackerModel.xcdatamodeld;
 			sourceTree = "<group>";

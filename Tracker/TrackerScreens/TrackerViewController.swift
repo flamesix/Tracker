@@ -12,6 +12,7 @@ final class TrackerViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .trWhite
         return collectionView
     }()
     
