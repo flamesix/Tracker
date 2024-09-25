@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 final class TrackerCategoryStore {
-    private let context = Store.shared.context
+    private let context = Store.shared.persistentContainer.viewContext
     
     func addNewCategory(_ title: String) throws {
         let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)

@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 final class TrackerStore {
-    private let context = Store.shared.context
+    private let context = Store.shared.persistentContainer.viewContext
     
     func addNewTracker(_ tracker: Tracker, _ category: String) {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()

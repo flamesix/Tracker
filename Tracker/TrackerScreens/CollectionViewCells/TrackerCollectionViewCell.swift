@@ -10,7 +10,6 @@ import UIKit
 protocol TrackerCollectionViewCellDelegate: AnyObject {
     func isNotFutureDate() -> Bool
     func didTapCompletedButton(for cell: TrackerCollectionViewCell, isButtonTapped: Bool)
-//    func didTapCompletedButton(_ id: UUID, _ isButtonTapped: Bool)
 }
 
 final class TrackerCollectionViewCell: UICollectionViewCell {

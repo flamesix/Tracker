@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 final class TrackerRecordStore {
-    private let context = Store.shared.context
+    private let context = Store.shared.persistentContainer.viewContext
     
     func getCompletedTrackers() throws -> [TrackerRecord] {
         var trackerRecord: [TrackerRecord] = []
