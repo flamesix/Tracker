@@ -20,17 +20,14 @@ final class TrackerRecordStore {
             for trackerCoreData in trackersCoreData {
                 
                 let id = trackerCoreData.id
-                var recordTracker: [Date] = []
                 let records = trackerCoreData.record?.allObjects as? [TrackerRecordCoreData]
                 if let records {
                     for record in records {
                         record.willAccessValue(forKey: "data")
-                        if let date = record.date {
-                            recordTracker.append(date)
+                        if let date = record.date,
+                           let id {
+                            trackerRecord.append(TrackerRecord(id: id, date: date))
                         }
-                    }
-                    if let id, !recordTracker.isEmpty {
-                        trackerRecord.append(TrackerRecord(id: id, date: recordTracker))
                     }
                 }
             }
@@ -54,7 +51,7 @@ final class TrackerRecordStore {
                 try context.save()
             }
         } catch {
-            print("Error finding category: \(error)")
+            print("Error addNewTrackerRecord: \(error)")
         }
     }
     
@@ -69,7 +66,7 @@ final class TrackerRecordStore {
                 try context.save()
             }
         } catch {
-            print("Ошибка поиска записи: \(error)")
+            print("Error deleteTrackerRecord: \(error)")
         }
     }
     

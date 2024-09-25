@@ -34,11 +34,8 @@ final class TrackerViewController: UIViewController {
         return picker
     }()
     
-    private let store = Store.shared
-//    private let trackerStore = TrackerStore()
-//    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
-//    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var trackers: [Tracker] = []
     
@@ -63,6 +60,7 @@ final class TrackerViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         getCategories()
+        getTrackerRecords()
         showTodayTrackers(date: currentDate)
     }
     
@@ -120,11 +118,25 @@ final class TrackerViewController: UIViewController {
     
     private func getCategories() {
         do {
-            categories = try store.getCategoriesTracker()
-            print(categories)
+            categories = try trackerCategoryStore.getCategoriesTracker()
         } catch {
             print("Can't get Categories in TrackerViewController")
         }
+    }
+    
+    private func getTrackerRecords() {
+        do {
+            completedTrackers = try trackerRecordStore.getCompletedTrackers()
+        } catch {
+            print("Can't get TrackerRecords in TrackerViewController")
+        }
+    }
+    
+    private func dateFromDatePicker() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let stringDate = dateFormatter.string(from: datePicker.date)
+        return dateFormatter.date(from: stringDate) ?? Date()
     }
 }
 
@@ -207,8 +219,10 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier, for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         cell.delegate = self
         let tracker = filteredTrackers[indexPath.section].trackers[indexPath.item]
+        let weekDay = Calendar.current.component(.weekday, from: datePicker.date)
+        let date = dateFromDatePicker()
         cell.updateID(id: tracker.id)
-        cell.configureCell(tracker, weekDay: Calendar.current.component(.weekday, from: datePicker.date), completedTrackers: completedTrackers)
+        cell.configureCell(tracker, weekDay: weekDay, date: date, completedTrackers: completedTrackers)
         return cell
     }
     
@@ -280,27 +294,16 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
         return datePicker.date <= Date()
     }
     
-//TODO: Saving completed trackers
-    func didTapCompletedButton(for cell: TrackerCollectionViewCell) {
-//        guard let indexPath = collectionView.indexPath(for: cell) else { return }
-//        let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]
-//        let date = datePicker.date
-////        completedTrackers.append(TrackerRecord(id: tracker.id, date: date))
-        print("didTapCompletedButton(for cell: TrackerCollectionViewCell)")
-    }
-    
-    func didTapCompletedButton(_ id: UUID, _ status: Bool) {
-        if completedTrackersIDs.contains(id) {
-            guard let index = completedTrackers.firstIndex(where: { $0.id == id }) else { return }
-            if !status {
-                for dateCompletedDate in completedTrackers[index].date {
-                    if selectedDate == dateCompletedDate {
-                        trackerRecordStore.deleteTrackerRecord(id: id, date: dateCompletedDate)
-                        return
-                    }
-                }
-            }
+    func didTapCompletedButton(for cell: TrackerCollectionViewCell, isButtonTapped: Bool) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]
+        let date = dateFromDatePicker()
+        if isButtonTapped {
+            completedTrackers.append(TrackerRecord(id: tracker.id, date: date))
+            trackerRecordStore.addNewTrackerRecord(id: tracker.id, date: date)
+        } else {
+            completedTrackers.removeAll(where: { $0.id == tracker.id && Calendar.current.isDate($0.date, equalTo: date, toGranularity: .day) })
+            trackerRecordStore.deleteTrackerRecord(id: tracker.id, date: date)
         }
-        trackerRecordStore.addNewTrackerRecord(id: id, date: selectedDate)
     }
 }
