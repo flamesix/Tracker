@@ -136,6 +136,12 @@ final class NewTrackerViewController: UIViewController {
         warningLabel.isHidden = !isWarned
         addConstraints()
     }
+    
+    private func makeCreateButtonActive(_ trackerTitle: String) {
+        self.trackerTitle = trackerTitle
+        createButton.isEnabled = true
+        createButton.backgroundColor = .trBlack
+    }
 }
 
 // MARK: - UITableViewDataSource & Delegate
@@ -178,10 +184,16 @@ extension NewTrackerViewController: UITextFieldDelegate {
         switch reason {
         case .committed:
             guard let trackerTitle = textField.text else { return }
-            if !scheduleDescription.isEmpty && !category.isEmpty {
-                self.trackerTitle = trackerTitle
-                createButton.isEnabled = true
-                createButton.backgroundColor = .trBlack
+            switch isRegularEvent {
+                
+            case true:
+                if !scheduleDescription.isEmpty && !category.isEmpty {
+                    makeCreateButtonActive(trackerTitle)
+                }
+            case false:
+                if !category.isEmpty {
+                    makeCreateButtonActive(trackerTitle)
+                }
             }
         case .cancelled:
             createButton.isEnabled = false

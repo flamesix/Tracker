@@ -94,9 +94,10 @@ final class TrackerViewController: UIViewController {
         let weekDay = Calendar.current.component(.weekday, from: date)
         
         filteredTrackers = categories.compactMap { category in
-            let filteredTrackers = category.trackers.filter { tracker in
+            var filteredTrackers = category.trackers.filter { tracker in
                 tracker.schedule.contains(weekDay)
             }
+            filteredTrackers.append(contentsOf: category.trackers.filter({ $0.schedule.isEmpty }))
             return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
     }
