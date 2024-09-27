@@ -1,10 +1,3 @@
-//
-//  OnboardingViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 27.09.2024.
-//
-
 import UIKit
 
 final class OnboardingViewController: UIViewController {
@@ -76,9 +69,4 @@ extension OnboardingViewController: SettingViewsProtocol {
             onboardLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
         ])
     }
-}
-
-@available(iOS 17, *)
-#Preview {
-    OnboardingViewController(backgroundImageTitle: Constants.onboardBlueScreen, onboardLabelText: "Отслеживайте только то, что хотите")
 }

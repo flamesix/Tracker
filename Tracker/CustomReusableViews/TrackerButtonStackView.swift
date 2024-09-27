@@ -1,10 +1,3 @@
-//
-//  TrackerButtonStackView.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 08.09.2024.
-//
-
 import UIKit
 
 final class TrackerButtonStackView: UIStackView {

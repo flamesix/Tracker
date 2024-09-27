@@ -1,10 +1,3 @@
-//
-//  OnboardingStateStorage.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 27.09.2024.
-//
-
 import Foundation
 
 final class OnboardingStateStorage {

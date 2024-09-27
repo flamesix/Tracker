@@ -1,10 +1,3 @@
-//
-//  NewTrackerViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 09.09.2024.
-//
-
 import UIKit
 
 final class NewTrackerViewController: UIViewController {
@@ -457,9 +450,3 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
     }
 }
-
-
-//@available(iOS 17, *)
-//#Preview {
-//    NewTrackerViewController(isRegularEvent: true)
-//}

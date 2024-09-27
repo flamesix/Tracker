@@ -1,10 +1,3 @@
-//
-//  NewCategoryViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 12.09.2024.
-//
-
 import UIKit
 
 protocol NewCategoryViewControllerDelegate: AnyObject {

@@ -1,11 +1,3 @@
-//
-//  Store.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 17.09.2024.
-//
-
-import UIKit
 import CoreData
 
 final class Store {

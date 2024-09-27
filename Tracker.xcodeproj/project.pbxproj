@@ -188,13 +188,13 @@
 				5B6FAA832C7B95BA0075174C /* App */,
 				5B6FAADC2C7DCB7E0075174C /* Helpers */,
 				5B6FAAD72C7DC8880075174C /* TabBarController */,
+				5B49712C2CA6B4E0004C750B /* OnboardingScreens */,
 				5BCE05792C8EDA53003C4837 /* Model */,
 				5B2BE2E52C7E49D7009526FF /* TrackerScreens */,
 				5B2B6ACA2C8DB48500037D7D /* StatisticScreens */,
 				5B2BE2F02C7F624C009526FF /* CreateTrackerScreens */,
 				5B6FAA842C7B95D70075174C /* Resources */,
 				5B2BE2E22C7DE6FF009526FF /* CustomReusableViews */,
-				5B49712C2CA6B4E0004C750B /* OnboardingScreens */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";

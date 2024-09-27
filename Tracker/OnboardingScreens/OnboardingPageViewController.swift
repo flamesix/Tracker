@@ -1,10 +1,3 @@
-//
-//  OnboardingPageViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 27.09.2024.
-//
-
 import UIKit
 
 final class OnboardingPageViewController: UIPageViewController {
@@ -61,6 +54,7 @@ extension OnboardingPageViewController: SettingViewsProtocol {
     func setupView() {
         dataSource = self
         delegate = self
+        overrideUserInterfaceStyle = .light
         view.addSubviews(pageControl)
         addConstraints()
         if let first = pages.first {

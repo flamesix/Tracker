@@ -1,10 +1,3 @@
-//
-//  CreateTrackerViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 27.08.2024.
-//
-
 import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
