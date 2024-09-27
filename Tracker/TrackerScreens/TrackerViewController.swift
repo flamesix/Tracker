@@ -62,11 +62,20 @@ final class TrackerViewController: UIViewController {
         setupView()
         getCategories()
         getTrackerRecords()
+        showOnboarding()
         showTodayTrackers(date: currentDate)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .addCategory, object: nil)
+    }
+    
+    private func showOnboarding() {
+        if !OnboardingStateStorage.shared.isShowed {
+            let vc = OnboardingPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true)
+        }
     }
     
     @objc private func getCategories(_ notification: Notification) {
