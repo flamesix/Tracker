@@ -15,7 +15,6 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trBlack
-        lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
     }()
     
@@ -23,7 +22,6 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trGray
-        lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
     }()
     
@@ -31,7 +29,6 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .leading
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
@@ -69,8 +66,10 @@ extension CategoryScheduleTableViewCell: SettingViewsProtocol {
         backgroundColor = .trBackground
         
         contentView.addSubviews(stackView)
-        stackView.addArrangedSubview(mainLabel)
-        stackView.addArrangedSubview(subLable)
+        [mainLabel, subLable].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview($0)
+        }
         
         addConstraints()
     }

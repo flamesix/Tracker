@@ -15,7 +15,6 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 19, weight: .bold)
         label.textColor = .trBlack
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -33,19 +32,23 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
     public func configure(with category: TrackerCategory) {
         categoryTitleLabel.text = category.title
     }
+    
+    public func configure(with title: String) {
+        categoryTitleLabel.text = title
+    }
 }
 
 extension CategoryHeaderReusableView: SettingViewsProtocol {
     func setupView() {
-        addSubview(categoryTitleLabel)
+        addSubviews(categoryTitleLabel)
         addConstraints()
         
     }
     
     func addConstraints() {
         NSLayoutConstraint.activate([
-            categoryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            categoryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            categoryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             categoryTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

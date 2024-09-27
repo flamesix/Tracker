@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
-    func isDateToday() -> Bool
-    func didTapCompletedButton(for cell: TrackerCollectionViewCell)
+    func isNotFutureDate() -> Bool
+    func didTapCompletedButton(for cell: TrackerCollectionViewCell, isButtonTapped: Bool)
 }
 
 final class TrackerCollectionViewCell: UICollectionViewCell {
@@ -21,7 +21,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
         imageView.layer.cornerRadius = 16
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -31,7 +30,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.layer.masksToBounds = true
         label.backgroundColor = .trEmojiBackground
         label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -41,7 +39,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .trWhite
         label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -50,19 +47,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .trBlack
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let completeTrackerButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 17
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private var isButtonTapped = false
     private var dayCounter = 0
+    private var id: UUID = UUID()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -73,37 +69,71 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: Склонение дней
-    //Локализацию пока не добавляю, будет дальше по курсу
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        completeTrackerButton.alpha = 1
+    }
+    
+    func updateID(id: UUID) {
+        self.id = id
+    }
+    
     @objc private func didTapCompleteTrackerButton() {
-        if delegate?.isDateToday() ?? false {
+        if delegate?.isNotFutureDate() ?? false {
             isButtonTapped = !isButtonTapped
-            
             if isButtonTapped {
-                completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
-                completeTrackerButton.alpha = 0.3
-                dayCounter += 1
-                counterLabel.text = "\(dayCounter) день"
-                
-                delegate?.didTapCompletedButton(for: self)
+                updateCompleteTrackerButtonState(isButtonTapped: isButtonTapped)
+                updateDayCounter(day: dayCounter + 1)
+                delegate?.didTapCompletedButton(for: self, isButtonTapped: isButtonTapped)
             } else {
-                completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
-                completeTrackerButton.alpha = 1
-                dayCounter -= 1
-                counterLabel.text = "\(dayCounter) день"
+                updateCompleteTrackerButtonState(isButtonTapped: isButtonTapped)
+                updateDayCounter(day: dayCounter - 1)
+                delegate?.didTapCompletedButton(for: self, isButtonTapped: isButtonTapped)
             }
         }
     }
     
-    public func configureCell(_ tracker: Tracker, weekDay: Int, completedTrackers: [TrackerRecord]) {
-            backgroundImageView.backgroundColor = UIColor(named: tracker.color)
-            emojiLabel.text = tracker.emoji
-            trackerLabel.text = tracker.title
-            // TODO: Склонение дней
-            counterLabel.text = "\(completedTrackers.filter({$0.id == tracker.id}).count) дней"
+    private func updateCompleteTrackerButtonState(isButtonTapped: Bool) {
+        isButtonTapped ? completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal) : completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        completeTrackerButton.alpha = isButtonTapped ? 0.3 : 1
+    }
+    
+    private func updateDayCounter(day: Int) {
+        dayCounter = day
+        var text = ""
+        let dayMod = dayCounter % 10
+        let dayMod100 = dayCounter % 100
+        
+        if dayMod == 1 && dayMod100 != 11 {
+            text = "\(dayCounter) день"
+        } else if dayMod >= 2 && dayMod <= 4 && (dayMod100 < 10 || dayMod100 >= 20) {
+            text = "\(dayCounter) дня"
+        } else {
+            text = "\(dayCounter) дней"
+        }
+        counterLabel.text = text
+    }
+    
+    private func configureCompleteTrackerButtonState(_ tracker: Tracker, date: Date, completedTrackers: [TrackerRecord]) {
+        if completedTrackers.contains(where: { $0.id == tracker.id && Calendar.current.isDate($0.date, equalTo: date, toGranularity: .day) }) {
+            completeTrackerButton.setImage(UIImage(named: "doneButton"), for: .normal)
+            completeTrackerButton.alpha = 0.3
+            isButtonTapped = true
+        } else {
             completeTrackerButton.setImage(UIImage(systemName: "plus"), for: .normal)
-            completeTrackerButton.tintColor = .trWhite
-            completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
+            completeTrackerButton.alpha = 1
+            isButtonTapped = false
+        }
+    }
+    
+    public func configureCell(_ tracker: Tracker, weekDay: Int, date: Date, completedTrackers: [TrackerRecord]) {
+        backgroundImageView.backgroundColor = UIColor(named: tracker.color)
+        emojiLabel.text = tracker.emoji
+        trackerLabel.text = tracker.title
+        updateDayCounter(day: completedTrackers.filter({$0.id == tracker.id}).count)
+        configureCompleteTrackerButtonState(tracker, date: date, completedTrackers: completedTrackers)
+        completeTrackerButton.tintColor = .trWhite
+        completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
     }
 }
 
