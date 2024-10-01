@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,7 +12,6 @@
 		5B2B18122C9A0130000571C1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B18112C9A0130000571C1 /* Constants.swift */; };
 		5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */; };
 		5B2B6AC12C8D914F00037D7D /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6AC02C8D914F00037D7D /* ScheduleViewController.swift */; };
-		5B2B6AC52C8DA29D00037D7D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6AC42C8DA29D00037D7D /* CategoryViewController.swift */; };
 		5B2B6AC72C8DA43000037D7D /* TrackerTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6AC62C8DA43000037D7D /* TrackerTableView.swift */; };
 		5B2B6AC92C8DB3C900037D7D /* TrackerButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6AC82C8DB3C900037D7D /* TrackerButtonStackView.swift */; };
 		5B2B6AD42C8DCE9B00037D7D /* TrackerWarningLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6AD32C8DCE9B00037D7D /* TrackerWarningLabel.swift */; };
@@ -58,7 +57,6 @@
 		5B2B18112C9A0130000571C1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		5B2B6AC02C8D914F00037D7D /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
-		5B2B6AC42C8DA29D00037D7D /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		5B2B6AC62C8DA43000037D7D /* TrackerTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTableView.swift; sourceTree = "<group>"; };
 		5B2B6AC82C8DB3C900037D7D /* TrackerButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerButtonStackView.swift; sourceTree = "<group>"; };
 		5B2B6AD32C8DCE9B00037D7D /* TrackerWarningLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerWarningLabel.swift; sourceTree = "<group>"; };
@@ -100,6 +98,10 @@
 		5BE428F42C92F7FC004506AF /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		5BE428F62C943777004506AF /* ScheduleTableVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableVIewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5B3108852CA870210085E0F9 /* CategoryScreens */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CategoryScreens; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5B6FAA692C7B93690075174C /* Frameworks */ = {
@@ -286,7 +288,7 @@
 			children = (
 				5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */,
 				5B2B6AC02C8D914F00037D7D /* ScheduleViewController.swift */,
-				5B2B6AC42C8DA29D00037D7D /* CategoryViewController.swift */,
+				5B3108852CA870210085E0F9 /* CategoryScreens */,
 			);
 			path = TrackerCreationScreens;
 			sourceTree = "<group>";
@@ -314,6 +316,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5B3108852CA870210085E0F9 /* CategoryScreens */,
 			);
 			name = Tracker;
 			productName = Tracker;
@@ -374,7 +379,6 @@
 				5BCE05842C8F3A39003C4837 /* UIViewController+Extension.swift in Sources */,
 				5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */,
 				5B2B6AD42C8DCE9B00037D7D /* TrackerWarningLabel.swift in Sources */,
-				5B2B6AC52C8DA29D00037D7D /* CategoryViewController.swift in Sources */,
 				5B6FAADE2C7DCB920075174C /* UIView+Extension.swift in Sources */,
 				5B2B6AC12C8D914F00037D7D /* ScheduleViewController.swift in Sources */,
 				5BA7F1F62C98138C007DF5DD /* TrackerCategoryStore.swift in Sources */,

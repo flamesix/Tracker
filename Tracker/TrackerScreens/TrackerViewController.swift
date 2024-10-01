@@ -24,6 +24,10 @@ final class TrackerViewController: UIViewController {
         let picker = UIDatePicker()
         picker.preferredDatePickerStyle = .compact
         picker.datePickerMode = .date
+        picker.overrideUserInterfaceStyle = .light
+        picker.backgroundColor = .trWhite
+        picker.layer.cornerRadius = 8
+        picker.layer.masksToBounds = true
         picker.locale = Locale(identifier: "ru_RU")
         return picker
     }()
@@ -252,12 +256,15 @@ extension TrackerViewController: UICollectionViewDelegate {
             return UIMenu(children: [
                 UIAction(title: "Закрепить") { _ in
                     print("Закрепить")
+                    print(indexPath)
                 },
                 UIAction(title: "Редактировать") { _ in
                     print("Редактировать")
+                    print(indexPath)
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { _ in
                     print("Удалить")
+                    print(indexPath)
                     
                 }
             ])

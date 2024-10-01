@@ -118,8 +118,9 @@ final class NewTrackerViewController: UIViewController {
     
     private func showCategoryViewController() {
         let vc = CategoryViewController()
-        vc.categories = categories
-        vc.selectedCategory = category
+        let viewModel = CategoryViewModel()
+        vc.initViewModel(viewModel: viewModel)
+        viewModel.selectedCategory = category
         vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
     }
