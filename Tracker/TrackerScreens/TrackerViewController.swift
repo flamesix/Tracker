@@ -109,18 +109,15 @@ final class TrackerViewController: UIViewController {
     }
     
     private func filterTrackers(for searchText: String) {
-        let trackersToFilter = categories
-        let searchResult = trackersToFilter.map { category in
-            let filteredResult = category.trackers.filter({ $0.title.localizedCaseInsensitiveContains(searchText) })
-            return TrackerCategory(title: category.title, trackers: filteredResult)
-        }
-        if let result = searchResult.first, result.trackers.isEmpty {
-            filteredTrackers = []
-        } else {
-            filteredTrackers = searchResult
-        }
         if searchText.isEmpty {
             filteredTrackers = categories
+        } else {
+            filteredTrackers = categories.compactMap { category in
+                let filteredTrackers = category.trackers.filter { tracker in
+                    tracker.title.localizedCaseInsensitiveContains(searchText)
+                }
+                return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
+            }
         }
     }
     
@@ -249,26 +246,50 @@ extension TrackerViewController: UICollectionViewDelegate {
         guard indexPaths.count > 0 else {
             return nil
         }
-        
-        let indexPath = indexPaths[0]
+        guard let indexPath = indexPaths.first else {
+            return nil
+        }
         
         return UIContextMenuConfiguration(actionProvider: { actions in
             return UIMenu(children: [
                 UIAction(title: "Закрепить") { _ in
                     print("Закрепить")
-                    print(indexPath)
                 },
                 UIAction(title: "Редактировать") { _ in
                     print("Редактировать")
-                    print(indexPath)
                 },
-                UIAction(title: "Удалить", attributes: .destructive) { _ in
+                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                     print("Удалить")
-                    print(indexPath)
                     
                 }
             ])
         })
+    }
+    
+    private func deleteTracker(at indexPath: IndexPath) {
+        let section = indexPath.section
+        let category = filteredTrackers[section]
+        let trackerID = category.trackers[indexPath.item].id
+        
+        var updatedTrackers = category.trackers
+        updatedTrackers.remove(at: indexPath.item)
+        
+        let updatedCategory = TrackerCategory(title: category.title, trackers: updatedTrackers)
+        
+        filteredTrackers[section] = updatedCategory
+        
+        if updatedTrackers.isEmpty {
+            filteredTrackers.remove(at: section)
+            collectionView.performBatchUpdates {
+                collectionView.deleteSections(IndexSet(integer: section))
+            }
+        } else {
+            collectionView.performBatchUpdates {
+                collectionView.deleteItems(at: [indexPath])
+            }
+        }
+        
+        trackerRecordStore.deleteTrackerRecord(id: trackerID, date: datePicker.date)
     }
 }
 
