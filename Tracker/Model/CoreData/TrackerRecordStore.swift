@@ -1,11 +1,3 @@
-//
-//  TrackerRecordStore.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 16.09.2024.
-//
-
-import Foundation
 import CoreData
 
 final class TrackerRecordStore {

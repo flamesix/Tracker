@@ -1,10 +1,3 @@
-//
-//  TrackerTextField.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 28.08.2024.
-//
-
 import UIKit
 
 final class TrackerTextField: UITextField {

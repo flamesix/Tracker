@@ -1,10 +1,3 @@
-//
-//  TrackerCollectionViewCell.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 27.08.2024.
-//
-
 import UIKit
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
@@ -38,6 +31,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .trWhite
+        label.overrideUserInterfaceStyle = .light
         label.numberOfLines = 0
         return label
     }()

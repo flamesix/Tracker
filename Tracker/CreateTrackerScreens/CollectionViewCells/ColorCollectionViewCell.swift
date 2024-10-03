@@ -1,10 +1,3 @@
-//
-//  ColorCollectionViewCell.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 14.09.2024.
-//
-
 import UIKit
 
 final class ColorCollectionViewCell: UICollectionViewCell {

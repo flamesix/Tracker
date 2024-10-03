@@ -1,10 +1,3 @@
-//
-//  CategoryViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 08.09.2024.
-//
-
 import UIKit
 
 protocol CategoryViewControllerDelegate: AnyObject {
@@ -14,25 +7,33 @@ protocol CategoryViewControllerDelegate: AnyObject {
 final class CategoryViewController: UIViewController {
     
     weak var delegate: CategoryViewControllerDelegate?
+    private var viewModel: CategoryViewModel?
     
-    var selectedCategory: String = ""
     private let tableView = TrackerTableView()
     private let addButton = TrackerButton("Добавить категорию", .trBlack, .trWhite)
     private let emptyLogo = TrackerEmptyLogo(frame: .zero)
     private let emptyLabel = TrackerEmptyLabel("Привычки и события можно \n объединить по смыслу")
     
     private var selectedIndexPath: IndexPath?
-    var categories: [TrackerCategory] = [] {
-        didSet {
-            updateEmptyState()
-            tableView.reloadData()
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         
+    }
+    
+    func initViewModel(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        viewModel?.categoriesUpdated = { [weak self] in
+            self?.updateEmptyState()
+            self?.tableView.reloadData()
+        }
+        
+        viewModel?.fetchCategories()
     }
     
     @objc private func addCategory() {
@@ -44,13 +45,13 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return viewModel?.categoriesCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryScheduleTableViewCell.reuseIdentifier, for: indexPath) as? CategoryScheduleTableViewCell else { return UITableViewCell() }
-        let category = categories[indexPath.row].title
-        cell.configureCategory(category: category, selectedCategory: selectedCategory)
+        let category = viewModel?.category(at: indexPath.row) ?? ""
+        cell.configureCategory(category: category, selectedCategory: viewModel?.selectedCategory ?? "")
         return cell
     }
 }
@@ -61,24 +62,19 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Сначала убираем галочку с ранее выбранной ячейки, если она существует
-        if let previousIndexPath = selectedIndexPath {
-            if previousIndexPath != indexPath {
-                let previousCell = tableView.cellForRow(at: previousIndexPath)
-                previousCell?.accessoryType = .none
-            }
+        viewModel?.selectCategory(at: indexPath.row)
+        delegate?.updateCategorySelection(with: viewModel?.selectedCategory ?? "")
+        
+        if let previousIndexPath = selectedIndexPath, previousIndexPath != indexPath {
+            let previousCell = tableView.cellForRow(at: previousIndexPath)
+            previousCell?.accessoryType = .none
         }
         
-        // Устанавливаем галочку на текущей выбранной ячейке
         let currentCell = tableView.cellForRow(at: indexPath)
         currentCell?.accessoryType = .checkmark
         
-        // Обновляем выбранную ячейку
         selectedIndexPath = indexPath
-        
         tableView.deselectRow(at: indexPath, animated: true)
-        let category = categories[indexPath.row].title
-        delegate?.updateCategorySelection(with: category)
         dismiss(animated: true)
     }
 }
@@ -112,7 +108,6 @@ extension CategoryViewController: SettingViewsProtocol {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(categories.count * 75)),
             
             addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -128,9 +123,13 @@ extension CategoryViewController: SettingViewsProtocol {
     }
     
     private func updateEmptyState() {
-        emptyLogo.isHidden = !categories.isEmpty
-        emptyLabel.isHidden = !categories.isEmpty
-        tableView.isHidden = categories.isEmpty
+        guard let viewModel else { return }
+        let isEmpty = viewModel.categoriesCount() == 0
+        emptyLogo.isHidden = !isEmpty
+        emptyLabel.isHidden = !isEmpty
+        tableView.isHidden = isEmpty
+        let tableHeight = CGFloat(viewModel.categoriesCount() * 75)
+        tableView.heightAnchor.constraint(equalToConstant: tableHeight).isActive = true
     }
 }
 

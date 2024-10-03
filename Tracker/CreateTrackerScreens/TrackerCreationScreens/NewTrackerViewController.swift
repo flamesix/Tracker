@@ -1,10 +1,3 @@
-//
-//  NewTrackerViewController.swift
-//  Tracker
-//
-//  Created by Юрий Гриневич on 09.09.2024.
-//
-
 import UIKit
 
 final class NewTrackerViewController: UIViewController {
@@ -125,8 +118,9 @@ final class NewTrackerViewController: UIViewController {
     
     private func showCategoryViewController() {
         let vc = CategoryViewController()
-        vc.categories = categories
-        vc.selectedCategory = category
+        let viewModel = CategoryViewModel()
+        vc.initViewModel(viewModel: viewModel)
+        viewModel.selectedCategory = category
         vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
     }
@@ -457,9 +451,3 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
     }
 }
-
-
-//@available(iOS 17, *)
-//#Preview {
-//    NewTrackerViewController(isRegularEvent: true)
-//}
