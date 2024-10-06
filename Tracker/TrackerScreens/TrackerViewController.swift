@@ -32,6 +32,17 @@ final class TrackerViewController: UIViewController {
         return picker
     }()
     
+    private let filterButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Фильтры", for: .normal)
+        button.setTitleColor(.trWhite, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        button.layer.cornerRadius = 16
+        button.backgroundColor = .trBlue
+        button.overrideUserInterfaceStyle = .light
+        return button
+    }()
+    
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     
@@ -87,6 +98,11 @@ final class TrackerViewController: UIViewController {
         vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
         
+    }
+    
+    @objc private func didTapFilterButton() {
+        let vc = FilterViewController()
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
@@ -159,9 +175,10 @@ extension TrackerViewController: SettingViewsProtocol {
         
         setupNavBar()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        filterButton.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
         
         view.backgroundColor = .trWhite
-        view.addSubviews(emptyLogo, emptyLabel, collectionView)
+        view.addSubviews(emptyLogo, emptyLabel, collectionView, filterButton)
         addConstraints()
         updateEmptyState()
     }
@@ -183,6 +200,11 @@ extension TrackerViewController: SettingViewsProtocol {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 130),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -130),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.heightAnchor.constraint(equalToConstant: 50)
             
         ])
     }
@@ -208,6 +230,7 @@ extension TrackerViewController: SettingViewsProtocol {
         emptyLogo.isHidden = !filteredTrackers.isEmpty
         emptyLabel.isHidden = !filteredTrackers.isEmpty
         collectionView.isHidden = filteredTrackers.isEmpty
+        filterButton.isHidden = filteredTrackers.isEmpty
     }
 }
 

@@ -1,20 +1,13 @@
 import UIKit
 
-final class CategoryScheduleTableViewCell: UITableViewCell {
+final class FilterTableViewCell: UITableViewCell {
     
-    static let reuseIdentifier = "CategoryScheduleTableViewCell"
+    static let reuseIdentifier = "FilterTableViewCell"
     
     private let mainLabel: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trBlack
-        return lable
-    }()
-    
-    private let subLabel: UILabel = {
-        let lable = UILabel()
-        lable.font = .systemFont(ofSize: 17, weight: .regular)
-        lable.textColor = .trGray
         return lable
     }()
     
@@ -26,7 +19,7 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier) 
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
     
@@ -34,32 +27,21 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(isRegularEvent: Bool, indexPath: IndexPath, schedule: String, category: String) {
-        switch isRegularEvent {
-        case true:
-            mainLabel.text = indexPath.row == 0 ? "Категория" : "Расписание"
-            subLabel.text = indexPath.row == 0 ? category : schedule
-        case false:
-            mainLabel.text = "Категория"
-            subLabel.text = category
-        }
-    }
-    
-    public func configureCategory(category: String, selectedCategory: String) {
-        if category == selectedCategory {
+    public func configureFilter(filter: String, selectedFilter: String) {
+        if filter == selectedFilter {
             accessoryType = .checkmark
         }
-        mainLabel.text = category
+        mainLabel.text = filter
     }
 }
 
-extension CategoryScheduleTableViewCell: SettingViewsProtocol {
+extension FilterTableViewCell: SettingViewsProtocol {
     func setupView() {
         selectionStyle = .none
         backgroundColor = .trBackground
         
         contentView.addSubviews(stackView)
-        [mainLabel, subLabel].forEach {
+        [mainLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview($0)
         }

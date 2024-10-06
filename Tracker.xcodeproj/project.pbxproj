@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5B099ECD2CA464F400417D54 /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B099ECB2CA464F400417D54 /* TrackerModel.xcdatamodeld */; };
+		5B0E48062CAEC25E00DF0E60 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5B0E48042CAEC25D00DF0E60 /* Localizable.strings */; };
+		5B0E480A2CAEC8CC00DF0E60 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 5B0E48082CAEC8CC00DF0E60 /* Localizable.stringsdict */; };
 		5B2B180E2C9971C8000571C1 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B180D2C9971C8000571C1 /* Store.swift */; };
 		5B2B18122C9A0130000571C1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B18112C9A0130000571C1 /* Constants.swift */; };
 		5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */; };
@@ -37,6 +39,8 @@
 		5BA7F1F42C981380007DF5DD /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F32C981380007DF5DD /* TrackerStore.swift */; };
 		5BA7F1F62C98138C007DF5DD /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F52C98138C007DF5DD /* TrackerCategoryStore.swift */; };
 		5BA7F1F82C981399007DF5DD /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */; };
+		5BC500D52CB2DE0900594E10 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC500D42CB2DE0900594E10 /* FilterViewController.swift */; };
+		5BC500D82CB2DFD700594E10 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC500D72CB2DFD700594E10 /* FilterTableViewCell.swift */; };
 		5BCE057B2C8EDA73003C4837 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE057A2C8EDA73003C4837 /* TrackerCategory.swift */; };
 		5BCE057D2C8EDA89003C4837 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE057C2C8EDA89003C4837 /* TrackerRecord.swift */; };
 		5BCE057F2C8EE083003C4837 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */; };
@@ -53,6 +57,9 @@
 
 /* Begin PBXFileReference section */
 		5B099ECC2CA464F400417D54 /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
+		5B0E48052CAEC25D00DF0E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5B0E48072CAEC36000DF0E60 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5B0E48092CAEC8CC00DF0E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		5B2B180D2C9971C8000571C1 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		5B2B18112C9A0130000571C1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
@@ -85,6 +92,8 @@
 		5BA7F1F32C981380007DF5DD /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		5BA7F1F52C98138C007DF5DD /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		5BC500D42CB2DE0900594E10 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		5BC500D72CB2DFD700594E10 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		5BCE057A2C8EDA73003C4837 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		5BCE057C2C8EDA89003C4837 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
 		5BCE057E2C8EE083003C4837 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
@@ -197,6 +206,7 @@
 				5B2BE2F02C7F624C009526FF /* CreateTrackerScreens */,
 				5B6FAA842C7B95D70075174C /* Resources */,
 				5B2BE2E22C7DE6FF009526FF /* CustomReusableViews */,
+				5BC500D62CB2DFAF00594E10 /* FilterScreens */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -216,6 +226,8 @@
 				5B6FAA782C7B936A0075174C /* Assets.xcassets */,
 				5B6FAA7A2C7B936A0075174C /* LaunchScreen.storyboard */,
 				5B6FAA7D2C7B936A0075174C /* Info.plist */,
+				5B0E48042CAEC25D00DF0E60 /* Localizable.strings */,
+				5B0E48082CAEC8CC00DF0E60 /* Localizable.stringsdict */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -250,6 +262,15 @@
 				5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		5BC500D62CB2DFAF00594E10 /* FilterScreens */ = {
+			isa = PBXGroup;
+			children = (
+				5BC500D42CB2DE0900594E10 /* FilterViewController.swift */,
+				5BC500D72CB2DFD700594E10 /* FilterTableViewCell.swift */,
+			);
+			path = FilterScreens;
 			sourceTree = "<group>";
 		};
 		5BCE05792C8EDA53003C4837 /* Model */ = {
@@ -347,6 +368,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 5B6FAA632C7B93690075174C;
 			productRefGroup = 5B6FAA6D2C7B93690075174C /* Products */;
@@ -364,6 +386,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B6FAA792C7B936A0075174C /* Assets.xcassets in Resources */,
+				5B0E480A2CAEC8CC00DF0E60 /* Localizable.stringsdict in Resources */,
+				5B0E48062CAEC25E00DF0E60 /* Localizable.strings in Resources */,
 				5B6FAA7C2C7B936A0075174C /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,6 +407,7 @@
 				5B2B6AC12C8D914F00037D7D /* ScheduleViewController.swift in Sources */,
 				5BA7F1F62C98138C007DF5DD /* TrackerCategoryStore.swift in Sources */,
 				5B2B180E2C9971C8000571C1 /* Store.swift in Sources */,
+				5BC500D52CB2DE0900594E10 /* FilterViewController.swift in Sources */,
 				5B2B6AD62C8DDCE000037D7D /* TrackerEmptyLogo.swift in Sources */,
 				5B2B6AD82C8DDD4D00037D7D /* TrackerEmptyLabel.swift in Sources */,
 				5B2BE2E72C7E5227009526FF /* CategoryHeaderReusableView.swift in Sources */,
@@ -413,6 +438,7 @@
 				5B2BE2EB2C7F5B67009526FF /* TrackerTextField.swift in Sources */,
 				5B6FAAE02C7DD1F30075174C /* Tracker.swift in Sources */,
 				5B4971402CA6BEAB004C750B /* OnboardingStateStorage.swift in Sources */,
+				5BC500D82CB2DFD700594E10 /* FilterTableViewCell.swift in Sources */,
 				5BD9B9F52C95C1350023BF3E /* ColorCollectionViewCell.swift in Sources */,
 				5B2B6AC92C8DB3C900037D7D /* TrackerButtonStackView.swift in Sources */,
 			);
@@ -421,6 +447,23 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5B0E48042CAEC25D00DF0E60 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5B0E48052CAEC25D00DF0E60 /* en */,
+				5B0E48072CAEC36000DF0E60 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		5B0E48082CAEC8CC00DF0E60 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5B0E48092CAEC8CC00DF0E60 /* en */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		5B6FAA7A2C7B936A0075174C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -437,6 +480,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -500,6 +544,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
