@@ -10,9 +10,9 @@ final class CategoryViewController: UIViewController {
     private var viewModel: CategoryViewModel?
     
     private let tableView = TrackerTableView()
-    private let addButton = TrackerButton("Добавить категорию", .trBlack, .trWhite)
+    private let addButton = TrackerButton(Constants.addCategory, .trBlack, .trWhite)
     private let emptyLogo = TrackerEmptyLogo(frame: .zero)
-    private let emptyLabel = TrackerEmptyLabel("Привычки и события можно \n объединить по смыслу")
+    private let emptyLabel = TrackerEmptyLabel(Constants.emptyCategory)
     
     private var selectedIndexPath: IndexPath?
     
@@ -81,7 +81,7 @@ extension CategoryViewController: UITableViewDelegate {
 
 extension CategoryViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Категория"
+        title = Constants.category
         view.backgroundColor = .trWhite
         
         setupTableView()

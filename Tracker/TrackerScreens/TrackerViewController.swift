@@ -12,13 +12,13 @@ final class TrackerViewController: UIViewController {
     private let searchController: UISearchController = {
         let search = UISearchController()
         search.hidesNavigationBarDuringPresentation = false
-        search.searchBar.setValue("Отменить", forKey: "cancelButtonText")
-        search.searchBar.placeholder = "Поиск"
+        search.searchBar.setValue(Constants.cancel, forKey: "cancelButtonText")
+        search.searchBar.placeholder = Constants.search
         return search
     }()
     
     private let emptyLogo = TrackerEmptyLogo(frame: .zero)
-    private let emptyLabel = TrackerEmptyLabel("Что будем отслеживать?")
+    private let emptyLabel = TrackerEmptyLabel(Constants.trackerEmptyLogo)
     
     private let datePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -34,7 +34,7 @@ final class TrackerViewController: UIViewController {
     
     private let filterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Фильтры", for: .normal)
+        button.setTitle(Constants.filters, for: .normal)
         button.setTitleColor(.trWhite, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         button.layer.cornerRadius = 16
@@ -220,7 +220,7 @@ extension TrackerViewController: SettingViewsProtocol {
     }
     
     private func setupNavBar() {
-        title = "Трекеры"
+        title = Constants.trackers
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
         
@@ -278,14 +278,23 @@ extension TrackerViewController: UICollectionViewDelegate {
         
         return UIContextMenuConfiguration(actionProvider: { actions in
             return UIMenu(children: [
-                UIAction(title: "Закрепить") { _ in
-                    print("Закрепить")
+                UIAction(title: Constants.pin) { _ in
+                    print(Constants.pin)
                 },
-                UIAction(title: "Редактировать") { _ in
-                    print("Редактировать")
+                UIAction(title: Constants.edit) { _ in
+                    print(Constants.edit)
                 },
-                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                    print("Удалить")
+                UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
+                    let deleteAction = UIAlertAction(title: Constants.delete, style: .destructive) { [weak self] _ in
+                        print(Constants.delete)
+                    }
+                    
+                    let cancel = UIAlertAction(title: Constants.cancelAlert, style: .cancel)
+                    
+                    let alertController = UIAlertController(title: Constants.deleteTracker, message: "", preferredStyle: .actionSheet)
+                    alertController.addAction(deleteAction)
+                    alertController.addAction(cancel)
+                    self?.present(alertController, animated: true)
                     
                 }
             ])

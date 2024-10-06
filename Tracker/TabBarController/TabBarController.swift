@@ -19,11 +19,11 @@ final class TabBarViewController: UITabBarController {
         statisticNVC.navigationBar.prefersLargeTitles = true
         
         
-        trackerNVC.tabBarItem = UITabBarItem(title: "Трекеры",
+        trackerNVC.tabBarItem = UITabBarItem(title: Constants.trackers,
                                                 image: UIImage(systemName: "record.circle.fill"),
                                                 tag: 1)
         
-        statisticNVC.tabBarItem = UITabBarItem(title: "Статистика",
+        statisticNVC.tabBarItem = UITabBarItem(title: Constants.statistic,
                                             image: UIImage(systemName: "hare.fill"),
                                             tag: 2)
         

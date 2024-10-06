@@ -11,8 +11,17 @@ final class NewTrackerViewController: UIViewController {
                                     "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"]
     private var colors: [String] = Array(1...18).map { String("tr\($0)")}
     enum EmojiColorSection: String, CaseIterable {
-        case emoji = "Emoji"
-        case color = "Цвет"
+        case emoji
+        case color
+        
+        var title: String {
+            switch self {
+            case .emoji:
+                return "Emoji"
+            case .color:
+                return Constants.color
+            }
+        }
     }
     private var selectedColor: String = ""
     private var selectedEmoji: String = ""
@@ -37,10 +46,10 @@ final class NewTrackerViewController: UIViewController {
         let scrollView = UIScrollView()
         return scrollView
     }()
-    private let addTrackerNameTextField = TrackerTextField(placeholder: "Введите название трекера")
+    private let addTrackerNameTextField = TrackerTextField(placeholder: Constants.enterTrackerName)
     private let tableView = TrackerTableView()
-    private let createButton = TrackerButton("Создать", .trGray, .trWhite)
-    private let cancelButton = TrackerButton("Отменить", .clear, .trRed, 1, .trRed)
+    private let createButton = TrackerButton(Constants.create, .trGray, .trWhite)
+    private let cancelButton = TrackerButton(Constants.cancel, .clear, .trRed, 1, .trRed)
     private let buttonStackView = TrackerButtonStackView()
     private let warningLabel = TrackerWarningLabel()
     
@@ -251,7 +260,7 @@ extension NewTrackerViewController: SettingViewsProtocol {
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         createButton.isEnabled = false
         
-        title = isRegularEvent ? "Новая привычка" : "Новое нерегулярное событие"
+        title = isRegularEvent ? Constants.newHabit : Constants.newUnregularEvent
         view.backgroundColor = .trWhite
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
@@ -359,7 +368,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeaderReusableView.reuseIdentifier, for: indexPath) as? CategoryHeaderReusableView else { return UICollectionReusableView() }
-        let sectionTitle = EmojiColorSection.allCases[indexPath.section].rawValue
+        let sectionTitle = EmojiColorSection.allCases[indexPath.section].title
         header.configure(with: sectionTitle)
         return header
     }

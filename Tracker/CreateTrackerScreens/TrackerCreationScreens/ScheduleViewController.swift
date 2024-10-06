@@ -8,7 +8,7 @@ final class ScheduleViewController: UIViewController {
     
     weak var delegate: ScheduleViewControllerDelegate?
     
-    private let doneButton = TrackerButton("Готово", .trGray, .trWhite)
+    private let doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
     private let tableView = TrackerTableView()
     
     var selectedDays: [WeekDay: Bool] = [:]
@@ -82,7 +82,7 @@ extension ScheduleViewController: UITableViewDelegate {
 
 extension ScheduleViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Расписание"
+        title = Constants.schedule
         view.backgroundColor = .trWhite
         
         setupTableView()

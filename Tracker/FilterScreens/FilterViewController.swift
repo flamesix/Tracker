@@ -56,7 +56,7 @@ extension FilterViewController: UITableViewDelegate {
 
 extension FilterViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Фильтры"
+        title = Constants.filters
         view.backgroundColor = .trWhite
         
         

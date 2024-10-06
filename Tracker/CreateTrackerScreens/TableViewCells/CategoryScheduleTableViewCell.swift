@@ -37,10 +37,10 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
     public func configure(isRegularEvent: Bool, indexPath: IndexPath, schedule: String, category: String) {
         switch isRegularEvent {
         case true:
-            mainLabel.text = indexPath.row == 0 ? "Категория" : "Расписание"
+            mainLabel.text = indexPath.row == 0 ? Constants.category : Constants.schedule
             subLabel.text = indexPath.row == 0 ? category : schedule
         case false:
-            mainLabel.text = "Категория"
+            mainLabel.text = Constants.category
             subLabel.text = category
         }
     }

@@ -10,8 +10,8 @@ final class NewCategoryViewController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     
-    private let categoryTitleTextField = TrackerTextField(placeholder: "Введите название категории")
-    private let doneButton = TrackerButton("Готово", .trGray, .trWhite)
+    private let categoryTitleTextField = TrackerTextField(placeholder: Constants.enterCategory)
+    private let doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +65,7 @@ extension NewCategoryViewController: UITextFieldDelegate {
 
 extension NewCategoryViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Категория"
+        title = Constants.category
         categoryTitleTextField.delegate = self
         view.backgroundColor = .trWhite
         view.addSubviews(doneButton, categoryTitleTextField)

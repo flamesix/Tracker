@@ -3,7 +3,7 @@ import UIKit
 final class StatisticViewController: UIViewController {
     
     private let emptyLogo = TrackerEmptyLogo("EmptyLogoStat")
-    private let emptyLabel = TrackerEmptyLabel("Анализировать пока нечего")
+    private let emptyLabel = TrackerEmptyLabel(Constants.nothingToAnalyze)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,7 +15,7 @@ final class StatisticViewController: UIViewController {
 
 extension StatisticViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Статистика"
+        title = Constants.statistic
         
         view.backgroundColor = .trWhite
         view.addSubviews(emptyLogo, emptyLabel)
