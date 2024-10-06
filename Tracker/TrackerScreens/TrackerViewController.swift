@@ -371,14 +371,40 @@ extension TrackerViewController: FilterViewControllerDelegate {
         selectedFilter = filter
         switch filter {
         case .allTrackers:
-            filteredTrackers = categories
+            filterAllTrackers()
         case .todayTrackers:
-            datePicker.date = currentDate
-            showTodayTrackers(date: currentDate)
+            filterTodayTrackers()
         case .doneTrackers:
-            break
+            filterCompletedTrackers()
         case .activeTrackers:
-            break
+            filterActiveTrackers()
+        }
+    }
+    
+    private func filterAllTrackers() {
+        filteredTrackers = categories
+    }
+    
+    private func filterTodayTrackers() {
+        datePicker.date = currentDate
+        showTodayTrackers(date: currentDate)
+    }
+    
+    private func filterCompletedTrackers() {
+        filteredTrackers = categories.compactMap { category in
+            let completed = category.trackers.filter { tracker in
+                completedTrackers.contains { $0.id == tracker.id }
+            }
+            return completed.isEmpty ? nil : TrackerCategory(title: category.title, trackers: completed)
+        }
+    }
+    
+    private func filterActiveTrackers() {
+        filteredTrackers = categories.compactMap { category in
+            let active = category.trackers.filter { tracker in
+                !completedTrackers.contains { $0.id == tracker.id }
+            }
+            return active.isEmpty ? nil : TrackerCategory(title: category.title, trackers: active)
         }
     }
 }
