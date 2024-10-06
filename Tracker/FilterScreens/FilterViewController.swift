@@ -1,15 +1,17 @@
 import UIKit
 
+protocol FilterViewControllerDelegate: AnyObject {
+    func didSelectFilter(filter: Filters)
+}
+
 final class FilterViewController: UIViewController {
+    
+    weak var delegate: FilterViewControllerDelegate?
     
     private let tableView = TrackerTableView()
     
-    private enum Filters: String, CaseIterable {
-        case allTrackers = "Все трекеры"
-        case todayTrackers = "Трекеры на сегодня"
-        case doneTrackers = "Завершенные"
-        case activeTrackers = "Не завершенные"
-    }
+    var selectedFilter: Filters?
+    private var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,13 +27,31 @@ extension FilterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.reuseIdentifier, for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
         let filter = Filters.allCases[indexPath.row].rawValue
-        cell.configureFilter(filter: filter, selectedFilter: filter)
+        cell.configureFilter(filter: filter, selectedFilter: selectedFilter?.rawValue)
         return cell
     }
 }
 
 extension FilterViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        75
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let filter = Filters.allCases[indexPath.row]
+        delegate?.didSelectFilter(filter: filter)
+        if let previousIndexPath = selectedIndexPath, previousIndexPath != indexPath {
+            let previousCell = tableView.cellForRow(at: previousIndexPath)
+            previousCell?.accessoryType = .none
+        }
+        
+        let currentCell = tableView.cellForRow(at: indexPath)
+        currentCell?.accessoryType = .checkmark
+        
+        selectedIndexPath = indexPath
+        tableView.deselectRow(at: indexPath, animated: true)
+        dismiss(animated: true)
+    }
 }
 
 extension FilterViewController: SettingViewsProtocol {

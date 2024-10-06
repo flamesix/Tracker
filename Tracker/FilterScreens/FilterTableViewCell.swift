@@ -27,7 +27,7 @@ final class FilterTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configureFilter(filter: String, selectedFilter: String) {
+    public func configureFilter(filter: String, selectedFilter: String?) {
         if filter == selectedFilter {
             accessoryType = .checkmark
         }

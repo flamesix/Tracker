@@ -56,6 +56,7 @@ final class TrackerViewController: UIViewController {
         }
     }
     
+    private var selectedFilter: Filters?
     private var completedTrackersIDs: Set<UUID> = []
     var completedTrackers: [TrackerRecord] = []
     private var filteredTrackers: [TrackerCategory] = [] {
@@ -102,6 +103,8 @@ final class TrackerViewController: UIViewController {
     
     @objc private func didTapFilterButton() {
         let vc = FilterViewController()
+        vc.selectedFilter = selectedFilter
+        vc.delegate = self
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
@@ -359,6 +362,23 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
         } else {
             completedTrackers.removeAll(where: { $0.id == tracker.id && Calendar.current.isDate($0.date, equalTo: date, toGranularity: .day) })
             trackerRecordStore.deleteTrackerRecord(id: tracker.id, date: date)
+        }
+    }
+}
+
+extension TrackerViewController: FilterViewControllerDelegate {
+    func didSelectFilter(filter: Filters) {
+        selectedFilter = filter
+        switch filter {
+        case .allTrackers:
+            filteredTrackers = categories
+        case .todayTrackers:
+            datePicker.date = currentDate
+            showTodayTrackers(date: currentDate)
+        case .doneTrackers:
+            break
+        case .activeTrackers:
+            break
         }
     }
 }
