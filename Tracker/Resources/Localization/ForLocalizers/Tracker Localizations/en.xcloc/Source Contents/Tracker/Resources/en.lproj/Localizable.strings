@@ -5,3 +5,34 @@
   Created by Юрий Гриневич on 03.10.2024.
   
 */
+
+"onboardRedText" = "Even if it's not liters of water and yoga";
+"onboardBlueText" = "Track only what you want";
+"deleteTracker" = "Are you sure you want to delete the tracker?";
+"pin" = "Pin";
+"edit" = "Edit";
+"delete" = "Delete";
+"cancelAlert" = "Cancel";
+"done" = "Done";
+"create" = "Create";
+"cancel" = "Cancel";
+"search" = "Search";
+"trackerEmptyLogo" = "What will we track?";
+"filters" = "Filters";
+"trackers" = "Trackers";
+"statistic" = "Statistics";
+"wowTechs" = "These are technologies!";
+"nothingToAnalyze" = "There is nothing to analyze yet";
+"habit" = "Habit";
+"unregularEvent" = "Irregular event";
+"createTracker" = "Tracker Creation";
+"color" = "Color";
+"enterTrackerName" = "Enter tracker name";
+"newHabit" = "New habit";
+"newUnregularEvent" = "New irregular event";
+"schedule" = "Schedule";
+"addCategory" = "Add a category";
+"emptyCategory" = "Habits and events can\n be combined according to the meaning";
+"category" = "Category";
+"enterCategory" = "Enter the name of the category";
+"warningLabel" = "38 characters limit";

@@ -1,5 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Tracker/Resources/en.lproj/Localizable.strings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="16.0" build-num="16A242d"/>
+    </header>
+    <body>
+      <trans-unit id="addCategory" xml:space="preserve">
+        <source>Add a category</source>
+        <target>Add a category</target>
+        <note>Добавить категорию</note>
+      </trans-unit>
+      <trans-unit id="cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>Отмена</note>
+      </trans-unit>
+      <trans-unit id="cancelAlert" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>Отмена</note>
+      </trans-unit>
+      <trans-unit id="category" xml:space="preserve">
+        <source>Category</source>
+        <target>Category</target>
+        <note>Категория</note>
+      </trans-unit>
+      <trans-unit id="color" xml:space="preserve">
+        <source>Color</source>
+        <target>Color</target>
+        <note>Цвет</note>
+      </trans-unit>
+      <trans-unit id="create" xml:space="preserve">
+        <source>Create</source>
+        <target>Create</target>
+        <note>Создать</note>
+      </trans-unit>
+      <trans-unit id="createTracker" xml:space="preserve">
+        <source>Tracker Creation</source>
+        <target>Tracker Creation</target>
+        <note>Создание трекера</note>
+      </trans-unit>
+      <trans-unit id="delete" xml:space="preserve">
+        <source>Delete</source>
+        <target>Delete</target>
+        <note>Удалить</note>
+      </trans-unit>
+      <trans-unit id="deleteTracker" xml:space="preserve">
+        <source>Are you sure you want to delete the tracker?</source>
+        <target>Are you sure you want to delete the tracker?</target>
+        <note>Уверены что хотите удалить трекер?</note>
+      </trans-unit>
+      <trans-unit id="done" xml:space="preserve">
+        <source>Done</source>
+        <target>Done</target>
+        <note>Готово</note>
+      </trans-unit>
+      <trans-unit id="edit" xml:space="preserve">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>Редактировать</note>
+      </trans-unit>
+      <trans-unit id="emptyCategory" xml:space="preserve">
+        <source>Habits and events can
+ be combined according to the meaning</source>
+        <target>Habits and events can
+ be combined according to the meaning</target>
+        <note>Привычки и события можно 
+ объединить по смыслу</note>
+      </trans-unit>
+      <trans-unit id="enterCategory" xml:space="preserve">
+        <source>Enter the name of the category</source>
+        <target>Enter the name of the category</target>
+        <note>Введите название категории</note>
+      </trans-unit>
+      <trans-unit id="enterTrackerName" xml:space="preserve">
+        <source>Enter tracker name</source>
+        <target>Enter tracker name</target>
+        <note>Введите название трекера</note>
+      </trans-unit>
+      <trans-unit id="filters" xml:space="preserve">
+        <source>Filters</source>
+        <target>Filters</target>
+        <note>Фильтры</note>
+      </trans-unit>
+      <trans-unit id="habit" xml:space="preserve">
+        <source>Habit</source>
+        <target>Habit</target>
+        <note>Привычка</note>
+      </trans-unit>
+      <trans-unit id="newHabit" xml:space="preserve">
+        <source>New habit</source>
+        <target>New habit</target>
+        <note>Новая привычка</note>
+      </trans-unit>
+      <trans-unit id="newUnregularEvent" xml:space="preserve">
+        <source>New irregular event</source>
+        <target>New irregular event</target>
+        <note>Новое нерегулярное событие</note>
+      </trans-unit>
+      <trans-unit id="nothingToAnalyze" xml:space="preserve">
+        <source>There is nothing to analyze yet</source>
+        <target>There is nothing to analyze yet</target>
+        <note>Анализировать пока нечего</note>
+      </trans-unit>
+      <trans-unit id="onboardBlueText" xml:space="preserve">
+        <source>Track only what you want</source>
+        <target>Track only what you want</target>
+        <note>Отслеживайте только то, что хотите</note>
+      </trans-unit>
+      <trans-unit id="onboardRedText" xml:space="preserve">
+        <source>Even if it's not liters of water and yoga</source>
+        <target>Even if it's not liters of water and yoga</target>
+        <note>Localizable.strings
+  Tracker
+
+  Created by Юрий Гриневич on 03.10.2024.</note>
+      </trans-unit>
+      <trans-unit id="pin" xml:space="preserve">
+        <source>Pin</source>
+        <target>Pin</target>
+        <note>Закрепить</note>
+      </trans-unit>
+      <trans-unit id="schedule" xml:space="preserve">
+        <source>Schedule</source>
+        <target>Schedule</target>
+        <note>Расписание</note>
+      </trans-unit>
+      <trans-unit id="search" xml:space="preserve">
+        <source>Search</source>
+        <target>Search</target>
+        <note>Поиск</note>
+      </trans-unit>
+      <trans-unit id="statistic" xml:space="preserve">
+        <source>Statistics</source>
+        <target>Statistics</target>
+        <note>Статистика</note>
+      </trans-unit>
+      <trans-unit id="trackerEmptyLogo" xml:space="preserve">
+        <source>What will we track?</source>
+        <target>What will we track?</target>
+        <note>Что будем отслеживать?</note>
+      </trans-unit>
+      <trans-unit id="trackers" xml:space="preserve">
+        <source>Trackers</source>
+        <target>Trackers</target>
+        <note>Трекеры</note>
+      </trans-unit>
+      <trans-unit id="unregularEvent" xml:space="preserve">
+        <source>Irregular event</source>
+        <target>Irregular event</target>
+        <note>Нерегулярное событие</note>
+      </trans-unit>
+      <trans-unit id="warningLabel" xml:space="preserve">
+        <source>38 characters limit</source>
+        <target>38 characters limit</target>
+        <note>Ограничение 38 символов</note>
+      </trans-unit>
+      <trans-unit id="wowTechs" xml:space="preserve">
+        <source>These are technologies!</source>
+        <target>These are technologies!</target>
+        <note>Вот это технологии!</note>
+      </trans-unit>
+    </body>
+  </file>
   <file original="Tracker/Resources/en.lproj/Localizable.stringsdict" source-language="en" target-language="en" datatype="plaintext">
     <header>
       <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="16.0" build-num="16A242d"/>

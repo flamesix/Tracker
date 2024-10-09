@@ -26,7 +26,7 @@ extension FilterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.reuseIdentifier, for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
-        let filter = Filters.allCases[indexPath.row].rawValue
+        let filter = Filters.allCases[indexPath.row].description
         cell.configureFilter(filter: filter, selectedFilter: selectedFilter?.rawValue)
         return cell
     }

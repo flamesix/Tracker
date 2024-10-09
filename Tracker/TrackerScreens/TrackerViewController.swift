@@ -267,16 +267,14 @@ extension TrackerViewController: UICollectionViewDataSource {
 }
 
 extension TrackerViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
-        
-        guard indexPaths.count > 0 else {
-            return nil
-        }
-        guard let indexPath = indexPaths.first else {
-            return nil
-        }
-        
-        return UIContextMenuConfiguration(actionProvider: { actions in
+    func collectionView(_ collectionView: UICollectionView,
+                                 contextMenuConfigurationForItemAt indexPath: IndexPath,
+                                 point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
+//            let inspectAction = self.inspectAction(indexPath)
+//            let duplicateAction = self.duplicateAction(indexPath)
+//            let deleteAction = self.deleteAction(indexPath)
+//            return UIMenu(title: "", children: [inspectAction, duplicateAction, deleteAction])
             return UIMenu(children: [
                 UIAction(title: Constants.pin) { _ in
                     print(Constants.pin)
@@ -286,7 +284,7 @@ extension TrackerViewController: UICollectionViewDelegate {
                 },
                 UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
                     let deleteAction = UIAlertAction(title: Constants.delete, style: .destructive) { [weak self] _ in
-                        print(Constants.delete)
+                        self?.deleteTracker(at: indexPath)
                     }
                     
                     let cancel = UIAlertAction(title: Constants.cancelAlert, style: .cancel)
@@ -298,33 +296,38 @@ extension TrackerViewController: UICollectionViewDelegate {
                     
                 }
             ])
-        })
+        }
     }
     
     private func deleteTracker(at indexPath: IndexPath) {
         let section = indexPath.section
         let category = filteredTrackers[section]
         let trackerID = category.trackers[indexPath.item].id
+        print("SECTION \(section), CATEGORY \(category), TRACKER ID \(trackerID)")
         
-        var updatedTrackers = category.trackers
-        updatedTrackers.remove(at: indexPath.item)
-        
-        let updatedCategory = TrackerCategory(title: category.title, trackers: updatedTrackers)
-        
-        filteredTrackers[section] = updatedCategory
-        
-        if updatedTrackers.isEmpty {
-            filteredTrackers.remove(at: section)
-            collectionView.performBatchUpdates {
-                collectionView.deleteSections(IndexSet(integer: section))
-            }
-        } else {
-            collectionView.performBatchUpdates {
-                collectionView.deleteItems(at: [indexPath])
-            }
+        collectionView.performBatchUpdates {
+            collectionView.deleteItems(at: [indexPath])
         }
-        
-        trackerRecordStore.deleteTrackerRecord(id: trackerID, date: datePicker.date)
+//
+//        var updatedTrackers = category.trackers
+//        updatedTrackers.remove(at: indexPath.item)
+//        
+//        let updatedCategory = TrackerCategory(title: category.title, trackers: updatedTrackers)
+//        
+//        filteredTrackers[section] = updatedCategory
+//        
+//        if updatedTrackers.isEmpty {
+//            filteredTrackers.remove(at: section)
+//            collectionView.performBatchUpdates {
+//                collectionView.deleteSections(IndexSet(integer: section))
+//            }
+//        } else {
+//            collectionView.performBatchUpdates {
+//                collectionView.deleteItems(at: [indexPath])
+//            }
+//        }
+//        
+//        trackerRecordStore.deleteTrackerRecord(id: trackerID, date: datePicker.date)
     }
 }
 
