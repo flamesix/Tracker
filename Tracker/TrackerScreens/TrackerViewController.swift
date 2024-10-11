@@ -281,17 +281,10 @@ extension TrackerViewController: UICollectionViewDelegate {
                     print(Constants.edit)
                 },
                 UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
-                    let deleteAction = UIAlertAction(title: Constants.delete, style: .destructive) { [weak self] _ in
+                    guard let self else { return }
+                    TrackerAlert.showAlert(on: self, alertTitle: Constants.deleteTracker) { [weak self] in
                         self?.deleteTracker(at: indexPath)
                     }
-                    
-                    let cancel = UIAlertAction(title: Constants.cancelAlert, style: .cancel)
-                    
-                    let alertController = UIAlertController(title: Constants.deleteTracker, message: "", preferredStyle: .actionSheet)
-                    alertController.addAction(deleteAction)
-                    alertController.addAction(cancel)
-                    self?.present(alertController, animated: true)
-                    
                 }
             ])
         }
