@@ -285,8 +285,8 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 extension TrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
-                                 contextMenuConfigurationForItemAt indexPath: IndexPath,
-                                 point: CGPoint) -> UIContextMenuConfiguration? {
+                        contextMenuConfigurationForItemAt indexPath: IndexPath,
+                        point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
             
             return UIMenu(children: [
@@ -338,6 +338,23 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension TrackerViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.isDragging {
+            filterButton.alpha = 1
+            let height = scrollView.frame.size.height
+            let contentYOffset = scrollView.contentOffset.y
+            let distanceFromBottom = scrollView.contentSize.height - contentYOffset
+            
+            if distanceFromBottom < height {
+                UIView.animate(withDuration: 2, delay: 0) { [weak self] in
+                    self?.filterButton.alpha = 0
+                }
+            }
+        }
+    }
+}
+
 extension TrackerViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterTrackers(for: searchText)
@@ -371,7 +388,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
         filterButton.setTitleColor(selectedFilter != nil ? .trRed : .trWhite, for: .normal)
         showTodayTrackers(date: currentDate)
         guard let filter else { return }
-
+        
         switch filter {
         case .allTrackers:
             filterAllTrackers()
