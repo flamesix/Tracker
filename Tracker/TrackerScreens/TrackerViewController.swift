@@ -111,7 +111,11 @@ final class TrackerViewController: UIViewController {
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         selectedDate = sender.date
-        showTodayTrackers(date: sender.date)
+        if let selectedFilter {
+            didSelectFilter(filter: selectedFilter)
+        } else {
+            showTodayTrackers(date: sender.date)
+        }
         updateEmptyState()
         collectionView.reloadData()
     }
@@ -235,6 +239,11 @@ extension TrackerViewController: SettingViewsProtocol {
         emptyLabel.isHidden = !filteredTrackers.isEmpty
         collectionView.isHidden = filteredTrackers.isEmpty
         filterButton.isHidden = filteredTrackers.isEmpty
+        if selectedFilter != nil && filteredTrackers.isEmpty {
+            filterButton.isHidden = false
+            emptyLogo.image = UIImage(named: "EmptyFilterResult")
+            emptyLabel.text = Constants.emptyFilterResults
+        }
     }
 }
 
@@ -350,8 +359,11 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
 }
 
 extension TrackerViewController: FilterViewControllerDelegate {
-    func didSelectFilter(filter: Filters) {
+    func didSelectFilter(filter: Filters?) {
         selectedFilter = filter
+        showTodayTrackers(date: currentDate)
+        guard let filter else { return }
+
         switch filter {
         case .allTrackers:
             filterAllTrackers()

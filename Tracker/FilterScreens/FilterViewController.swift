@@ -1,7 +1,7 @@
 import UIKit
 
 protocol FilterViewControllerDelegate: AnyObject {
-    func didSelectFilter(filter: Filters)
+    func didSelectFilter(filter: Filters?)
 }
 
 final class FilterViewController: UIViewController {
@@ -27,7 +27,7 @@ extension FilterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.reuseIdentifier, for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
         let filter = Filters.allCases[indexPath.row].description
-        cell.configureFilter(filter: filter, selectedFilter: selectedFilter?.rawValue)
+        cell.configureFilter(filter: filter, selectedFilter: selectedFilter?.description)
         return cell
     }
 }
@@ -39,7 +39,7 @@ extension FilterViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let filter = Filters.allCases[indexPath.row]
-        delegate?.didSelectFilter(filter: filter)
+        delegate?.didSelectFilter(filter: filter.description == selectedFilter?.description ? nil : filter)
         if let previousIndexPath = selectedIndexPath, previousIndexPath != indexPath {
             let previousCell = tableView.cellForRow(at: previousIndexPath)
             previousCell?.accessoryType = .none
