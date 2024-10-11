@@ -68,7 +68,6 @@ final class NewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         updateCategories()
-        //        setupHideKeyboardOnTap()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateCategory(_:)), name: .updateCategory, object: nil)
     }

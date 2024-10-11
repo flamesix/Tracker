@@ -57,7 +57,12 @@ final class TrackerViewController: UIViewController {
         }
     }
     
-    private var selectedFilter: Filters?
+    private var selectedFilter: Filters? {
+        didSet {
+            filterStorage.filter = selectedFilter
+        }
+    }
+    private let filterStorage = FilterStateStorage.shared
     private var completedTrackersIDs: Set<UUID> = []
     var completedTrackers: [TrackerRecord] = []
     private var filteredTrackers: [TrackerCategory] = [] {
@@ -74,6 +79,7 @@ final class TrackerViewController: UIViewController {
         getTrackerRecords()
         showOnboarding()
         showTodayTrackers(date: currentDate)
+        didSelectFilter(filter: filterStorage.filter)
     }
     
     deinit {
@@ -91,6 +97,7 @@ final class TrackerViewController: UIViewController {
     @objc private func getCategories(_ notification: Notification) {
         getCategories()
         showTodayTrackers(date: currentDate)
+        didSelectFilter(filter: filterStorage.filter)
     }
     
     @objc private func didTapAddButton() {
@@ -361,6 +368,7 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
 extension TrackerViewController: FilterViewControllerDelegate {
     func didSelectFilter(filter: Filters?) {
         selectedFilter = filter
+        filterButton.setTitleColor(selectedFilter != nil ? .trRed : .trWhite, for: .normal)
         showTodayTrackers(date: currentDate)
         guard let filter else { return }
 
