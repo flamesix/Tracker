@@ -62,9 +62,24 @@ final class TrackerCategoryStore {
         return categories
     }
     
+    func deleteCategoriesTracker(_ category: String) {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", category as NSString)
+        
+        do {
+            let category = try context.fetch(fetchRequest)
+            if let category = category.first {
+                context.delete(category)
+                try context.save()
+            }
+        } catch {
+            print("Error deleteCategoriesTracker: \(error)")
+        }
+    }
+    
     func fetchedResultsController() -> NSFetchedResultsController<TrackerCategoryCoreData> {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
-
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,

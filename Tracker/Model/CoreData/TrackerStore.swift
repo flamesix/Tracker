@@ -44,8 +44,8 @@ final class TrackerStore {
         fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as NSUUID)
         
         do {
-            let trackes = try context.fetch(fetchRequest)
-            if let tracker = trackes.first {
+            let tracker = try context.fetch(fetchRequest)
+            if let tracker = tracker.first {
                 context.delete(tracker)
                 try context.save()
             }

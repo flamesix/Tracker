@@ -77,6 +77,26 @@ extension CategoryViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
+            return UIMenu(children: [
+                UIAction(title: Constants.edit) { _ in
+                    print(Constants.edit)
+                },
+                UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
+                    guard let self else { return }
+                    TrackerAlert.showAlert(on: self, alertTitle: Constants.deleteCategory) { [weak self] in
+                        self?.deleteCategory(at: indexPath)
+                    }
+                }
+            ])
+        }
+    }
+    
+    private func deleteCategory(at indexPath: IndexPath) {
+        viewModel?.deleteCategory(at: indexPath.row)
+    }
 }
 
 extension CategoryViewController: SettingViewsProtocol {

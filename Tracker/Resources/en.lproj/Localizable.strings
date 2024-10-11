@@ -40,3 +40,4 @@
 "todayTrackers" = "Today trackers";
 "doneTrackers" = "Done trackers";
 "activeTrackers" = "Active trackers";
+"deleteCategory" = "Are you sure you don't need this category?";

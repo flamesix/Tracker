@@ -40,3 +40,4 @@
 "todayTrackers" = "Трекеры на сегодня";
 "doneTrackers" = "Завершенные";
 "activeTrackers" = "Не завершенные";
+"deleteCategory" = "Эта категория точно не нужна?";

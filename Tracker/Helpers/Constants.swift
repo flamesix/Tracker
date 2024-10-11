@@ -40,4 +40,5 @@ enum Constants {
     static let todayTrackers = NSLocalizedString("todayTrackers", comment: "Трекеры на сегодня")
     static let doneTrackers = NSLocalizedString("doneTrackers", comment: "Завершенные")
     static let activeTrackers = NSLocalizedString("activeTrackers", comment: "Не завершенные")
+    static let deleteCategory = NSLocalizedString("deleteCategory", comment: "Эта категория точно не нужна?")
 }
