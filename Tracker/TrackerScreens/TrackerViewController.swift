@@ -45,6 +45,7 @@ final class TrackerViewController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
+    private let trackerStore = TrackerStore()
     
     var trackers: [Tracker] = []
     
@@ -271,10 +272,7 @@ extension TrackerViewController: UICollectionViewDelegate {
                                  contextMenuConfigurationForItemAt indexPath: IndexPath,
                                  point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
-//            let inspectAction = self.inspectAction(indexPath)
-//            let duplicateAction = self.duplicateAction(indexPath)
-//            let deleteAction = self.deleteAction(indexPath)
-//            return UIMenu(title: "", children: [inspectAction, duplicateAction, deleteAction])
+            
             return UIMenu(children: [
                 UIAction(title: Constants.pin) { _ in
                     print(Constants.pin)
@@ -303,31 +301,11 @@ extension TrackerViewController: UICollectionViewDelegate {
         let section = indexPath.section
         let category = filteredTrackers[section]
         let trackerID = category.trackers[indexPath.item].id
-        print("SECTION \(section), CATEGORY \(category), TRACKER ID \(trackerID)")
         
-        collectionView.performBatchUpdates {
-            collectionView.deleteItems(at: [indexPath])
-        }
-//
-//        var updatedTrackers = category.trackers
-//        updatedTrackers.remove(at: indexPath.item)
-//        
-//        let updatedCategory = TrackerCategory(title: category.title, trackers: updatedTrackers)
-//        
-//        filteredTrackers[section] = updatedCategory
-//        
-//        if updatedTrackers.isEmpty {
-//            filteredTrackers.remove(at: section)
-//            collectionView.performBatchUpdates {
-//                collectionView.deleteSections(IndexSet(integer: section))
-//            }
-//        } else {
-//            collectionView.performBatchUpdates {
-//                collectionView.deleteItems(at: [indexPath])
-//            }
-//        }
-//        
-//        trackerRecordStore.deleteTrackerRecord(id: trackerID, date: datePicker.date)
+        trackerRecordStore.deleteTrackerRecord(trackerID)
+        trackerStore.deleteTracker(trackerID)
+        getCategories()
+        getTrackerRecords()
     }
 }
 

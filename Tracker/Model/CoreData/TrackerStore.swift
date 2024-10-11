@@ -38,4 +38,19 @@ final class TrackerStore {
                                                                   cacheName: nil)
         return fetchedResultsController
     }
+    
+    func deleteTracker(_ trackerId: UUID) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as NSUUID)
+        
+        do {
+            let trackes = try context.fetch(fetchRequest)
+            if let tracker = trackes.first {
+                context.delete(tracker)
+                try context.save()
+            }
+        } catch {
+            print("Error finding category: \(error)")
+        }
+    }
 }
