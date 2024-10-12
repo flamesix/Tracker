@@ -56,4 +56,6 @@ enum Constants {
     static let fri = NSLocalizedString("fri", comment: "Пт")
     static let sat = NSLocalizedString("sat", comment: "Сб")
     static let sun = NSLocalizedString("sun", comment: "Вс")
+    static let editRegular = NSLocalizedString("editRegular", comment: "Редактирование привычки")
+    static let editUnregular = NSLocalizedString("editUnregular", comment: "Редактирование нерегулярного события")
 }

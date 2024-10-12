@@ -17,13 +17,13 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     @objc private func didTapRegularEventButton() {
-        let vc = NewTrackerViewController(isRegularEvent: true)
+        let vc = NewOrEditTrackerViewController(trackerType: .editRegular)
         vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func didTapUnRegularEventButton() {
-        let vc = NewTrackerViewController(isRegularEvent: false)
+        let vc = NewOrEditTrackerViewController(trackerType: .unregular)
         vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }

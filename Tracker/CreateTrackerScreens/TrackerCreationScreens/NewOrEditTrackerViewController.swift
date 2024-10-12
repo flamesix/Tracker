@@ -1,6 +1,62 @@
 import UIKit
 
-final class NewTrackerViewController: UIViewController {
+enum TrackerType {
+    case regular
+    case unregular
+    case editRegular
+    case editUnregular
+    
+    var numberOfRowsInSection: Int {
+        switch self {
+        case .regular, .editRegular:
+            2
+        case .unregular, .editUnregular:
+            1
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .regular:
+            Constants.newHabit
+        case .unregular:
+            Constants.newUnregularEvent
+        case .editRegular:
+            Constants.editRegular
+        case .editUnregular:
+            Constants.editUnregular
+        }
+    }
+    
+    var isRegular: Bool {
+        switch self {
+        case .regular, .editRegular:
+            true
+        case .unregular, .editUnregular:
+            false
+        }
+    }
+    
+    var isEdit: Bool {
+        switch self {
+        case .regular, .unregular:
+            false
+        case .editRegular, .editUnregular:
+            true
+        }
+    }
+    
+    var constraint: CGFloat {
+        switch self {
+        case .regular, .unregular:
+            24
+        case .editRegular, .editUnregular:
+            102
+        }
+    }
+}
+
+final class NewOrEditTrackerViewController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerStore = TrackerStore()
@@ -27,13 +83,15 @@ final class NewTrackerViewController: UIViewController {
     private var selectedEmoji: String = ""
     private var selectedItems: [Int: IndexPath] = [:]
     
-    private var isRegularEvent: Bool = true
     private var category: String = ""
     private var scheduleDescription: String = ""
     
     private var trackerTitle: String = ""
     private var schedule: [Int] = []
     private var selectedDays: [WeekDay: Bool] = [:]
+    
+    private var daysCount: Int?
+    private var trackerType: TrackerType = .regular
     
     // MARK: - UIComponents
     private let collectionView: UICollectionView = {
@@ -53,10 +111,24 @@ final class NewTrackerViewController: UIViewController {
     private let buttonStackView = TrackerButtonStackView()
     private let warningLabel = TrackerWarningLabel()
     
+    private lazy var daysCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .trBlack
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        guard let daysCount else { return label }
+        let dayString = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of days completed"),
+            daysCount
+        )
+        label.text = dayString
+        return label
+    }()
+    
     // MARK: - Init
-    init(isRegularEvent: Bool) {
+    init(trackerType: TrackerType) {
         super.init(nibName: nil, bundle: nil)
-        self.isRegularEvent = isRegularEvent
+        self.trackerType = trackerType
     }
     
     required init?(coder: NSCoder) {
@@ -147,21 +219,21 @@ final class NewTrackerViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource & Delegate
-extension NewTrackerViewController: UITableViewDataSource {
+extension NewOrEditTrackerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        isRegularEvent ? 2 : 1
+        trackerType.numberOfRowsInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryScheduleTableViewCell.reuseIdentifier, for: indexPath) as? CategoryScheduleTableViewCell else { return UITableViewCell() }
         cell.accessoryType = .disclosureIndicator
-        cell.configure(isRegularEvent: isRegularEvent, indexPath: indexPath, schedule: scheduleDescription, category: category)
+        cell.configure(isRegularEvent: trackerType.isRegular, indexPath: indexPath, schedule: scheduleDescription, category: category)
         return cell
     }
 }
 
-extension NewTrackerViewController: UITableViewDelegate {
+extension NewOrEditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
@@ -177,7 +249,7 @@ extension NewTrackerViewController: UITableViewDelegate {
 }
 
 // MARK: - UITextFieldDelegate
-extension NewTrackerViewController: UITextFieldDelegate {
+extension NewOrEditTrackerViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
     }
@@ -186,13 +258,12 @@ extension NewTrackerViewController: UITextFieldDelegate {
         switch reason {
         case .committed:
             guard let trackerTitle = textField.text else { return }
-            switch isRegularEvent {
-                
-            case true:
+            switch trackerType {
+            case .regular, .editRegular:
                 if !scheduleDescription.isEmpty && !category.isEmpty {
                     makeCreateButtonActive(trackerTitle)
                 }
-            case false:
+            case .unregular, .editUnregular:
                 if !category.isEmpty {
                     makeCreateButtonActive(trackerTitle)
                 }
@@ -230,7 +301,7 @@ extension NewTrackerViewController: UITextFieldDelegate {
 }
 
 // MARK: - Delegates
-extension NewTrackerViewController: ScheduleViewControllerDelegate {
+extension NewOrEditTrackerViewController: ScheduleViewControllerDelegate {
     func updateScheduleSelection(with selectedDays: [WeekDay : Bool], schedule: [Int]) {
         let sortedDays = selectedDays.filter({ $0.value == true }).keys.sorted(by: { $0.sort < $1.sort })
         scheduleDescription = sortedDays.map { $0.short }.joined(separator: ", ")
@@ -240,7 +311,7 @@ extension NewTrackerViewController: ScheduleViewControllerDelegate {
     }
 }
 
-extension NewTrackerViewController: CategoryViewControllerDelegate {
+extension NewOrEditTrackerViewController: CategoryViewControllerDelegate {
     func updateCategorySelection(with category: String) {
         self.category = category
         tableView.reloadData()
@@ -248,7 +319,7 @@ extension NewTrackerViewController: CategoryViewControllerDelegate {
 }
 
 // MARK: - SettingView
-extension NewTrackerViewController: SettingViewsProtocol {
+extension NewOrEditTrackerViewController: SettingViewsProtocol {
     func setupView() {
         setupTableView()
         setupCollectionView()
@@ -259,78 +330,68 @@ extension NewTrackerViewController: SettingViewsProtocol {
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         createButton.isEnabled = false
         
-        title = isRegularEvent ? Constants.newHabit : Constants.newUnregularEvent
+        title = trackerType.title
         view.backgroundColor = .trWhite
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
         view.addSubviews(scrollView)
-        scrollView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView)
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.bounds.height)
+        switch trackerType {
+        case .regular, .unregular:
+            scrollView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView)
+            scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
+        case .editRegular, .editUnregular:
+            scrollView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView, daysCountLabel)
+            scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height + 78)
+        }
+        
         addConstraints()
         
     }
     
     func addConstraints() {
-        if warningLabel.isHidden {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            addTrackerNameTextField.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: trackerType.constraint),
+            addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
+            
+            tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.heightAnchor.constraint(equalToConstant: trackerType.isRegular ? 150 : 75),
+            
+            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            collectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -18),
+            
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 60),
+            
+        ])
+        if !warningLabel.isHidden {
             NSLayoutConstraint.activate([
-                scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                
-                addTrackerNameTextField.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 24),
-                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
-                
-                tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
-                
-                collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
-                collectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -18),
-                
-                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
-                
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                
-                addTrackerNameTextField.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 24),
-                addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
-                
                 warningLabel.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 8),
                 warningLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
                 warningLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
                 warningLabel.heightAnchor.constraint(equalToConstant: 22),
                 
-                tableView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: 32),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.heightAnchor.constraint(equalToConstant: isRegularEvent ? 150 : 75),
-                
-                collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
-                collectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -18),
-                
-                buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                buttonStackView.heightAnchor.constraint(equalToConstant: 60),
-                
+            ])
+        }
+        
+        if trackerType.isEdit {
+            NSLayoutConstraint.activate([
+                daysCountLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 24),
+                daysCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                daysCountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                daysCountLabel.heightAnchor.constraint(equalToConstant: 38),
             ])
         }
     }
@@ -338,7 +399,7 @@ extension NewTrackerViewController: SettingViewsProtocol {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = isRegularEvent ? .singleLine : .none
+        tableView.separatorStyle = trackerType.isRegular ? .singleLine : .none
     }
     
     private func setupCollectionView() {
@@ -351,7 +412,7 @@ extension NewTrackerViewController: SettingViewsProtocol {
 }
 
 // MARK: - UICollectionViewDataSource
-extension NewTrackerViewController: UICollectionViewDataSource {
+extension NewOrEditTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         EmojiColorSection.allCases.count
     }
@@ -394,7 +455,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegate
-extension NewTrackerViewController: UICollectionViewDelegate {
+extension NewOrEditTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let previouslySelectedIndexPath = selectedItems[indexPath.section] {
@@ -440,7 +501,7 @@ extension NewTrackerViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewFlowLayout
-extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
+extension NewOrEditTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let spacing: CGFloat = 5
         let width = (collectionView.frame.width - spacing * 5) / 6
