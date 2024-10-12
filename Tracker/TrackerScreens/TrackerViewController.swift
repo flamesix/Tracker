@@ -28,7 +28,6 @@ final class TrackerViewController: UIViewController {
         picker.backgroundColor = .trWhite
         picker.layer.cornerRadius = 8
         picker.layer.masksToBounds = true
-        picker.locale = Locale(identifier: "ru_RU")
         return picker
     }()
     

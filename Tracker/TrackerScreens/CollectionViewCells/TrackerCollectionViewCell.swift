@@ -94,18 +94,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private func updateDayCounter(day: Int) {
         dayCounter = day
-        var text = ""
-        let dayMod = dayCounter % 10
-        let dayMod100 = dayCounter % 100
         
-        if dayMod == 1 && dayMod100 != 11 {
-            text = "\(dayCounter) день"
-        } else if dayMod >= 2 && dayMod <= 4 && (dayMod100 < 10 || dayMod100 >= 20) {
-            text = "\(dayCounter) дня"
-        } else {
-            text = "\(dayCounter) дней"
-        }
-        counterLabel.text = text
+        let dayString = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of days completed"),
+            day
+        )
+        counterLabel.text = dayString
     }
     
     private func configureCompleteTrackerButtonState(_ tracker: Tracker, date: Date, completedTrackers: [TrackerRecord]) {

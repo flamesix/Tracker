@@ -42,3 +42,17 @@
 "activeTrackers" = "Не завершенные";
 "deleteCategory" = "Эта категория точно не нужна?";
 "emptyFilterResults" = "Ничего не найдено";
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+"mon" = "Пн";
+"tue" = "Вт";
+"wed" = "Ср";
+"thu" = "Чт";
+"fri" = "Пт";
+"sat" = "Сб";
+"sun" = "Вс";

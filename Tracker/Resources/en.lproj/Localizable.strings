@@ -42,3 +42,17 @@
 "activeTrackers" = "Active trackers";
 "deleteCategory" = "Are you sure you don't need this category?";
 "emptyFilterResults" = "Nothing was found";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+"mon" = "Mon";
+"tue" = "Tue";
+"wed" = "Wed";
+"thu" = "Thu";
+"fri" = "Fri";
+"sat" = "Sat";
+"sun" = "Sun";

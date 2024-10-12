@@ -66,7 +66,7 @@ extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.reuseIdentifier, for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
-        let day = WeekDay.allCases[indexPath.row].rawValue
+        let day = WeekDay.allCases[indexPath.row].long
         cell.config(with: day, schedule: schedule, indexPath: indexPath)
         cell.switcher.addTarget(self, action: #selector(switcherTapped(_:)), for: .valueChanged)
         
