@@ -47,6 +47,7 @@
 		5BA7F1F42C981380007DF5DD /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F32C981380007DF5DD /* TrackerStore.swift */; };
 		5BA7F1F62C98138C007DF5DD /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F52C98138C007DF5DD /* TrackerCategoryStore.swift */; };
 		5BA7F1F82C981399007DF5DD /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */; };
+		5BADB3722CBA6CAF00C7D82B /* AnalyticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BADB3712CBA6CAF00C7D82B /* AnalyticService.swift */; };
 		5BC500D52CB2DE0900594E10 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC500D42CB2DE0900594E10 /* FilterViewController.swift */; };
 		5BC500D82CB2DFD700594E10 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC500D72CB2DFD700594E10 /* FilterTableViewCell.swift */; };
 		5BC500DA2CB2EAA300594E10 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC500D92CB2EAA300594E10 /* Filters.swift */; };
@@ -122,6 +123,7 @@
 		5BA7F1F32C981380007DF5DD /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		5BA7F1F52C98138C007DF5DD /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		5BADB3712CBA6CAF00C7D82B /* AnalyticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
 		5BC500D42CB2DE0900594E10 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		5BC500D72CB2DFD700594E10 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		5BC500D92CB2EAA300594E10 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 		5B6FAA6E2C7B93690075174C /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				5BADB3702CBA6C9D00C7D82B /* Services */,
 				5B6FAA832C7B95BA0075174C /* App */,
 				5B6FAADC2C7DCB7E0075174C /* Helpers */,
 				5B6FAAD72C7DC8880075174C /* TabBarController */,
@@ -354,6 +357,14 @@
 				5BA7F1F72C981399007DF5DD /* TrackerRecordStore.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		5BADB3702CBA6C9D00C7D82B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5BADB3712CBA6CAF00C7D82B /* AnalyticService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5BC500D62CB2DFAF00594E10 /* FilterScreens */ = {
@@ -626,6 +637,7 @@
 				5B6FAA742C7B93690075174C /* TrackerViewController.swift in Sources */,
 				5BE428F32C92BFDF004506AF /* CategoryScheduleTableViewCell.swift in Sources */,
 				5BCE057F2C8EE083003C4837 /* NewTrackerViewController.swift in Sources */,
+				5BADB3722CBA6CAF00C7D82B /* AnalyticService.swift in Sources */,
 				5B6FAAD92C7DC89C0075174C /* TabBarController.swift in Sources */,
 				5BA7F1F42C981380007DF5DD /* TrackerStore.swift in Sources */,
 				5B2B18122C9A0130000571C1 /* Constants.swift in Sources */,

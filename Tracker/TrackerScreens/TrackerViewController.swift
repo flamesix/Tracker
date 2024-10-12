@@ -82,8 +82,19 @@ final class TrackerViewController: UIViewController {
         didSelectFilter(filter: filterStorage.filter)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticService().trackOpenScreen(screen: "Main")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticService().trackCloseScreen(screen: "Main")
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .addCategory, object: nil)
+        AnalyticService().trackOpenScreen(screen: "Main")
     }
     
     private func showOnboarding() {
@@ -101,6 +112,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func didTapAddButton() {
+        AnalyticService().trackClick(screen: "Main", item: "add_track")
         NotificationCenter.default.removeObserver(self, name: .addCategory, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(getCategories(_:)), name: .addCategory, object: nil)
         let vc = CreateTrackerViewController()
@@ -110,6 +122,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func didTapFilterButton() {
+        AnalyticService().trackClick(screen: "Main", item: "filter")
         let vc = FilterViewController()
         vc.selectedFilter = selectedFilter
         vc.delegate = self
@@ -294,9 +307,11 @@ extension TrackerViewController: UICollectionViewDelegate {
                     print(Constants.pin)
                 },
                 UIAction(title: Constants.edit) { _ in
+                    AnalyticService().trackClick(screen: "Main", item: "edit")
                     print(Constants.edit)
                 },
                 UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
+                    AnalyticService().trackClick(screen: "Main", item: "delete")
                     guard let self else { return }
                     TrackerAlert.showAlert(on: self, alertTitle: Constants.deleteTracker) { [weak self] in
                         self?.deleteTracker(at: indexPath)
@@ -369,6 +384,8 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
     }
     
     func didTapCompletedButton(for cell: TrackerCollectionViewCell, isButtonTapped: Bool) {
+        AnalyticService().trackClick(screen: "Main", item: "track")
+        
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]
         let date = dateFromDatePicker()
