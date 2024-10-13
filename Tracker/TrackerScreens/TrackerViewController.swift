@@ -340,6 +340,8 @@ extension TrackerViewController: UICollectionViewDelegate {
                                                 tracker: tracker,
                                                 daysCount: daysCount,
                                                 trackerType: !tracker.schedule.isEmpty ? .editRegular : .editUnregular )
+        NotificationCenter.default.removeObserver(self, name: .editCategory, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getCategories(_:)), name: .editCategory, object: nil)
         present(UINavigationController(rootViewController: vc), animated: true)
     }
 }

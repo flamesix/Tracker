@@ -53,4 +53,32 @@ final class TrackerStore {
             print("Error finding category: \(error)")
         }
     }
+    
+    func updateTracker(_ tracker: Tracker, _ category: String) {
+        let fetchRequestTracker: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequestTracker.predicate = NSPredicate(format: "id == %@", tracker.id as NSUUID)
+        
+        let fetchRequestCategory: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequestCategory.predicate = NSPredicate(format: "title == %@", category)
+        
+        do {
+            let trackersCoreDate = try context.fetch(fetchRequestTracker)
+            let categories = try context.fetch(fetchRequestCategory)
+            if let trackerCoreDate = trackersCoreDate.first,
+               let category = categories.first {
+                
+                trackerCoreDate.title = tracker.title
+                trackerCoreDate.emoji = tracker.emoji
+                trackerCoreDate.color = tracker.color
+                let jsonSchedule = try? JSONEncoder().encode(tracker.schedule)
+                trackerCoreDate.schedule = jsonSchedule
+                
+                trackerCoreDate.category = category
+                
+                try context.save()
+            }
+        } catch {
+            print("Error finding category: \(error)")
+        }
+    }
 }

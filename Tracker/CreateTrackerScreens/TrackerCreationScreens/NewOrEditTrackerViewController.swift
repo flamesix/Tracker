@@ -172,6 +172,7 @@ final class NewOrEditTrackerViewController: UIViewController {
         addTrackerNameTextField.text = trackerTitle
         updateSelectedDaysToEdit(schedule)
         updateSelectedItems(tracker)
+        createButton.setTitle(Constants.save, for: .normal)
         tableView.reloadData()
         collectionView.reloadData()
     }
@@ -225,14 +226,25 @@ final class NewOrEditTrackerViewController: UIViewController {
     }
     
     private func createTracker(color: String, emoji: String) {
-        let tracker = Tracker(id: UUID(),
-                              title: trackerTitle,
-                              color: color,
-                              emoji: emoji,
-                              schedule: schedule)
-        trackerStore.addNewTracker(tracker, category)
-        NotificationCenter.default.post(name: .addCategory, object: TrackerCategory(title: category, trackers: [tracker]))
-        
+        switch trackerType.isEdit {
+        case true:
+            guard let tracker else { return }
+            let editedTracker = Tracker(id: tracker.id,
+                                        title: trackerTitle,
+                                        color: color,
+                                        emoji: emoji,
+                                        schedule: schedule)
+            trackerStore.updateTracker(editedTracker, category)
+            NotificationCenter.default.post(name: .editCategory, object: nil)
+        case false:
+            let tracker = Tracker(id: UUID(),
+                                  title: trackerTitle,
+                                  color: color,
+                                  emoji: emoji,
+                                  schedule: schedule)
+            trackerStore.addNewTracker(tracker, category)
+            NotificationCenter.default.post(name: .addCategory, object: TrackerCategory(title: category, trackers: [tracker]))
+        }
     }
     
     @objc private func didTapCancelButton() {
