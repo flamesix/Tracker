@@ -170,6 +170,8 @@ final class NewOrEditTrackerViewController: UIViewController {
         category = trackerCategory.title
         scheduleDescription = makeScheduleDescription(schedule)
         addTrackerNameTextField.text = trackerTitle
+        updateSelectedDaysToEdit(schedule)
+        updateSelectedItems(tracker)
         tableView.reloadData()
         collectionView.reloadData()
     }
@@ -189,6 +191,29 @@ final class NewOrEditTrackerViewController: UIViewController {
             }
         }
         return description.joined(separator: ", ")
+    }
+    
+    private func updateSelectedDaysToEdit(_ schedule: [Int]) {
+        for day in schedule {
+            switch day {
+            case 1: selectedDays[.sunday] = true
+            case 2: selectedDays[.monday] = true
+            case 3: selectedDays[.tuesday] = true
+            case 4: selectedDays[.wednesday] = true
+            case 5: selectedDays[.thursday] = true
+            case 6: selectedDays[.friday] = true
+            case 7: selectedDays[.saturday] = true
+            default:
+                break
+            }
+        }
+    }
+    
+    private func updateSelectedItems(_ tracker: Tracker) {
+        let emojiIndexPath = IndexPath(row: emojis.firstIndex(of: tracker.emoji ) ?? 0, section: 0)
+        let colorIndexPath = IndexPath(row: colors.firstIndex(of: tracker.color) ?? 0, section: 1)
+        selectedItems[0] = emojiIndexPath
+        selectedItems[1] = colorIndexPath
     }
     
     private func updateCategories() {
@@ -484,6 +509,7 @@ extension NewOrEditTrackerViewController: UICollectionViewDataSource {
             
             let emoji = emojis[indexPath.row]
             emojiCell.configure(with: emoji)
+            emojiCell.configureSelection(isSelected: selectedItems[indexPath.section] == indexPath)
             
             return emojiCell
         case .color:
@@ -491,6 +517,7 @@ extension NewOrEditTrackerViewController: UICollectionViewDataSource {
             
             let color = colors[indexPath.row]
             colorCell.configure(with: color)
+            colorCell.configureSelection(isSelected: selectedItems[indexPath.section] == indexPath)
             
             return colorCell
         }
