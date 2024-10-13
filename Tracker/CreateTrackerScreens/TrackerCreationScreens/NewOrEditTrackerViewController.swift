@@ -93,6 +93,7 @@ final class NewOrEditTrackerViewController: UIViewController {
     private var daysCount: Int?
     private var trackerType: TrackerType = .regular
     private var trackerCategory: TrackerCategory?
+    private var tracker: Tracker?
     
     // MARK: - UIComponents
     private let collectionView: UICollectionView = {
@@ -132,10 +133,16 @@ final class NewOrEditTrackerViewController: UIViewController {
         self.trackerType = trackerType
     }
     
-    init(trackerCategory: TrackerCategory, trackerType: TrackerType) {
+    init(trackerCategory: TrackerCategory, tracker: Tracker, daysCount: Int, trackerType: TrackerType) {
         super.init(nibName: nil, bundle: nil)
         self.trackerCategory = trackerCategory
+        self.tracker = tracker
+        self.daysCount = daysCount
         self.trackerType = trackerType
+        
+        if trackerType.isEdit {
+            updateUIforEditTracker(trackerCategory, tracker: tracker)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -155,21 +162,34 @@ final class NewOrEditTrackerViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .updateCategory, object: nil)
     }
     
-    private func populateUIWithTrackerData(_ tracker: Tracker) {
-            trackerTitle = tracker.title
-            selectedEmoji = tracker.emoji
-            selectedColor = tracker.color
-            schedule = tracker.schedule
-            
-            // Populate the category and schedule descriptions
-//            category = // Get category name associated with the tracker
-//            scheduleDescription = // Format the schedule into a description
-            
-            // Set UI elements
-            addTrackerNameTextField.text = trackerTitle
-            tableView.reloadData() // Reload category and schedule cells
-            collectionView.reloadData() // Reload emoji and color selections
+    private func updateUIforEditTracker(_ trackerCategory: TrackerCategory, tracker: Tracker) {
+        trackerTitle = tracker.title
+        selectedEmoji = tracker.emoji
+        selectedColor = tracker.color
+        schedule = tracker.schedule
+        category = trackerCategory.title
+        scheduleDescription = makeScheduleDescription(schedule)
+        addTrackerNameTextField.text = trackerTitle
+        tableView.reloadData()
+        collectionView.reloadData()
+    }
+    
+    private func makeScheduleDescription(_ schedule: [Int]) -> String {
+        var description: [String] = []
+        var sortedSchedule: [Int] = schedule.sorted(by: <)
+        if !schedule.isEmpty && sortedSchedule[0] == 1 {
+            sortedSchedule.remove(at: 0)
+            sortedSchedule.append(1)
         }
+        for day in sortedSchedule {
+            if day == 1 {
+                description.append(WeekDay.allCases[6].short)
+            } else {
+                description.append(WeekDay.allCases[day - 2].short)
+            }
+        }
+        return description.joined(separator: ", ")
+    }
     
     private func updateCategories() {
         do {

@@ -335,7 +335,10 @@ extension TrackerViewController: UICollectionViewDelegate {
         let section = indexPath.section
         let category = filteredTrackers[section]
         let tracker = category.trackers[indexPath.item]
+        let daysCount = completedTrackers.filter({ $0.id == tracker.id }).count
         let vc = NewOrEditTrackerViewController(trackerCategory: category,
+                                                tracker: tracker,
+                                                daysCount: daysCount,
                                                 trackerType: !tracker.schedule.isEmpty ? .editRegular : .editUnregular )
         present(UINavigationController(rootViewController: vc), animated: true)
     }
