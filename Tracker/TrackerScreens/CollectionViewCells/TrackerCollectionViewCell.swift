@@ -50,7 +50,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private let pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "pin")
+        imageView.tintColor = .trWhite
+        imageView.overrideUserInterfaceStyle = .light
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private var isButtonTapped = false
+    private var isPinned = false
     private var dayCounter = 0
     private var id: UUID = UUID()
     
@@ -119,6 +129,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         trackerLabel.text = tracker.title
         updateDayCounter(day: completedTrackers.filter({$0.id == tracker.id}).count)
+        pinImageView.isHidden = !tracker.isPinned
         configureCompleteTrackerButtonState(tracker, date: date, completedTrackers: completedTrackers)
         completeTrackerButton.tintColor = .trWhite
         completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
@@ -128,7 +139,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 extension TrackerCollectionViewCell: SettingViewsProtocol {
     func setupView() {
         completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
-        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton)
+        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton, pinImageView)
         addConstraints()
         
     }
@@ -145,6 +156,11 @@ extension TrackerCollectionViewCell: SettingViewsProtocol {
             emojiLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
+            
+            pinImageView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            pinImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            pinImageView.heightAnchor.constraint(equalToConstant: 24),
+            pinImageView.widthAnchor.constraint(equalToConstant: 24),
             
             trackerLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 8),
             trackerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),

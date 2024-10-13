@@ -299,42 +299,37 @@ extension TrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         contextMenuConfigurationForItemAt indexPath: IndexPath,
                         point: CGPoint) -> UIContextMenuConfiguration? {
+        let tracker = filteredTrackers[indexPath.section].trackers[indexPath.row]
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
             
             return UIMenu(children: [
-                UIAction(title: Constants.pin) { _ in
-                    print(Constants.pin)
+                UIAction(title: tracker.isPinned ? Constants.pin : Constants.unpin) { [weak self] _ in
+                    self?.pinTracker(at: indexPath, for: tracker)
                 },
                 UIAction(title: Constants.edit) { [weak self] _ in
                     AnalyticService().trackClick(screen: "Main", item: "edit")
-                    self?.editTracker(at: indexPath)
+                    self?.editTracker(at: indexPath, for: tracker)
                 },
                 UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
                     AnalyticService().trackClick(screen: "Main", item: "delete")
                     guard let self else { return }
                     TrackerAlert.showAlert(on: self, alertTitle: Constants.deleteTracker) { [weak self] in
-                        self?.deleteTracker(at: indexPath)
+                        self?.deleteTracker(at: indexPath, for: tracker)
                     }
                 }
             ])
         }
     }
     
-    private func deleteTracker(at indexPath: IndexPath) {
-        let section = indexPath.section
-        let category = filteredTrackers[section]
-        let trackerID = category.trackers[indexPath.item].id
-        
-        trackerRecordStore.deleteTrackerRecord(trackerID)
-        trackerStore.deleteTracker(trackerID)
+    private func deleteTracker(at indexPath: IndexPath, for tracker: Tracker) {
+        trackerRecordStore.deleteTrackerRecord(tracker.id)
+        trackerStore.deleteTracker(tracker.id)
         getCategories()
         getTrackerRecords()
     }
     
-    private func editTracker(at indexPath: IndexPath) {
-        let section = indexPath.section
-        let category = filteredTrackers[section]
-        let tracker = category.trackers[indexPath.item]
+    private func editTracker(at indexPath: IndexPath, for tracker: Tracker) {
+        let category = filteredTrackers[indexPath.section]
         let daysCount = completedTrackers.filter({ $0.id == tracker.id }).count
         let vc = NewOrEditTrackerViewController(trackerCategory: category,
                                                 tracker: tracker,
@@ -343,6 +338,12 @@ extension TrackerViewController: UICollectionViewDelegate {
         NotificationCenter.default.removeObserver(self, name: .editCategory, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(getCategories(_:)), name: .editCategory, object: nil)
         present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
+    private func pinTracker(at indexPath: IndexPath, for tracker: Tracker) {
+        
+        
+    
     }
 }
 

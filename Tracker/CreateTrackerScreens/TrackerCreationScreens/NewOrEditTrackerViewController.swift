@@ -233,6 +233,7 @@ final class NewOrEditTrackerViewController: UIViewController {
                                         title: trackerTitle,
                                         color: color,
                                         emoji: emoji,
+                                        isPinned: false,
                                         schedule: schedule)
             trackerStore.updateTracker(editedTracker, category)
             NotificationCenter.default.post(name: .editCategory, object: nil)
@@ -241,6 +242,7 @@ final class NewOrEditTrackerViewController: UIViewController {
                                   title: trackerTitle,
                                   color: color,
                                   emoji: emoji,
+                                  isPinned: false,
                                   schedule: schedule)
             trackerStore.addNewTracker(tracker, category)
             NotificationCenter.default.post(name: .addCategory, object: TrackerCategory(title: category, trackers: [tracker]))

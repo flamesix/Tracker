@@ -59,4 +59,6 @@ enum Constants {
     static let editRegular = NSLocalizedString("editRegular", comment: "Редактирование привычки")
     static let editUnregular = NSLocalizedString("editUnregular", comment: "Редактирование нерегулярного события")
     static let save = NSLocalizedString("save", comment: "Сохранить")
+    static let pinned = NSLocalizedString("pinned", comment: "Закрепленные")
+    static let unpin = NSLocalizedString("unpin", comment: "Открепить")
 }

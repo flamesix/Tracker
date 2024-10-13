@@ -35,8 +35,8 @@ final class TrackerCategoryStore {
                         let daysOfWeek = try? JSONDecoder().decode([Int].self, from: jsonSchedule as Data)
                         schedule = daysOfWeek ?? []
                     }
-                    
-                    let tracker = Tracker(id: id, title: title, color: color, emoji: emoji, schedule: schedule)
+                    let isPinned = trackerCoreData.isPinned
+                    let tracker = Tracker(id: id, title: title, color: color, emoji: emoji, isPinned: isPinned, schedule: schedule)
                     trackers.append(tracker)
                 }
             }

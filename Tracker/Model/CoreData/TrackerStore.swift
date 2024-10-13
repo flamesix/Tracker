@@ -14,6 +14,7 @@ final class TrackerStore {
                 trackerCoreDate.title = tracker.title
                 trackerCoreDate.emoji = tracker.emoji
                 trackerCoreDate.color = tracker.color
+                trackerCoreDate.isPinned = tracker.isPinned
                 let jsonSchedule = try? JSONEncoder().encode(tracker.schedule)
                 trackerCoreDate.schedule = jsonSchedule
                 
