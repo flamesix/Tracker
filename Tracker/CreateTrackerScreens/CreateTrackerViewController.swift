@@ -17,7 +17,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     @objc private func didTapRegularEventButton() {
-        let vc = NewOrEditTrackerViewController(trackerType: .editRegular)
+        let vc = NewOrEditTrackerViewController(trackerType: .regular)
         vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
