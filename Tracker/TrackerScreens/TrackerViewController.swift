@@ -305,9 +305,9 @@ extension TrackerViewController: UICollectionViewDelegate {
                 UIAction(title: Constants.pin) { _ in
                     print(Constants.pin)
                 },
-                UIAction(title: Constants.edit) { _ in
+                UIAction(title: Constants.edit) { [weak self] _ in
                     AnalyticService().trackClick(screen: "Main", item: "edit")
-                    print(Constants.edit)
+                    self?.editTracker(at: indexPath)
                 },
                 UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
                     AnalyticService().trackClick(screen: "Main", item: "delete")
@@ -329,6 +329,15 @@ extension TrackerViewController: UICollectionViewDelegate {
         trackerStore.deleteTracker(trackerID)
         getCategories()
         getTrackerRecords()
+    }
+    
+    private func editTracker(at indexPath: IndexPath) {
+        let section = indexPath.section
+        let category = filteredTrackers[section]
+        let tracker = category.trackers[indexPath.item]
+        let vc = NewOrEditTrackerViewController(trackerCategory: category,
+                                                trackerType: !tracker.schedule.isEmpty ? .editRegular : .editUnregular )
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
 

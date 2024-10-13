@@ -92,6 +92,7 @@ final class NewOrEditTrackerViewController: UIViewController {
     
     private var daysCount: Int?
     private var trackerType: TrackerType = .regular
+    private var trackerCategory: TrackerCategory?
     
     // MARK: - UIComponents
     private let collectionView: UICollectionView = {
@@ -131,6 +132,12 @@ final class NewOrEditTrackerViewController: UIViewController {
         self.trackerType = trackerType
     }
     
+    init(trackerCategory: TrackerCategory, trackerType: TrackerType) {
+        super.init(nibName: nil, bundle: nil)
+        self.trackerCategory = trackerCategory
+        self.trackerType = trackerType
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -147,6 +154,22 @@ final class NewOrEditTrackerViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self, name: .updateCategory, object: nil)
     }
+    
+    private func populateUIWithTrackerData(_ tracker: Tracker) {
+            trackerTitle = tracker.title
+            selectedEmoji = tracker.emoji
+            selectedColor = tracker.color
+            schedule = tracker.schedule
+            
+            // Populate the category and schedule descriptions
+//            category = // Get category name associated with the tracker
+//            scheduleDescription = // Format the schedule into a description
+            
+            // Set UI elements
+            addTrackerNameTextField.text = trackerTitle
+            tableView.reloadData() // Reload category and schedule cells
+            collectionView.reloadData() // Reload emoji and color selections
+        }
     
     private func updateCategories() {
         do {
