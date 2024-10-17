@@ -82,4 +82,19 @@ final class TrackerStore {
             print("Error finding category: \(error)")
         }
     }
+    
+    func pinTracker(_ trackerId: UUID) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as NSUUID)
+        
+        do {
+            let trackes = try context.fetch(fetchRequest)
+            if let tracker = trackes.first {
+                tracker.isPinned = !tracker.isPinned
+                try context.save()
+            }
+        } catch {
+            print("Error while pinning tracker: \(error)")
+        }
+    }
 }

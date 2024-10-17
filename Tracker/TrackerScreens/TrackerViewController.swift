@@ -303,7 +303,7 @@ extension TrackerViewController: UICollectionViewDelegate {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
             
             return UIMenu(children: [
-                UIAction(title: tracker.isPinned ? Constants.pin : Constants.unpin) { [weak self] _ in
+                UIAction(title: !tracker.isPinned ? Constants.pin : Constants.unpin) { [weak self] _ in
                     self?.pinTracker(at: indexPath, for: tracker)
                 },
                 UIAction(title: Constants.edit) { [weak self] _ in
@@ -341,9 +341,12 @@ extension TrackerViewController: UICollectionViewDelegate {
     }
     
     private func pinTracker(at indexPath: IndexPath, for tracker: Tracker) {
-        
-        
-    
+        trackerStore.pinTracker(tracker.id)
+        getCategories()
+        getTrackerRecords()
+        showTodayTrackers(date: currentDate)
+        didSelectFilter(filter: filterStorage.filter)
+        collectionView.reloadData()
     }
 }
 

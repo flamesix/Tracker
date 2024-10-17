@@ -21,8 +21,9 @@ final class TrackerCategoryStore {
         return categories
     }
     
-    private func map(categoryCoreData: TrackerCategoryCoreData) -> [Tracker] {
+    private func map(categoryCoreData: TrackerCategoryCoreData) -> ([Tracker], [Tracker]) {
         var trackers: [Tracker] = []
+        var pinnedTrackers: [Tracker] = []
         categoryCoreData.tracker?.forEach { trackerCoreDataOptional in
             if let trackerCoreData = trackerCoreDataOptional as? TrackerCoreData {
                 if let id = trackerCoreData.id,
@@ -37,11 +38,11 @@ final class TrackerCategoryStore {
                     }
                     let isPinned = trackerCoreData.isPinned
                     let tracker = Tracker(id: id, title: title, color: color, emoji: emoji, isPinned: isPinned, schedule: schedule)
-                    trackers.append(tracker)
+                    isPinned ? pinnedTrackers.append(tracker) : trackers.append(tracker)
                 }
             }
         }
-        return trackers
+        return (trackers, pinnedTrackers)
     }
     
     func getCategoriesTracker() throws -> [TrackerCategory] {
@@ -50,10 +51,15 @@ final class TrackerCategoryStore {
         do {
             let categoriesCoreData = try context.fetch(request)
             categoriesCoreData.forEach { categoryCoreData in
-                let trackers = map(categoryCoreData: categoryCoreData)
+                let (trackers, pinnedTrackers) = map(categoryCoreData: categoryCoreData)
                 if let title = categoryCoreData.title {
                     let category = TrackerCategory(title: title, trackers: trackers)
                     categories.append(category)
+                }
+                
+                if !pinnedTrackers.isEmpty {
+                    let pinnedCategories = TrackerCategory(title: Constants.pinned, trackers: pinnedTrackers)
+                    categories.insert(pinnedCategories, at: 0)
                 }
             }
         } catch {
