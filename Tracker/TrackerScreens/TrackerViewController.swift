@@ -63,7 +63,11 @@ final class TrackerViewController: UIViewController {
     }
     private let filterStorage = FilterStateStorage.shared
     private var completedTrackersIDs: Set<UUID> = []
-    var completedTrackers: [TrackerRecord] = []
+    var completedTrackers: [TrackerRecord] = [] {
+        didSet {
+            StatisticStorage.shared.completedCount = completedTrackers.count
+        }
+    }
     private var filteredTrackers: [TrackerCategory] = [] {
         didSet {
             updateEmptyState()

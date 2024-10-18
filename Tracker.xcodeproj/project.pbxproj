@@ -38,6 +38,8 @@
 		5B6FAADB2C7DC9370075174C /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FAADA2C7DC9370075174C /* StatisticViewController.swift */; };
 		5B6FAADE2C7DCB920075174C /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FAADD2C7DCB920075174C /* UIView+Extension.swift */; };
 		5B6FAAE02C7DD1F30075174C /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FAADF2C7DD1F30075174C /* Tracker.swift */; };
+		5B7912762CC146ED00A24B64 /* TrackerStatisticBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7912752CC146ED00A24B64 /* TrackerStatisticBlockView.swift */; };
+		5B7912782CC18E7300A24B64 /* StatisticStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7912772CC18E7300A24B64 /* StatisticStorage.swift */; };
 		5B7C0A392CBA60CF0027440F /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 5B7C0A382CBA60CF0027440F /* InlineSnapshotTesting */; };
 		5B7C0A3B2CBA60CF0027440F /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 5B7C0A3A2CBA60CF0027440F /* SnapshotTesting */; };
 		5B7C0A532CBA643F0027440F /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C0A512CBA643F0027440F /* TrackerTests.swift */; };
@@ -114,6 +116,8 @@
 		5B6FAADA2C7DC9370075174C /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		5B6FAADD2C7DCB920075174C /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		5B6FAADF2C7DD1F30075174C /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		5B7912752CC146ED00A24B64 /* TrackerStatisticBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStatisticBlockView.swift; sourceTree = "<group>"; };
+		5B7912772CC18E7300A24B64 /* StatisticStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticStorage.swift; sourceTree = "<group>"; };
 		5B7C0A2E2CBA607D0027440F /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C0A4E2CBA643F0027440F /* testViewController.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testViewController.1.png; sourceTree = "<group>"; };
 		5B7C0A512CBA643F0027440F /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
@@ -183,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				5B6FAADA2C7DC9370075174C /* StatisticViewController.swift */,
+				5B7912772CC18E7300A24B64 /* StatisticStorage.swift */,
 			);
 			path = StatisticScreens;
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 				5B2B6AD52C8DDCE000037D7D /* TrackerEmptyLogo.swift */,
 				5B2B6AD72C8DDD4D00037D7D /* TrackerEmptyLabel.swift */,
 				5BC500E32CB9219D00594E10 /* TrackerAlert.swift */,
+				5B7912752CC146ED00A24B64 /* TrackerStatisticBlockView.swift */,
 			);
 			path = CustomReusableViews;
 			sourceTree = "<group>";
@@ -636,6 +642,7 @@
 				5B49712B2CA6AE34004C750B /* OnboardingViewController.swift in Sources */,
 				5B2BE2DF2C7DE6B3009526FF /* CreateTrackerViewController.swift in Sources */,
 				5B6FAA742C7B93690075174C /* TrackerViewController.swift in Sources */,
+				5B7912782CC18E7300A24B64 /* StatisticStorage.swift in Sources */,
 				5BE428F32C92BFDF004506AF /* CategoryScheduleTableViewCell.swift in Sources */,
 				5BCE057F2C8EE083003C4837 /* NewOrEditTrackerViewController.swift in Sources */,
 				5BADB3722CBA6CAF00C7D82B /* AnalyticService.swift in Sources */,
@@ -659,6 +666,7 @@
 				5B6FAA722C7B93690075174C /* SceneDelegate.swift in Sources */,
 				5BA7F1F82C981399007DF5DD /* TrackerRecordStore.swift in Sources */,
 				5B2BE2EB2C7F5B67009526FF /* TrackerTextField.swift in Sources */,
+				5B7912762CC146ED00A24B64 /* TrackerStatisticBlockView.swift in Sources */,
 				5B6FAAE02C7DD1F30075174C /* Tracker.swift in Sources */,
 				5B4971402CA6BEAB004C750B /* OnboardingStateStorage.swift in Sources */,
 				5BC500D82CB2DFD700594E10 /* FilterTableViewCell.swift in Sources */,
