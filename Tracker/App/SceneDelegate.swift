@@ -1,4 +1,5 @@
 import UIKit
+import YandexMobileMetrica
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -9,6 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = TabBarViewController()
+        AnalyticService.activate()
         window.makeKeyAndVisible()
         self.window = window
     }

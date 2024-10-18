@@ -12,7 +12,7 @@ final class TrackerWarningLabel: UILabel {
     }
     
     private func configure() {
-        text = "Ограничение 38 символов"
+        text = Constants.warningLabel
         textColor = .trRed
         font = .systemFont(ofSize: 17)
         textAlignment = .center

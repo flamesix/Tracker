@@ -50,7 +50,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private let pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "pin")
+        imageView.tintColor = .trWhite
+        imageView.overrideUserInterfaceStyle = .light
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private var isButtonTapped = false
+    private var isPinned = false
     private var dayCounter = 0
     private var id: UUID = UUID()
     
@@ -94,18 +104,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private func updateDayCounter(day: Int) {
         dayCounter = day
-        var text = ""
-        let dayMod = dayCounter % 10
-        let dayMod100 = dayCounter % 100
         
-        if dayMod == 1 && dayMod100 != 11 {
-            text = "\(dayCounter) день"
-        } else if dayMod >= 2 && dayMod <= 4 && (dayMod100 < 10 || dayMod100 >= 20) {
-            text = "\(dayCounter) дня"
-        } else {
-            text = "\(dayCounter) дней"
-        }
-        counterLabel.text = text
+        let dayString = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of days completed"),
+            day
+        )
+        counterLabel.text = dayString
     }
     
     private func configureCompleteTrackerButtonState(_ tracker: Tracker, date: Date, completedTrackers: [TrackerRecord]) {
@@ -125,6 +129,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         trackerLabel.text = tracker.title
         updateDayCounter(day: completedTrackers.filter({$0.id == tracker.id}).count)
+        pinImageView.isHidden = !tracker.isPinned
         configureCompleteTrackerButtonState(tracker, date: date, completedTrackers: completedTrackers)
         completeTrackerButton.tintColor = .trWhite
         completeTrackerButton.backgroundColor = UIColor(named: tracker.color)
@@ -134,7 +139,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 extension TrackerCollectionViewCell: SettingViewsProtocol {
     func setupView() {
         completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
-        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton)
+        contentView.addSubviews(backgroundImageView, emojiLabel, trackerLabel, counterLabel, completeTrackerButton, pinImageView)
         addConstraints()
         
     }
@@ -151,6 +156,11 @@ extension TrackerCollectionViewCell: SettingViewsProtocol {
             emojiLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
+            
+            pinImageView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            pinImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            pinImageView.heightAnchor.constraint(equalToConstant: 24),
+            pinImageView.widthAnchor.constraint(equalToConstant: 24),
             
             trackerLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 8),
             trackerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),

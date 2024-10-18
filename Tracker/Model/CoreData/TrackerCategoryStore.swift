@@ -21,8 +21,9 @@ final class TrackerCategoryStore {
         return categories
     }
     
-    private func map(categoryCoreData: TrackerCategoryCoreData) -> [Tracker] {
+    private func map(categoryCoreData: TrackerCategoryCoreData) -> ([Tracker], [Tracker]) {
         var trackers: [Tracker] = []
+        var pinnedTrackers: [Tracker] = []
         categoryCoreData.tracker?.forEach { trackerCoreDataOptional in
             if let trackerCoreData = trackerCoreDataOptional as? TrackerCoreData {
                 if let id = trackerCoreData.id,
@@ -35,13 +36,13 @@ final class TrackerCategoryStore {
                         let daysOfWeek = try? JSONDecoder().decode([Int].self, from: jsonSchedule as Data)
                         schedule = daysOfWeek ?? []
                     }
-                    
-                    let tracker = Tracker(id: id, title: title, color: color, emoji: emoji, schedule: schedule)
-                    trackers.append(tracker)
+                    let isPinned = trackerCoreData.isPinned
+                    let tracker = Tracker(id: id, title: title, color: color, emoji: emoji, isPinned: isPinned, schedule: schedule)
+                    isPinned ? pinnedTrackers.append(tracker) : trackers.append(tracker)
                 }
             }
         }
-        return trackers
+        return (trackers, pinnedTrackers)
     }
     
     func getCategoriesTracker() throws -> [TrackerCategory] {
@@ -50,10 +51,15 @@ final class TrackerCategoryStore {
         do {
             let categoriesCoreData = try context.fetch(request)
             categoriesCoreData.forEach { categoryCoreData in
-                let trackers = map(categoryCoreData: categoryCoreData)
+                let (trackers, pinnedTrackers) = map(categoryCoreData: categoryCoreData)
                 if let title = categoryCoreData.title {
                     let category = TrackerCategory(title: title, trackers: trackers)
                     categories.append(category)
+                }
+                
+                if !pinnedTrackers.isEmpty {
+                    let pinnedCategories = TrackerCategory(title: Constants.pinned, trackers: pinnedTrackers)
+                    categories.insert(pinnedCategories, at: 0)
                 }
             }
         } catch {
@@ -62,9 +68,24 @@ final class TrackerCategoryStore {
         return categories
     }
     
+    func deleteCategoriesTracker(_ category: String) {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", category as NSString)
+        
+        do {
+            let category = try context.fetch(fetchRequest)
+            if let category = category.first {
+                context.delete(category)
+                try context.save()
+            }
+        } catch {
+            print("Error deleteCategoriesTracker: \(error)")
+        }
+    }
+    
     func fetchedResultsController() -> NSFetchedResultsController<TrackerCategoryCoreData> {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
-
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
