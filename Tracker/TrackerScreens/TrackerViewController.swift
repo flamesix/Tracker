@@ -455,6 +455,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
     }
     
     private func filterCompletedTrackers() {
+        showTodayTrackers(date: currentDate)
         filteredTrackers = categories.compactMap { category in
             let completed = category.trackers.filter { tracker in
                 completedTrackers.contains { $0.id == tracker.id }
@@ -464,6 +465,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
     }
     
     private func filterActiveTrackers() {
+        showTodayTrackers(date: currentDate)
         filteredTrackers = categories.compactMap { category in
             let active = category.trackers.filter { tracker in
                 !completedTrackers.contains { $0.id == tracker.id }

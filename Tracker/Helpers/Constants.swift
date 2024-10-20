@@ -61,4 +61,5 @@ enum Constants {
     static let save = NSLocalizedString("save", comment: "Сохранить")
     static let pinned = NSLocalizedString("pinned", comment: "Закрепленные")
     static let unpin = NSLocalizedString("unpin", comment: "Открепить")
+    static let everyDay = NSLocalizedString("everyDay", comment: "Каждый день")
 }
