@@ -106,6 +106,12 @@ final class NewOrEditTrackerViewController: UIViewController {
         let scrollView = UIScrollView()
         return scrollView
     }()
+    
+    private let contentView: UIView = {
+        let contentView = UIView()
+        return contentView
+    }()
+    
     private let addTrackerNameTextField = TrackerTextField(placeholder: Constants.enterTrackerName)
     private let tableView = TrackerTableView()
     private let createButton = TrackerButton(Constants.create, .trGray, .trWhite)
@@ -417,13 +423,12 @@ extension NewOrEditTrackerViewController: SettingViewsProtocol {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
         view.addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
         switch trackerType {
         case .regular, .unregular:
-            scrollView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView)
-            scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
+            contentView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView)
         case .editRegular, .editUnregular:
-            scrollView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView, daysCountLabel)
-            scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height + 78)
+            contentView.addSubviews(addTrackerNameTextField, tableView, collectionView, buttonStackView, daysCountLabel)
         }
         
         addConstraints()
@@ -433,36 +438,43 @@ extension NewOrEditTrackerViewController: SettingViewsProtocol {
     func addConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            addTrackerNameTextField.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: trackerType.constraint),
-            addTrackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            addTrackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            
+            addTrackerNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: trackerType.constraint),
+            addTrackerNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            addTrackerNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             addTrackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
             
             tableView.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 24),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             tableView.heightAnchor.constraint(equalToConstant: trackerType.isRegular ? 150 : 75),
             
             collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
-            collectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -18),
-            
-            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 492),
+
+            buttonStackView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
+            buttonStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            buttonStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             buttonStackView.heightAnchor.constraint(equalToConstant: 60),
+            buttonStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
             
         ])
         if !warningLabel.isHidden {
             NSLayoutConstraint.activate([
                 warningLabel.topAnchor.constraint(equalTo: addTrackerNameTextField.bottomAnchor, constant: 8),
-                warningLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
-                warningLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
+                warningLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 45),
+                warningLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -45),
                 warningLabel.heightAnchor.constraint(equalToConstant: 22),
                 
             ])
@@ -470,9 +482,9 @@ extension NewOrEditTrackerViewController: SettingViewsProtocol {
         
         if trackerType.isEdit {
             NSLayoutConstraint.activate([
-                daysCountLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 24),
-                daysCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                daysCountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                daysCountLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+                daysCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                daysCountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                 daysCountLabel.heightAnchor.constraint(equalToConstant: 38),
             ])
         }
