@@ -156,6 +156,18 @@ final class TrackerViewController: UIViewController {
         }
     }
     
+    private func filterTrackers(for date: Date, trackersToFilter: [TrackerCategory]) {
+        let weekDay = Calendar.current.component(.weekday, from: date)
+        
+        filteredTrackers = trackersToFilter.compactMap { category in
+            var filteredTrackers = category.trackers.filter { tracker in
+                tracker.schedule.contains(weekDay)
+            }
+            filteredTrackers.append(contentsOf: category.trackers.filter({ $0.schedule.isEmpty }))
+            return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }
+    }
+    
     private func filterTrackers(for searchText: String) {
         if searchText.isEmpty {
             filteredTrackers = categories
@@ -455,22 +467,22 @@ extension TrackerViewController: FilterViewControllerDelegate {
     }
     
     private func filterCompletedTrackers() {
-        showTodayTrackers(date: currentDate)
-        filteredTrackers = categories.compactMap { category in
+        let trackersToFilter = categories.compactMap { category in
             let completed = category.trackers.filter { tracker in
                 completedTrackers.contains { $0.id == tracker.id }
             }
             return completed.isEmpty ? nil : TrackerCategory(title: category.title, trackers: completed)
         }
+        filterTrackers(for: currentDate, trackersToFilter: trackersToFilter)
     }
     
     private func filterActiveTrackers() {
-        showTodayTrackers(date: currentDate)
-        filteredTrackers = categories.compactMap { category in
+        let trackersToFilter = categories.compactMap { category in
             let active = category.trackers.filter { tracker in
                 !completedTrackers.contains { $0.id == tracker.id }
             }
             return active.isEmpty ? nil : TrackerCategory(title: category.title, trackers: active)
         }
+        filterTrackers(for: currentDate, trackersToFilter: trackersToFilter)
     }
 }
