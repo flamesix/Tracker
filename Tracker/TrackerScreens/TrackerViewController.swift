@@ -133,6 +133,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        currentDate = sender.date
         selectedDate = sender.date
         if let selectedFilter {
             didSelectFilter(filter: selectedFilter)
@@ -330,6 +331,7 @@ extension TrackerViewController: UICollectionViewDelegate {
         trackerStore.deleteTracker(tracker.id)
         getCategories()
         getTrackerRecords()
+        showTodayTrackers(date: currentDate)
     }
     
     private func editTracker(at indexPath: IndexPath, for tracker: Tracker) {
@@ -396,6 +398,10 @@ extension TrackerViewController: UISearchBarDelegate {
         filterTrackers(for: searchText)
         updateEmptyState()
         collectionView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        showTodayTrackers(date: currentDate)
     }
 }
 

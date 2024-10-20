@@ -79,14 +79,38 @@ final class NewOrEditTrackerViewController: UIViewController {
             }
         }
     }
-    private var selectedColor: String = ""
-    private var selectedEmoji: String = ""
+    
+    private var selectedColor: String = "" {
+        didSet {
+            checkCreateButtonActive()
+        }
+    }
+    
+    private var selectedEmoji: String = "" {
+        didSet {
+            checkCreateButtonActive()
+        }
+    }
+    
+    private var category: String = "" {
+        didSet {
+            checkCreateButtonActive()
+        }
+    }
+    
+    private var scheduleDescription: String = "" {
+        didSet {
+            checkCreateButtonActive()
+        }
+    }
+    
+    private var trackerTitle: String = "" {
+        didSet {
+            checkCreateButtonActive()
+        }
+    }
+    
     private var selectedItems: [Int: IndexPath] = [:]
-    
-    private var category: String = ""
-    private var scheduleDescription: String = ""
-    
-    private var trackerTitle: String = ""
     private var schedule: [Int] = []
     private var selectedDays: [WeekDay: Bool] = [:]
     
@@ -160,6 +184,7 @@ final class NewOrEditTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         updateCategories()
+        setupHideKeyboardOnTap()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateCategory(_:)), name: .updateCategory, object: nil)
     }
@@ -299,10 +324,36 @@ final class NewOrEditTrackerViewController: UIViewController {
         addConstraints()
     }
     
-    private func makeCreateButtonActive(_ trackerTitle: String) {
-        self.trackerTitle = trackerTitle
+    private func makeCreateButtonActive() {
         createButton.isEnabled = true
         createButton.backgroundColor = .trBlack
+    }
+    
+    private func makeCreateButtonInactive() {
+        createButton.isEnabled = false
+        createButton.backgroundColor = .trGray
+    }
+    
+    private func checkCreateButtonActive() {
+        switch trackerType {
+        case .regular, .editRegular:
+            if !trackerTitle.isEmpty && !scheduleDescription.isEmpty && !category.isEmpty && !selectedColor.isEmpty && !selectedEmoji.isEmpty {
+                makeCreateButtonActive()
+            } else {
+                makeCreateButtonInactive()
+            }
+        case .unregular, .editUnregular:
+            if !trackerTitle.isEmpty && !category.isEmpty && !selectedColor.isEmpty && !selectedEmoji.isEmpty {
+                makeCreateButtonActive()
+            } else {
+                makeCreateButtonInactive()
+            }
+        }
+    }
+    
+    @objc private func didChangeTrackerName(_ sender: UITextField) {
+        guard let trackerTitle = sender.text else { return }
+        self.trackerTitle = trackerTitle
     }
 }
 
@@ -338,32 +389,6 @@ extension NewOrEditTrackerViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 extension NewOrEditTrackerViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        switch reason {
-        case .committed:
-            guard let trackerTitle = textField.text else { return }
-            switch trackerType {
-            case .regular, .editRegular:
-                if !scheduleDescription.isEmpty && !category.isEmpty {
-                    makeCreateButtonActive(trackerTitle)
-                }
-            case .unregular, .editUnregular:
-                if !category.isEmpty {
-                    makeCreateButtonActive(trackerTitle)
-                }
-            }
-        case .cancelled:
-            createButton.isEnabled = false
-            createButton.backgroundColor = .trGray
-        @unknown default:
-            print("Cannot Handle Unknown Reason")
-        }
-    }
-    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let currentText = textField.text,
@@ -413,7 +438,7 @@ extension NewOrEditTrackerViewController: SettingViewsProtocol {
         setupCollectionView()
         
         addTrackerNameTextField.delegate = self
-        
+        addTrackerNameTextField.addTarget(self, action: #selector(didChangeTrackerName), for: .editingChanged)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         createButton.isEnabled = false
