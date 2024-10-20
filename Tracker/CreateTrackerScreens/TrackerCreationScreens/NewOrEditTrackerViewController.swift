@@ -438,6 +438,7 @@ extension NewOrEditTrackerViewController: SettingViewsProtocol {
         setupCollectionView()
         
         addTrackerNameTextField.delegate = self
+        addTrackerNameTextField.becomeFirstResponder()
         addTrackerNameTextField.addTarget(self, action: #selector(didChangeTrackerName), for: .editingChanged)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)

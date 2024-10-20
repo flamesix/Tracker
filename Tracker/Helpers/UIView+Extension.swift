@@ -59,7 +59,7 @@ extension UIView {
             $0.name == UIView.kLayerNameGradientBorder
         }
         if borderLayers?.count ?? 0 > 1 {
-            fatalError()
+            assertionFailure("Unable to make gradient border layer.")
         }
         return borderLayers?.first as? CAGradientLayer
     }
