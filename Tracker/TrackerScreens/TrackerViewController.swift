@@ -279,6 +279,9 @@ extension TrackerViewController: SettingViewsProtocol {
             filterButton.isHidden = false
             emptyLogo.image = UIImage(named: "EmptyFilterResult")
             emptyLabel.text = Constants.emptyFilterResults
+        } else {
+            emptyLogo.image = UIImage(named: "EmptyLogo")
+            emptyLabel.text = Constants.trackerEmptyLogo
         }
     }
 }
