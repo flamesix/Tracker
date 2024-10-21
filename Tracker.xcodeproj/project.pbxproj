@@ -12,6 +12,7 @@
 		5B099ECD2CA464F400417D54 /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B099ECB2CA464F400417D54 /* TrackerModel.xcdatamodeld */; };
 		5B0E48062CAEC25E00DF0E60 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5B0E48042CAEC25D00DF0E60 /* Localizable.strings */; };
 		5B0E480A2CAEC8CC00DF0E60 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 5B0E48082CAEC8CC00DF0E60 /* Localizable.stringsdict */; };
+		5B2A1EA32CC636B200AE21CE /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2A1EA22CC636B200AE21CE /* UITableViewCell+Extension.swift */; };
 		5B2B180E2C9971C8000571C1 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B180D2C9971C8000571C1 /* Store.swift */; };
 		5B2B18122C9A0130000571C1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B18112C9A0130000571C1 /* Constants.swift */; };
 		5B2B6ABF2C8D842D00037D7D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */; };
@@ -87,6 +88,7 @@
 		5B0E48052CAEC25D00DF0E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5B0E48072CAEC36000DF0E60 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5B0E48092CAEC8CC00DF0E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		5B2A1EA22CC636B200AE21CE /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
 		5B2B180D2C9971C8000571C1 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		5B2B18112C9A0130000571C1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5B2B6ABE2C8D842D00037D7D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				5BE428EE2C90BB32004506AF /* Protocols.swift */,
 				5BE428F02C92106F004506AF /* Notification+Extension.swift */,
 				5B2B18112C9A0130000571C1 /* Constants.swift */,
+				5B2A1EA22CC636B200AE21CE /* UITableViewCell+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 				5B6FAA742C7B93690075174C /* TrackerViewController.swift in Sources */,
 				5B7912782CC18E7300A24B64 /* StatisticStorage.swift in Sources */,
 				5BE428F32C92BFDF004506AF /* CategoryScheduleTableViewCell.swift in Sources */,
+				5B2A1EA32CC636B200AE21CE /* UITableViewCell+Extension.swift in Sources */,
 				5BCE057F2C8EE083003C4837 /* NewOrEditTrackerViewController.swift in Sources */,
 				5BADB3722CBA6CAF00C7D82B /* AnalyticService.swift in Sources */,
 				5B6FAAD92C7DC89C0075174C /* TabBarController.swift in Sources */,

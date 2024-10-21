@@ -88,6 +88,11 @@ extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellCount = tableView.numberOfRows(inSection: indexPath.section)
+        cell.setCustomStyle(indexPath: indexPath, cellCount: cellCount)
+    }
 }
 
 extension ScheduleViewController: SettingViewsProtocol {

@@ -222,7 +222,7 @@ final class NewOrEditTrackerViewController: UIViewController {
                 description.append(WeekDay.allCases[day - 2].short)
             }
         }
-        return schedule.count == 7 ? Constants.everyDay : description.joined(separator: ", ")
+        return schedule.count == WeekDay.allCases.count ? Constants.everyDay : description.joined(separator: ", ")
     }
     
     private func updateSelectedDaysToEdit(_ schedule: [Int]) {
@@ -417,7 +417,7 @@ extension NewOrEditTrackerViewController: UITextFieldDelegate {
 extension NewOrEditTrackerViewController: ScheduleViewControllerDelegate {
     func updateScheduleSelection(with selectedDays: [WeekDay : Bool], schedule: [Int]) {
         let sortedDays = selectedDays.filter({ $0.value == true }).keys.sorted(by: { $0.sort < $1.sort })
-        scheduleDescription = schedule.count == 7 ? Constants.everyDay : sortedDays.map { $0.short }.joined(separator: ", ")
+        scheduleDescription = schedule.count == WeekDay.allCases.count ? Constants.everyDay : sortedDays.map { $0.short }.joined(separator: ", ")
         self.selectedDays = selectedDays
         self.schedule = schedule
         tableView.reloadData()
