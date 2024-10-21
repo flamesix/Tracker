@@ -7,7 +7,7 @@ final class CategoryViewModel {
     var selectedCategory: String?
     
     var categoriesUpdated: (() -> Void)?
-
+    
     func fetchCategories() {
         do {
             categories = try trackerCategoryStore.getCategoriesTracker()
@@ -16,7 +16,7 @@ final class CategoryViewModel {
         }
         categoriesUpdated?()
     }
-
+    
     func categoriesCount() -> Int {
         categories.count
     }
@@ -27,5 +27,12 @@ final class CategoryViewModel {
     
     func selectCategory(at index: Int) {
         selectedCategory = categories[index].title
+    }
+    
+    func deleteCategory(at index: Int) {
+        let category = categories[index].title
+        categories.remove(at: index)
+        trackerCategoryStore.deleteCategoriesTracker(category)
+        categoriesUpdated?()
     }
 }

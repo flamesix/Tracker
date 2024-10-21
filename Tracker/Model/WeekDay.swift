@@ -1,30 +1,49 @@
 import Foundation
 
 enum WeekDay: String, CaseIterable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
+    
+    var long: String {
+        switch self {
+        case .monday:
+            Constants.monday
+        case .tuesday:
+            Constants.tuesday
+        case .wednesday:
+            Constants.wednesday
+        case .thursday:
+            Constants.thursday
+        case .friday:
+            Constants.friday
+        case .saturday:
+            Constants.saturday
+        case .sunday:
+            Constants.sunday
+        }
+    }
     
     var short: String {
         switch self {
         case .monday:
-            "Пн"
+            Constants.mon
         case .tuesday:
-            "Вт"
+            Constants.tue
         case .wednesday:
-            "Ср"
+            Constants.wed
         case .thursday:
-            "Чт"
+            Constants.thu
         case .friday:
-            "Пт"
+            Constants.fri
         case .saturday:
-            "Сб"
+            Constants.sat
         case .sunday:
-            "Вс"
+            Constants.sun
         }
     }
     

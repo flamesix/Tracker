@@ -10,7 +10,7 @@ final class Store {
         let container = NSPersistentContainer(name: "TrackerModel")
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                assertionFailure("Unresolved error \(error), \(error.userInfo)")
             }
         }
         return container
@@ -23,7 +23,7 @@ final class Store {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                assertionFailure("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }
