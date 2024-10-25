@@ -35,11 +35,11 @@ final class TrackerRecordStore {
         do {
             let trackers = try context.fetch(fetchRequest)
             if let tracker = trackers.first {
-                let trackerRecordCoreDate = TrackerRecordCoreData(context: context)
-                trackerRecordCoreDate.date = date
+                let trackerRecordCoreData = TrackerRecordCoreData(context: context)
+                trackerRecordCoreData.date = date
                 
-                trackerRecordCoreDate.tracker = tracker
-                tracker.addToRecord(trackerRecordCoreDate)
+                trackerRecordCoreData.tracker = tracker
+                tracker.addToRecord(trackerRecordCoreData)
                 try context.save()
             }
         } catch {
@@ -56,6 +56,21 @@ final class TrackerRecordStore {
             if let record = records.first {
                 context.delete(record)
                 try context.save()
+            }
+        } catch {
+            print("Error deleteTrackerRecord: \(error)")
+        }
+    }
+    
+    func deleteTrackerRecord(_ trackerId: UUID) {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "tracker.id == %@", trackerId as NSUUID)
+        
+        do {
+            let records = try context.fetch(fetchRequest)
+            for record in records {
+                    context.delete(record)
+                    try context.save()
             }
         } catch {
             print("Error deleteTrackerRecord: \(error)")

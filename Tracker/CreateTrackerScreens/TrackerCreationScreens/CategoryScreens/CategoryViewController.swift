@@ -9,10 +9,10 @@ final class CategoryViewController: UIViewController {
     weak var delegate: CategoryViewControllerDelegate?
     private var viewModel: CategoryViewModel?
     
-    private let tableView = TrackerTableView()
-    private let addButton = TrackerButton("Добавить категорию", .trBlack, .trWhite)
-    private let emptyLogo = TrackerEmptyLogo(frame: .zero)
-    private let emptyLabel = TrackerEmptyLabel("Привычки и события можно \n объединить по смыслу")
+    private lazy var tableView = TrackerTableView()
+    private lazy var addButton = TrackerButton(Constants.addCategory, .trBlack, .trWhite)
+    private lazy var emptyLogo = TrackerEmptyLogo(frame: .zero)
+    private lazy var emptyLabel = TrackerEmptyLabel(Constants.emptyCategory)
     
     private var selectedIndexPath: IndexPath?
     
@@ -77,11 +77,31 @@ extension CategoryViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
+            return UIMenu(children: [
+                UIAction(title: Constants.edit) { _ in
+                    print(Constants.edit)
+                },
+                UIAction(title: Constants.delete, attributes: .destructive) { [weak self] _ in
+                    guard let self else { return }
+                    TrackerAlert.showAlert(on: self, alertTitle: Constants.deleteCategory) { [weak self] in
+                        self?.deleteCategory(at: indexPath)
+                    }
+                }
+            ])
+        }
+    }
+    
+    private func deleteCategory(at indexPath: IndexPath) {
+        viewModel?.deleteCategory(at: indexPath.row)
+    }
 }
 
 extension CategoryViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Категория"
+        title = Constants.category
         view.backgroundColor = .trWhite
         
         setupTableView()

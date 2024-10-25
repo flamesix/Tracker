@@ -4,21 +4,21 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CategoryScheduleTableViewCell"
     
-    private let mainLabel: UILabel = {
+    private lazy var mainLabel: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trBlack
         return lable
     }()
     
-    private let subLable: UILabel = {
+    private lazy var subLabel: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trGray
         return lable
     }()
     
-    private let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .leading
@@ -37,11 +37,11 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
     public func configure(isRegularEvent: Bool, indexPath: IndexPath, schedule: String, category: String) {
         switch isRegularEvent {
         case true:
-            mainLabel.text = indexPath.row == 0 ? "Категория" : "Расписание"
-            subLable.text = indexPath.row == 0 ? category : schedule
+            mainLabel.text = indexPath.row == 0 ? Constants.category : Constants.schedule
+            subLabel.text = indexPath.row == 0 ? category : schedule
         case false:
-            mainLabel.text = "Категория"
-            subLable.text = category
+            mainLabel.text = Constants.category
+            subLabel.text = category
         }
     }
     
@@ -59,7 +59,7 @@ extension CategoryScheduleTableViewCell: SettingViewsProtocol {
         backgroundColor = .trBackground
         
         contentView.addSubviews(stackView)
-        [mainLabel, subLable].forEach {
+        [mainLabel, subLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview($0)
         }

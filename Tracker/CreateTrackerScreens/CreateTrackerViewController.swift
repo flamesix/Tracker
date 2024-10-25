@@ -8,8 +8,8 @@ final class CreateTrackerViewController: UIViewController {
     
     weak var delegate: CreateTrackerViewControllerDelegate?
     
-    private let regularEventButton = TrackerButton("Привычка", .trBlack, .trWhite)
-    private let unregularEventButton = TrackerButton("Нерегулярное событие", .trBlack, .trWhite)
+    private lazy var regularEventButton = TrackerButton(Constants.habit, .trBlack, .trWhite)
+    private lazy var unregularEventButton = TrackerButton(Constants.unregularEvent, .trBlack, .trWhite)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,13 +17,13 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     @objc private func didTapRegularEventButton() {
-        let vc = NewTrackerViewController(isRegularEvent: true)
+        let vc = NewOrEditTrackerViewController(trackerType: .regular)
         vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @objc private func didTapUnRegularEventButton() {
-        let vc = NewTrackerViewController(isRegularEvent: false)
+        let vc = NewOrEditTrackerViewController(trackerType: .unregular)
         vc.categories = delegate?.pushCategories() ?? []
         present(UINavigationController(rootViewController: vc), animated: true)
     }
@@ -32,7 +32,7 @@ final class CreateTrackerViewController: UIViewController {
 
 extension CreateTrackerViewController: SettingViewsProtocol {
     func setupView() {
-        title = "Создание трекера"
+        title = Constants.createTracker
         view.backgroundColor = .trWhite
         view.addSubviews(regularEventButton, unregularEventButton)
         regularEventButton.addTarget(self, action: #selector(didTapRegularEventButton), for: .touchUpInside)

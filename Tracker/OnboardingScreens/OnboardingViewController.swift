@@ -5,7 +5,7 @@ final class OnboardingViewController: UIViewController {
     private var backgroundImageTitle: String
     private var onboardLabelText: String
     
-    private let onboardButton = TrackerButton("Вот это технологии!", .trBlack, .trWhite)
+    private let onboardButton = TrackerButton(Constants.wowTechs, .trBlack, .trWhite)
     
     private lazy var onboardLabel: UILabel = {
         let label = UILabel()

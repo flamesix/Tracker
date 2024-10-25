@@ -4,13 +4,13 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ColorCollectionViewCell"
     
-    private let colorImageView: UIImageView = {
+    private lazy var colorImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 8
         return view
     }()
     
-    private let colorBackgroundView: UIView = {
+    private lazy var colorBackgroundView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
         return view
