@@ -472,7 +472,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
     private func filterCompletedTrackers() {
         let trackersToFilter = categories.compactMap { category in
             let completed = category.trackers.filter { tracker in
-                completedTrackers.contains { $0.id == tracker.id }
+                completedTrackers.contains { $0.id == tracker.id && $0.date == dateFromDatePicker() }
             }
             return completed.isEmpty ? nil : TrackerCategory(title: category.title, trackers: completed)
         }
@@ -482,7 +482,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
     private func filterActiveTrackers() {
         let trackersToFilter = categories.compactMap { category in
             let active = category.trackers.filter { tracker in
-                !completedTrackers.contains { $0.id == tracker.id }
+                !completedTrackers.contains { $0.id == tracker.id && $0.date == dateFromDatePicker() }
             }
             return active.isEmpty ? nil : TrackerCategory(title: category.title, trackers: active)
         }
