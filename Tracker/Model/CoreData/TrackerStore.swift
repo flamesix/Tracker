@@ -9,16 +9,16 @@ final class TrackerStore {
         do {
             let categories = try context.fetch(fetchRequest)
             if let category = categories.first {
-                let trackerCoreDate = TrackerCoreData(context: context)
-                trackerCoreDate.id = tracker.id
-                trackerCoreDate.title = tracker.title
-                trackerCoreDate.emoji = tracker.emoji
-                trackerCoreDate.color = tracker.color
-                trackerCoreDate.isPinned = tracker.isPinned
+                let trackerCoreData = TrackerCoreData(context: context)
+                trackerCoreData.id = tracker.id
+                trackerCoreData.title = tracker.title
+                trackerCoreData.emoji = tracker.emoji
+                trackerCoreData.color = tracker.color
+                trackerCoreData.isPinned = tracker.isPinned
                 let jsonSchedule = try? JSONEncoder().encode(tracker.schedule)
-                trackerCoreDate.schedule = jsonSchedule
+                trackerCoreData.schedule = jsonSchedule
                 
-                trackerCoreDate.category = category
+                trackerCoreData.category = category
                 try context.save()
             } else {
                 print("Category not found with title: \(category)")
@@ -63,19 +63,19 @@ final class TrackerStore {
         fetchRequestCategory.predicate = NSPredicate(format: "title == %@", category)
         
         do {
-            let trackersCoreDate = try context.fetch(fetchRequestTracker)
+            let trackersCoreData = try context.fetch(fetchRequestTracker)
             let categories = try context.fetch(fetchRequestCategory)
-            if let trackerCoreDate = trackersCoreDate.first,
+            if let trackerCoreData = trackersCoreData.first,
                let category = categories.first {
                 
-                trackerCoreDate.title = tracker.title
-                trackerCoreDate.emoji = tracker.emoji
-                trackerCoreDate.color = tracker.color
+                trackerCoreData.title = tracker.title
+                trackerCoreData.emoji = tracker.emoji
+                trackerCoreData.color = tracker.color
                 let jsonSchedule = try? JSONEncoder().encode(tracker.schedule)
-                trackerCoreDate.schedule = jsonSchedule
-                trackerCoreDate.isPinned = tracker.isPinned
+                trackerCoreData.schedule = jsonSchedule
+                trackerCoreData.isPinned = tracker.isPinned
                 
-                trackerCoreDate.category = category
+                trackerCoreData.category = category
                 
                 try context.save()
             }

@@ -133,7 +133,6 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-//        currentDate = sender.date
         selectedDate = sender.date
         if let selectedFilter {
             didSelectFilter(filter: selectedFilter)

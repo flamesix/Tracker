@@ -35,11 +35,11 @@ final class TrackerRecordStore {
         do {
             let trackers = try context.fetch(fetchRequest)
             if let tracker = trackers.first {
-                let trackerRecordCoreDate = TrackerRecordCoreData(context: context)
-                trackerRecordCoreDate.date = date
+                let trackerRecordCoreData = TrackerRecordCoreData(context: context)
+                trackerRecordCoreData.date = date
                 
-                trackerRecordCoreDate.tracker = tracker
-                tracker.addToRecord(trackerRecordCoreDate)
+                trackerRecordCoreData.tracker = tracker
+                tracker.addToRecord(trackerRecordCoreData)
                 try context.save()
             }
         } catch {
