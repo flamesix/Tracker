@@ -8,8 +8,8 @@ final class CreateTrackerViewController: UIViewController {
     
     weak var delegate: CreateTrackerViewControllerDelegate?
     
-    private let regularEventButton = TrackerButton(Constants.habit, .trBlack, .trWhite)
-    private let unregularEventButton = TrackerButton(Constants.unregularEvent, .trBlack, .trWhite)
+    private lazy var regularEventButton = TrackerButton(Constants.habit, .trBlack, .trWhite)
+    private lazy var unregularEventButton = TrackerButton(Constants.unregularEvent, .trBlack, .trWhite)
 
     override func viewDidLoad() {
         super.viewDidLoad()

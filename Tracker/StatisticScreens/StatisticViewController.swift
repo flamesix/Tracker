@@ -2,10 +2,10 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
-    private let emptyLogo = TrackerEmptyLogo("EmptyLogoStat")
-    private let emptyLabel = TrackerEmptyLabel(Constants.nothingToAnalyze)
+    private lazy var emptyLogo = TrackerEmptyLogo("EmptyLogoStat")
+    private lazy var emptyLabel = TrackerEmptyLabel(Constants.nothingToAnalyze)
     
-    private let completedTrackers = TrackerStatisticBlockView()
+    private lazy var completedTrackers = TrackerStatisticBlockView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

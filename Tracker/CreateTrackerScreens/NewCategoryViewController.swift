@@ -10,8 +10,8 @@ final class NewCategoryViewController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     
-    private let categoryTitleTextField = TrackerTextField(placeholder: Constants.enterCategory)
-    private let doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
+    private lazy var categoryTitleTextField = TrackerTextField(placeholder: Constants.enterCategory)
+    private lazy var doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
 
     override func viewDidLoad() {
         super.viewDidLoad()

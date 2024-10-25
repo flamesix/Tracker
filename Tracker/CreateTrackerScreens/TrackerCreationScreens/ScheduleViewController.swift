@@ -8,18 +8,18 @@ final class ScheduleViewController: UIViewController {
     
     weak var delegate: ScheduleViewControllerDelegate?
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         return scrollView
     }()
     
-    private let contentView: UIView = {
+    private lazy var contentView: UIView = {
         let contentView = UIView()
         return contentView
     }()
     
-    private let doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
-    private let tableView = TrackerTableView()
+    private lazy var doneButton = TrackerButton(Constants.done, .trGray, .trWhite)
+    private lazy var tableView = TrackerTableView()
     
     var selectedDays: [WeekDay: Bool] = [:]
     var schedule: [Int] = [] {

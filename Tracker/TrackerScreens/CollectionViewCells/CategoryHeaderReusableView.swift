@@ -4,7 +4,7 @@ final class CategoryHeaderReusableView: UICollectionReusableView {
     
     static let reuseIdentifier = "CategoryHeaderReusableView"
     
-    private let categoryTitleLabel: UILabel = {
+    private lazy var categoryTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 19, weight: .bold)
         label.textColor = .trBlack

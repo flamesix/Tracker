@@ -2,14 +2,14 @@ import UIKit
 
 final class TrackerViewController: UIViewController {
     
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .trWhite
         return collectionView
     }()
     
-    private let searchController: UISearchController = {
+    private lazy var searchController: UISearchController = {
         let search = UISearchController()
         search.hidesNavigationBarDuringPresentation = false
         search.searchBar.setValue(Constants.cancel, forKey: "cancelButtonText")
@@ -17,10 +17,10 @@ final class TrackerViewController: UIViewController {
         return search
     }()
     
-    private let emptyLogo = TrackerEmptyLogo(frame: .zero)
-    private let emptyLabel = TrackerEmptyLabel(Constants.trackerEmptyLogo)
+    private lazy var emptyLogo = TrackerEmptyLogo(frame: .zero)
+    private lazy var emptyLabel = TrackerEmptyLabel(Constants.trackerEmptyLogo)
     
-    private let datePicker: UIDatePicker = {
+    private lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.preferredDatePickerStyle = .compact
         picker.datePickerMode = .date
@@ -31,7 +31,7 @@ final class TrackerViewController: UIViewController {
         return picker
     }()
     
-    private let filterButton: UIButton = {
+    private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setTitle(Constants.filters, for: .normal)
         button.setTitleColor(.trWhite, for: .normal)

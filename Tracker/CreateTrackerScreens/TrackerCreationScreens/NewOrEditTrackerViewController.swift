@@ -120,27 +120,27 @@ final class NewOrEditTrackerViewController: UIViewController {
     private var tracker: Tracker?
     
     // MARK: - UIComponents
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
     }()
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         return scrollView
     }()
     
-    private let contentView: UIView = {
+    private lazy var contentView: UIView = {
         let contentView = UIView()
         return contentView
     }()
     
-    private let addTrackerNameTextField = TrackerTextField(placeholder: Constants.enterTrackerName)
-    private let tableView = TrackerTableView()
-    private let createButton = TrackerButton(Constants.create, .trGray, .trWhite)
-    private let cancelButton = TrackerButton(Constants.cancel, .clear, .trRed, 1, .trRed)
-    private let buttonStackView = TrackerButtonStackView()
-    private let warningLabel = TrackerWarningLabel()
+    private lazy var addTrackerNameTextField = TrackerTextField(placeholder: Constants.enterTrackerName)
+    private lazy var tableView = TrackerTableView()
+    private lazy var createButton = TrackerButton(Constants.create, .trGray, .trWhite)
+    private lazy var cancelButton = TrackerButton(Constants.cancel, .clear, .trRed, 1, .trRed)
+    private lazy var buttonStackView = TrackerButtonStackView()
+    private lazy var warningLabel = TrackerWarningLabel()
     
     private lazy var daysCountLabel: UILabel = {
         let label = UILabel()

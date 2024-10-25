@@ -4,7 +4,7 @@ final class ScheduleTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "ScheduleTableViewCell"
     
-    public let switcher: UISwitch = {
+    public lazy var switcher: UISwitch = {
         let switchControl = UISwitch()
         switchControl.onTintColor = .trBlue
         return switchControl

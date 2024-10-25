@@ -10,14 +10,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     weak var delegate: TrackerCollectionViewCellDelegate?
     static let reuseIdentifier = "TrackerCollectionViewCell"
     
-    private let backgroundImageView: UIImageView = {
+    private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
         imageView.layer.cornerRadius = 16
         return imageView
     }()
     
-    private let emojiLabel: UILabel = {
+    private lazy var emojiLabel: UILabel = {
         let label = UILabel()
         label.layer.cornerRadius = 12
         label.layer.masksToBounds = true
@@ -26,7 +26,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let trackerLabel: UILabel = {
+    private lazy var trackerLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -36,7 +36,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let counterLabel: UILabel = {
+    private lazy var counterLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -44,13 +44,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let completeTrackerButton: UIButton = {
+    private lazy var completeTrackerButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 17
         return button
     }()
     
-    private let pinImageView: UIImageView = {
+    private lazy var pinImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "pin")
         imageView.tintColor = .trWhite

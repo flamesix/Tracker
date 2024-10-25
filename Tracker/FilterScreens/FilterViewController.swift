@@ -8,7 +8,7 @@ final class FilterViewController: UIViewController {
     
     weak var delegate: FilterViewControllerDelegate?
     
-    private let tableView = TrackerTableView()
+    private lazy var tableView = TrackerTableView()
     
     var selectedFilter: Filters?
     private var selectedIndexPath: IndexPath?

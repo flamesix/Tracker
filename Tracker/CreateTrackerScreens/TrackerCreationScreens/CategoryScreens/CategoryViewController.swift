@@ -9,10 +9,10 @@ final class CategoryViewController: UIViewController {
     weak var delegate: CategoryViewControllerDelegate?
     private var viewModel: CategoryViewModel?
     
-    private let tableView = TrackerTableView()
-    private let addButton = TrackerButton(Constants.addCategory, .trBlack, .trWhite)
-    private let emptyLogo = TrackerEmptyLogo(frame: .zero)
-    private let emptyLabel = TrackerEmptyLabel(Constants.emptyCategory)
+    private lazy var tableView = TrackerTableView()
+    private lazy var addButton = TrackerButton(Constants.addCategory, .trBlack, .trWhite)
+    private lazy var emptyLogo = TrackerEmptyLogo(frame: .zero)
+    private lazy var emptyLabel = TrackerEmptyLabel(Constants.emptyCategory)
     
     private var selectedIndexPath: IndexPath?
     

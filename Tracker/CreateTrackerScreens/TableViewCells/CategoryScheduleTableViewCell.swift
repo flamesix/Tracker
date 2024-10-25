@@ -4,21 +4,21 @@ final class CategoryScheduleTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CategoryScheduleTableViewCell"
     
-    private let mainLabel: UILabel = {
+    private lazy var mainLabel: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trBlack
         return lable
     }()
     
-    private let subLabel: UILabel = {
+    private lazy var subLabel: UILabel = {
         let lable = UILabel()
         lable.font = .systemFont(ofSize: 17, weight: .regular)
         lable.textColor = .trGray
         return lable
     }()
     
-    private let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .leading
