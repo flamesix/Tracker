@@ -133,7 +133,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        currentDate = sender.date
+//        currentDate = sender.date
         selectedDate = sender.date
         if let selectedFilter {
             didSelectFilter(filter: selectedFilter)
@@ -346,7 +346,7 @@ extension TrackerViewController: UICollectionViewDelegate {
         trackerStore.deleteTracker(tracker.id)
         getCategories()
         getTrackerRecords()
-        showTodayTrackers(date: currentDate)
+        showTodayTrackers(date: selectedDate)
     }
     
     private func editTracker(at indexPath: IndexPath, for tracker: Tracker) {
@@ -365,7 +365,7 @@ extension TrackerViewController: UICollectionViewDelegate {
         trackerStore.pinTracker(tracker)
         getCategories()
         getTrackerRecords()
-        showTodayTrackers(date: currentDate)
+        showTodayTrackers(date: selectedDate)
         didSelectFilter(filter: filterStorage.filter)
         collectionView.reloadData()
     }
@@ -416,7 +416,7 @@ extension TrackerViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        showTodayTrackers(date: currentDate)
+        showTodayTrackers(date: selectedDate)
     }
 }
 
@@ -445,7 +445,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
     func didSelectFilter(filter: Filters?) {
         selectedFilter = filter
         filterButton.setTitleColor(selectedFilter != nil ? .trRed : .trWhite, for: .normal)
-        showTodayTrackers(date: currentDate)
+        showTodayTrackers(date: selectedDate)
         guard let filter else { return }
         
         switch filter {
@@ -462,11 +462,12 @@ extension TrackerViewController: FilterViewControllerDelegate {
     
     private func filterAllTrackers() {
         filteredTrackers = categories
+        showTodayTrackers(date: selectedDate)
     }
     
     private func filterTodayTrackers() {
         datePicker.date = currentDate
-        showTodayTrackers(date: currentDate)
+        showTodayTrackers(date: Date())
     }
     
     private func filterCompletedTrackers() {
@@ -476,7 +477,7 @@ extension TrackerViewController: FilterViewControllerDelegate {
             }
             return completed.isEmpty ? nil : TrackerCategory(title: category.title, trackers: completed)
         }
-        filterTrackers(for: currentDate, trackersToFilter: trackersToFilter)
+        filterTrackers(for: selectedDate, trackersToFilter: trackersToFilter)
     }
     
     private func filterActiveTrackers() {
@@ -486,6 +487,6 @@ extension TrackerViewController: FilterViewControllerDelegate {
             }
             return active.isEmpty ? nil : TrackerCategory(title: category.title, trackers: active)
         }
-        filterTrackers(for: currentDate, trackersToFilter: trackersToFilter)
+        filterTrackers(for: selectedDate, trackersToFilter: trackersToFilter)
     }
 }
