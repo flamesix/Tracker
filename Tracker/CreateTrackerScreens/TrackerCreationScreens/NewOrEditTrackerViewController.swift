@@ -123,7 +123,6 @@ final class NewOrEditTrackerViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.isScrollEnabled = false
         return collectionView
     }()
     private let scrollView: UIScrollView = {
@@ -198,7 +197,7 @@ final class NewOrEditTrackerViewController: UIViewController {
         selectedEmoji = tracker.emoji
         selectedColor = tracker.color
         schedule = tracker.schedule
-        category = trackerCategory.title
+        category = trackerStore.getCategoryForTracker(tracker)
         scheduleDescription = makeScheduleDescription(schedule)
         addTrackerNameTextField.text = trackerTitle
         updateSelectedDaysToEdit(schedule)
@@ -264,7 +263,7 @@ final class NewOrEditTrackerViewController: UIViewController {
                                         title: trackerTitle,
                                         color: color,
                                         emoji: emoji,
-                                        isPinned: false,
+                                        isPinned: tracker.isPinned,
                                         schedule: schedule)
             trackerStore.updateTracker(editedTracker, category)
             NotificationCenter.default.post(name: .editCategory, object: nil)

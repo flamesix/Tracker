@@ -73,6 +73,7 @@ final class TrackerStore {
                 trackerCoreDate.color = tracker.color
                 let jsonSchedule = try? JSONEncoder().encode(tracker.schedule)
                 trackerCoreDate.schedule = jsonSchedule
+                trackerCoreDate.isPinned = tracker.isPinned
                 
                 trackerCoreDate.category = category
                 
@@ -83,9 +84,9 @@ final class TrackerStore {
         }
     }
     
-    func pinTracker(_ trackerId: UUID) {
+    func pinTracker(_ tracker: Tracker) {
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as NSUUID)
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as NSUUID)
         
         do {
             let trackes = try context.fetch(fetchRequest)
@@ -96,5 +97,24 @@ final class TrackerStore {
         } catch {
             print("Error while pinning tracker: \(error)")
         }
+    }
+    
+    func getCategoryForTracker(_ tracker: Tracker) -> String {
+        var categoryTitle: String = ""
+        let request = NSFetchRequest<TrackerCoreData>(entityName: Constants.trackerCoreData)
+        request.predicate = NSPredicate(format: "id == %@", tracker.id as NSUUID)
+        do {
+            let trackers = try context.fetch(request)
+            if let tracker = trackers.first {
+                if let category = tracker.category {
+                    if let title = category.title {
+                        categoryTitle = title
+                    }
+                }
+            }
+        } catch {
+            print("Error while getCategoryForTracker: \(error)")
+        }
+        return categoryTitle
     }
 }

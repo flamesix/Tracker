@@ -362,7 +362,7 @@ extension TrackerViewController: UICollectionViewDelegate {
     }
     
     private func pinTracker(at indexPath: IndexPath, for tracker: Tracker) {
-        trackerStore.pinTracker(tracker.id)
+        trackerStore.pinTracker(tracker)
         getCategories()
         getTrackerRecords()
         showTodayTrackers(date: currentDate)
